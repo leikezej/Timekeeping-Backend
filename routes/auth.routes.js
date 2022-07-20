@@ -1,5 +1,7 @@
 const { verifySignUp } = require("../middleware");
 const controller = require("../controllers/auth.controller");
+// const passwordReset = require("./routes/passwordReset");
+
 module.exports = function(app) {
   app.use(function(req, res, next) {
     res.header(
@@ -19,4 +21,5 @@ module.exports = function(app) {
   app.post("/api/auth/signin", controller.signin);
   app.post("/api/auth/signout", controller.signout);
   app.post("/api/auth/forgot", controller.forgot);
+  app.use("/api/auth/reset", controller.reset);
 };

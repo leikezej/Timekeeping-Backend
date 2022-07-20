@@ -8,6 +8,10 @@ Authentication:
 POST /api/auth/signup
 POST /api/auth/signin
 
+POST	/users	         create user
+POST	/password-reset	Send password reset link
+POST	/password-reset/:userId/:token	Reset user password
+
 Authorization:
 GET /api/test/all
 GET /api/test/user for loggedin users (user/moderator/admin)

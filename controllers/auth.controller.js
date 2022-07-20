@@ -111,6 +111,37 @@ exports.forgot = async (req, res) => {
 };
 
 
+// RESET PASSWORD
+exports.reset = async (req, res) => {
+  try {
+      // const schema = Joi.object({ password: Joi.string().required() });
+      const { error } = schema.validate(req.body);
+        if (error) return res.status(400).send(error.details[0].message);
+
+      const user = await User.findById(req.params.userId);
+        if (!user) return res.status(400).send("invalid link or expired");
+
+      const token = await token.findOne({
+          userId: user._id,
+          token: req.params.token,
+      });
+       if (!token) return res.status(400).send("Invalid link or expired");
+
+      user.password = req.body.password;
+        await user.save();
+        await token.delete();
+
+      res.send("password reset sucessfully.");
+  } catch (error) {
+      res.send("An error occured");
+      console.log(error);
+  }
+};
+
+
+
+
+
 //SIGNOUT
 exports.signout = async (req, res) => {
       try {
