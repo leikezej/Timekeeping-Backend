@@ -7,11 +7,15 @@ const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+// REGISTER
 exports.signup = (req, res) => {
-  // Save User to Database
   User.create({
-    username: req.body.username,
+    name: req.body.name,
     email: req.body.email,
+    birthdate: req.body.birthdate,
+    gender: req.body.gender,
+    address: req.body.address,
+    phone: req.body.phone,
     password: bcrypt.hashSync(req.body.password, 8)
   })
     .then(user => {
@@ -38,10 +42,12 @@ exports.signup = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+// LOGIN
 exports.signin = (req, res) => {
   User.findOne({
     where: {
-      username: req.body.username
+      email: req.body.email
     }
   })
     .then(user => {
@@ -68,7 +74,7 @@ exports.signin = (req, res) => {
         }
         res.status(200).send({
           id: user.id,
-          username: user.username,
+          name: user.name,
           email: user.email,
           roles: authorities,
           accessToken: token
@@ -78,4 +84,41 @@ exports.signin = (req, res) => {
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
+};
+
+// FORGOT PASSWORD
+exports.forgot = async (req, res) => {
+  const id = req.params.id;
+  User.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Password Updated"
+        });
+      } else {
+        res.send({
+          message: "Cannot Reset, Email Not Found!"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "error"
+      });
+    });
+};
+
+
+//SIGNOUT
+exports.signout = async (req, res) => {
+      try {
+        req.session = null;
+        return res.status(200).send({
+          message: "Logged Out Successful!"
+        });
+      } catch (err) {
+        this.next(err);
+    }
 };

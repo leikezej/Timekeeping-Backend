@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const cookieSession = require("cookie-session");
 const app = express();
 
 var corsOptions = {
@@ -9,19 +10,27 @@ var corsOptions = {
 const db = require("./models");
 const Role = db.role;
 
-// db.sequelize.sync();
-// db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Db');
-//   initial();
-// });
+db.sequelize.sync();
+db.sequelize.sync({force: true}).then(() => {
+  console.log('Drop and Resync Db');
+  initial();
+});
 
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  cookieSession({
+    name: "bugtech-session",
+    secret: "COOKIE_SECRET",
+    httpOnly: false
+  })
+);
+
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to Jepski application." });
 });
 
 
