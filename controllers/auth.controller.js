@@ -110,7 +110,6 @@ exports.forgot = async (req, res) => {
     });
 };
 
-
 // RESET PASSWORD
 exports.reset = async (req, res) => {
   try {
@@ -138,11 +137,7 @@ exports.reset = async (req, res) => {
   }
 };
 
-
-
-
-
-//SIGNOUT
+// SIGNOUT
 exports.signout = async (req, res) => {
       try {
         req.session = null;
