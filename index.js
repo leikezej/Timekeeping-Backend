@@ -33,7 +33,6 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Jepski application." });
 });
 
-
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 
