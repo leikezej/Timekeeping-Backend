@@ -4,17 +4,21 @@ const cookieSession = require("cookie-session");
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "*"
 };
 
 const db = require("./models");
 const Role = db.role;
 
-db.sequelize.sync();
-db.sequelize.sync({force: true}).then(() => {
-  console.log('Drop and Resync Db');
-  initial();
-});
+const User = db.user;
+
+
+// db.sequelize.sync({
+//   // force: true
+// }).then(() => {
+//   console.log('Drop and Resync Db');
+//   // initial();
+// });
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -57,4 +61,14 @@ function initial() {
      id: 3,
      name: "admin"
    });
+
+   User.create({
+    name: "test",
+    email: "test@gmail.com",
+    birthdate: "June 4, 1997",
+    gender: "male",
+    address: "Tacloban City",
+    password: "123123123"
+   })
+   
  }
