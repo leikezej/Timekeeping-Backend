@@ -44,7 +44,6 @@ exports.signup = (req, res) => {
     });
 };
 
-
 // LOGIN
 exports.signin = async (req, res) => {
   try {
@@ -65,14 +64,19 @@ exports.signin = async (req, res) => {
         message: "Invalid Password!",
       });
     }
+
     const token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 86400, // 24 hours
     });
+
+    let refreshToken = await RefreshToken.createToken(user);
+
     let authorities = [];
     const roles = await user.getRoles();
     for (let i = 0; i < roles.length; i++) {
       authorities.push("ROLE_" + roles[i].name.toUpperCase());
     }
+
     req.session.token = token;
     return res.status(200).send({
       id: user.id,
@@ -81,7 +85,7 @@ exports.signin = async (req, res) => {
       image: user.image,
       role: authorities,
       accessToken: token,
-      RefreshToken: RefreshToken,
+      refreshToken: refreshToken,
     });
   } catch (error) {
     return res.status(500).send({ message: error.message });
@@ -109,14 +113,17 @@ exports.refreshToken = async (req, res) => {
       });
       return;
     }
+
     const user = await refreshToken.getUser();
     let newAccessToken = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: config.jwtExpiration,
     });
+
     return res.status(200).json({
       accessToken: newAccessToken,
       refreshToken: refreshToken.token,
     });
+    
   } catch (err) {
     return res.status(500).send({ message: err });
   }
@@ -153,11 +160,11 @@ exports.reset = async (req, res) => {
       const { error } = schema.validate(req.body);
         if (error) return res.status(400).send(error.details[0].message);
 
-      const user = await User.findById(req.params.userId);
+      const user = await User.findById(req.params.user_id);
         if (!user) return res.status(400).send("invalid link or expired");
 
       const token = await token.findOne({
-          userId: user._id,
+          user_id: user._id,
           token: req.params.token,
       });
        if (!token) return res.status(400).send("Invalid link or expired");
