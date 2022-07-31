@@ -1,8 +1,6 @@
 const { verifySignUp } = require("../middleware");
 const controller = require("../controllers/auth.controller");
 const middleware = require("../middleware/");
-// const express = require("express");
-// const router = express.Router();
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -27,7 +25,7 @@ module.exports = function(app) {
   app.post("/api/auth/refreshtoken", controller.refreshToken);
   app.post("/api/auth/forgot", controller.forgot);
   app.post("/api/auth/forgot", controller.forgot);
-  app.post("/api/auth/passwordReset", controller.passwordReset);
+  // app.post("/api/auth/passwordReset", controller.passwordReset);
   // app.post("/api/auth/reset-password", controller.resetPassword);
   // app.post("/api/auth/update-password", controller.updatePassword);
 };

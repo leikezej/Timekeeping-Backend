@@ -3,14 +3,6 @@ const config = require("../config/auth.config");
 const Op = db.Sequelize.Op;
 const { user: User, role: Role, refreshToken: RefreshToken } = db;
 
-// const SibApiV3Sdk = require("sib-api-v3-sdk");
-// SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = 'SENDIN_APIKEY';
-
-
-// const mailgun = require("mailgun-js");
-// const DOMAIN = 'sandbox21312312312512321.mailgun.org';
-// const mg = mailgun({ apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN });
-
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
@@ -51,92 +43,7 @@ exports.signup = (req, res) => {
     });
 };
 
-// exports.signup = (req, res) => {
-//   User.create({
-//     name: req.body.name,
-//     email: req.body.email,
-//     birthdate: req.body.birthdate,
-//     gender: req.body.gender,
-//     address: req.body.address,
-//     phone: req.body.phone,
-//     role: req.body.role,
-//     password: bcrypt.hashSync(req.body.password, 8)
-//   })
-//     .then(user => {
-//       if (req.body.roles) {
-//         Role.findAll({
-//           where: {
-//             name: {
-//               [Op.or]: req.body.roles
-//             }
-//           }
-//         }).then(roles => {
-//           user.setRoles(roles).then(() => {
-//             res.send({ message: "User was registered successfully!" });
-//           });
-//         });
-//       } else {
-//         // user role = 1
-//         user.setRoles([1]).then(() => {
-//           res.send({ message: "User was registered successfully!" });
-//         });
-//       }
-//     })
-//     .catch(err => {
-//       res.status(500).send({ message: err.message });
-//     }); 
-
-//     // const token = jwt.sign({ name, email, password}, process.env.JWT_ACC_ACTIVATE, { expiresIn: '20m'});
-//     // const data = {
-//     //     from: 'noreply@proton.com',
-//     //     to: email,
-//     //     subject: 'Account Activation Link',
-//     //     html: `
-//     //       <h2>Please Click The Link To Activate Your Account!</h2>      
-//     //       <p>${process.env.CLIENT_URL}/api/auth/activate/${token}</p>
-//     //     `
-//     // };
-
-//     tranEmailApi
-//     .sendTransacEmail({
-//         sender,
-//         to: receivers,
-//         subject: 'Account Activation Link',
-//         textContent: `
-//           Activation Link
-//         `,
-//         htmlContent: `
-//           <h1>Cules Coding</h1>
-//           <a href="https://localhost:8080/api/auth/activate/">Activate</a>
-//                 `,
-//             params: {
-//                 role: 'Authentication',
-//             },
-//     })
-//     .then(console.log)
-//     .catch(console.log)
-
-//     const sender = {
-//       email: 'jezedevkiel21@gmail.com',
-//       name: 'Jepski-Auth',
-//     };
-//     const receivers = [
-//       {
-//           email: email,
-//       },
-//   ]
-//     // mg.messages().send(data, function (error, body) {
-//     //   if(error) {
-//     //     return res.json({
-//     //         error: message
-//     //     })
-//     //   }
-//     //   return res.json({ message: 'Activation Link Has Been Sent To Your Email !'});
-//     // });
-// };
-
 // LOGIN
-
 exports.signin = async (req, res) => {
   try {
     const user = await User.findOne({
@@ -221,6 +128,34 @@ exports.refreshToken = async (req, res) => {
     return res.status(500).send({ message: err });
   }
 };
+
+exports.passwordReset = async (req, res) => {
+  try {
+      const schema = Joi.object({ email: Joi.string().email().required()});
+      const {error} = schema.validate(req.body);
+      if (error) return res.status(400).send(error.details[0].message);
+
+      const user = await User.findOneI({ email: req.body.email});
+      if(!user) return res.status(400).send("user given does not exist");
+
+      let token = await token.findOneI({ user: "userId: user._id"});
+      if(!token){
+          token = await new token ({
+              userId: user._id,
+              token: crypto.randomBytes(32).toString('hex'),
+          }).save()
+      }
+
+      const link = `localhost:3000/api/auth/passwordReset/${user._id}/${token.token}`;
+      await sendEmail(user.email, "password reset", link);
+
+      res.send("password reset link sent to your email")
+  } catch (error) {
+      res.send("An Error occured");
+      console.log(error)
+  }
+};
+
 
 // FORGOT PASSWORD
 exports.forgot = async (req, res) => {
