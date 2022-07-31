@@ -1,9 +1,15 @@
 const db = require("../models");
 const config = require("../config/auth.config");
-// const User = db.user;
-// const Role = db.role;
 const Op = db.Sequelize.Op;
 const { user: User, role: Role, refreshToken: RefreshToken } = db;
+
+// const SibApiV3Sdk = require("sib-api-v3-sdk");
+// SibApiV3Sdk.ApiClient.instance.authentications['api-key'].apiKey = 'SENDIN_APIKEY';
+
+
+// const mailgun = require("mailgun-js");
+// const DOMAIN = 'sandbox21312312312512321.mailgun.org';
+// const mg = mailgun({ apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN });
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -17,6 +23,7 @@ exports.signup = (req, res) => {
     gender: req.body.gender,
     address: req.body.address,
     phone: req.body.phone,
+    role: req.body.role,
     password: bcrypt.hashSync(req.body.password, 8)
   })
     .then(user => {
@@ -44,7 +51,92 @@ exports.signup = (req, res) => {
     });
 };
 
+// exports.signup = (req, res) => {
+//   User.create({
+//     name: req.body.name,
+//     email: req.body.email,
+//     birthdate: req.body.birthdate,
+//     gender: req.body.gender,
+//     address: req.body.address,
+//     phone: req.body.phone,
+//     role: req.body.role,
+//     password: bcrypt.hashSync(req.body.password, 8)
+//   })
+//     .then(user => {
+//       if (req.body.roles) {
+//         Role.findAll({
+//           where: {
+//             name: {
+//               [Op.or]: req.body.roles
+//             }
+//           }
+//         }).then(roles => {
+//           user.setRoles(roles).then(() => {
+//             res.send({ message: "User was registered successfully!" });
+//           });
+//         });
+//       } else {
+//         // user role = 1
+//         user.setRoles([1]).then(() => {
+//           res.send({ message: "User was registered successfully!" });
+//         });
+//       }
+//     })
+//     .catch(err => {
+//       res.status(500).send({ message: err.message });
+//     }); 
+
+//     // const token = jwt.sign({ name, email, password}, process.env.JWT_ACC_ACTIVATE, { expiresIn: '20m'});
+//     // const data = {
+//     //     from: 'noreply@proton.com',
+//     //     to: email,
+//     //     subject: 'Account Activation Link',
+//     //     html: `
+//     //       <h2>Please Click The Link To Activate Your Account!</h2>      
+//     //       <p>${process.env.CLIENT_URL}/api/auth/activate/${token}</p>
+//     //     `
+//     // };
+
+//     tranEmailApi
+//     .sendTransacEmail({
+//         sender,
+//         to: receivers,
+//         subject: 'Account Activation Link',
+//         textContent: `
+//           Activation Link
+//         `,
+//         htmlContent: `
+//           <h1>Cules Coding</h1>
+//           <a href="https://localhost:8080/api/auth/activate/">Activate</a>
+//                 `,
+//             params: {
+//                 role: 'Authentication',
+//             },
+//     })
+//     .then(console.log)
+//     .catch(console.log)
+
+//     const sender = {
+//       email: 'jezedevkiel21@gmail.com',
+//       name: 'Jepski-Auth',
+//     };
+//     const receivers = [
+//       {
+//           email: email,
+//       },
+//   ]
+//     // mg.messages().send(data, function (error, body) {
+//     //   if(error) {
+//     //     return res.json({
+//     //         error: message
+//     //     })
+//     //   }
+//     //   return res.json({ message: 'Activation Link Has Been Sent To Your Email !'});
+//     // });
+// };
+
 // LOGIN
+
 exports.signin = async (req, res) => {
   try {
     const user = await User.findOne({
@@ -93,6 +185,7 @@ exports.signin = async (req, res) => {
   console.log("Success")
 };
 
+// REFRESH TOKEN
 exports.refreshToken = async (req, res) => {
   const { refreshToken: requestToken } = req.body;
   if (requestToken == null) {
@@ -153,32 +246,92 @@ exports.forgot = async (req, res) => {
     });
 };
 
+// exports.reset = async (req, res) => {
+//   const id = req.params.id;
+//   User.update(req.body, {
+//     where: { id: id }
+//   })
+//     .then(num => {
+//       if (num == 1) {
+//         res.send({
+//           message: "Password Updated"
+//         });
+//       } else {
+//         res.send({
+//           message: "Cannot Reset, Email Not Found!"
+//         });
+//       }
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message: "error"
+//       });
+//     });
+// };
 // RESET PASSWORD
-exports.reset = async (req, res) => {
-  try {
-      // const schema = Joi.object({ password: Joi.string().required() });
-      const { error } = schema.validate(req.body);
-        if (error) return res.status(400).send(error.details[0].message);
+// exports.forgotPassword = async (req, res) => {
+//   const { email } = req.body;
+  
+//   User.findOne({email}, (err, user) => {
+//     if(err || !user) {
+//       return res.status(400).json({ error: "Email Does Not Exist!"});
+//     }
 
-      const user = await User.findById(req.params.user_id);
-        if (!user) return res.status(400).send("invalid link or expired");
+//     // const token = jwt.sign({_id: user._id}, process.env.RESET_PASSWORD_KEY, { expiresIn: '20m'});
+//     // const data = {
+//     //     from: 'noreply@proton.com',
+//     //     to: email,
+//     //     subject: 'Account Activation Link',
+//     //     html: `
+//     //       <h2>Please Click The Link To Reset Your Password!</h2>      
+//     //       <p>${process.env.CLIENT_URL}/api/auth/forgotpassword/${token}</p>
+//     //     `
+//     // };
+//     tranEmailApi
+//     .sendTransacEmail({
+//         sender,
+//         to: receivers,
+//         subject: 'Password Reset',
+//         textContent: `
+          
+//         `,
+//         htmlContent: `
+//           <h1>Click Here To Reset Your Password</h1>
+//           <a href="https://localhost:8080/api/auth/forgotPassword">Forgot Password</a>
+//                 `,
+//             params: {
+//                 role: 'Reset',
+//             },
+//     })
+//     .then(console.log)
+//     .catch(console.log)
 
-      const token = await token.findOne({
-          user_id: user._id,
-          token: req.params.token,
-      });
-       if (!token) return res.status(400).send("Invalid link or expired");
+//     const sender = {
+//       email: 'jezedevkiel21@gmail.com',
+//       name: 'Jepski-Auth',
+//     };
+//     const receivers = [
+//       {
+//           email: email,
+//       },
+//   ]
 
-      user.password = req.body.password;
-        await user.save();
-        await token.delete();
-
-      res.send("password reset sucessfully.");
-  } catch (error) {
-      res.send("An error occured");
-      console.log(error);
-  }
-};
+//     return user.updateOne({ resetLink: token}, function (err, success) {
+//       if(err) {
+//         return res.status(400).json({ error: "Reset Password Link Error!"});
+//       } else {
+//         mg.messages().send(data, function (error, body) {
+//           if(error) {
+//             return res.json({
+//                 error: message
+//             })
+//           }
+//           return res.json({ message: 'Email has been sent!'});
+//         });
+//       }
+//     })
+//   })
+// };
 
 // SIGNOUT
 exports.signout = async (req, res) => {
@@ -191,3 +344,36 @@ exports.signout = async (req, res) => {
         this.next(err);
     }
 };
+
+// ACTIVATE ACCOUNT
+// exports.activateAccount = async (req, res) => {
+//   const {token} = req.body;
+
+//   if(token) {
+//     jwt.verify(token, process.env.JWT_ACC_ACTIVATE, function(err, decodedToken){
+//       if(err) {
+//           return res.status(400).json({error: 'Incorrect or Expired Link'})
+//       }
+
+//       const { name, email, passsword } = decodedToken;
+
+//       User.findOne({email}).exec((err, user) => {
+//         if(user) {
+//           return res.status(400).json({error: 'User With This Email Already Exists!'});
+//         }
+//         let newUser = new User({ name, email, password });
+//         newUser.save((err, success) => {
+//           if(err) {
+//           console.log("Error");
+//           return res.status(400).json({error: 'Error Activating Account!'});
+//         }
+//         res.json({
+//           message: "Signup Success!"
+//         })
+//       })
+//     });
+//   })
+// } else {
+//     return res.json({ Error: "Something went Strong!"})
+//   }
+// }

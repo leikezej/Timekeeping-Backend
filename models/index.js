@@ -25,6 +25,8 @@ db.sequelize = sequelize;
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.refreshToken = require("../models/refreshToken.model.js")(sequelize, Sequelize);
+// db.forgotPassword = require("../models/forgot-password.model.js")(sequelize, Sequelize);
+// db.images = require("../models/image.model.js")(sequelize, Sequelize);
 
 
 db.role.belongsToMany(db.user, {
@@ -40,12 +42,12 @@ db.user.belongsToMany(db.role, {
 });
 
 db.refreshToken.belongsTo(db.user, {
-  foreignKey: 'userId', targetKey: 'id'
+  foreignKey: 'user_id', targetKey: 'id'
 });
 
 db.user.hasOne(db.refreshToken, {
-  foreignKey: 'userId', targetKey: 'id'
+  foreignKey: 'user_id', targetKey: 'id'
 });
 
-db.ROLES = ["user", "admin", "moderator"];
+db.ROLES = ["user", "admin"];
 module.exports = db;

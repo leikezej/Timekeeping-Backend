@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
     const Token = sequelize.define("tokens", {
-        userId: {
+        user_id: {
            type: Sequelize.STRING
     },
           token: {
