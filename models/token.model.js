@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Token = sequelize.define("tokens", {
+    const Token = sequelize.define("token", {
         userId: {
            type: Sequelize.STRING
     },
