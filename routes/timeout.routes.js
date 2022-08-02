@@ -1,5 +1,5 @@
 const { authJwt } = require("../middleware");
-const controller = require("../controllers/timein.controller");
+const controller = require("../controllers/timeout.controller");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -10,5 +10,5 @@ module.exports = function(app) {
     next();
   });
 
-  app.post("/api/timesheet/timein", controller.timein);
+  app.post("/api/timesheet/timeout", controller.timeout);
 };
