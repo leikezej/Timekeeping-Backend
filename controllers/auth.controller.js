@@ -189,3 +189,18 @@ exports.signout = async (req, res) => {
         this.next(err);
     }
 };
+
+exports.findAll = (req, res) => {
+  const name = req.query.name;
+  var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+  User.findAll({ where: condition })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    });
+};
