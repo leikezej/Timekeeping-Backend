@@ -27,7 +27,6 @@ db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.refreshToken = require("../models/refreshToken.model.js")(sequelize, Sequelize);
 db.timein = require("../models/timein.model.js")(sequelize, Sequelize);
 db.timeout = require("../models/timeout.model.js")(sequelize, Sequelize);
-db.tutorial = require("../models/tutorial.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
