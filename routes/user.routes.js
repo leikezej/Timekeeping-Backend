@@ -11,7 +11,7 @@ module.exports = function(app) {
   });
 
   app.get("/api/test/all", controller.allAccess);
-  app.get("/api/auth/users", controller.findAll);
+  app.get("/api/user/users", controller.findAll);
 
   app.get(
     "/api/test/user",

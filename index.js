@@ -8,7 +8,7 @@ var corsOptions = {
 };
 
 const db = require("./models");
-const Role = db.role;
+const Role = db.role ;
 
 db.sequelize.sync();
 db.sequelize.sync({force: true}).then(() => {
@@ -27,7 +27,6 @@ app.use(
   })
 );
 
-// simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Jepski application." });
 });
@@ -37,7 +36,6 @@ require('./routes/user.routes')(app);
 require('./routes/timein.routes')(app);
 require('./routes/timeout.routes')(app);
 
-// set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
