@@ -1,10 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
+const router = express.Router();
+const controller = require("./controllers/file.controller");
 const app = express();
+global.__basedir = __dirname;
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://localhost:3000"
+  // origin: "*"
 };
 
 const db = require("./models");
@@ -35,6 +39,7 @@ require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/timein.routes')(app);
 require('./routes/timeout.routes')(app);
+require('./routes/upload.routes')(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
