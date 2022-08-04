@@ -19,6 +19,12 @@ GET /api/test/mod for moderator
 GET /api/test/admin for admin
 
 
+### FILE UPLOAD:
+Methods	Urls	Actions
+POST	/upload	upload a File
+GET	/files	get List of Files (name & url)
+GET	/files/[filename]	download a File
+
 ## OUT
 localhost:8080/api/auth/signup
 {
