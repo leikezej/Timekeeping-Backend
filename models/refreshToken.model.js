@@ -9,6 +9,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATE,
     },
   });
+  
   RefreshToken.createToken = async function (user) {
     let expiredAt = new Date();
     expiredAt.setSeconds(expiredAt.getSeconds() + config.jwtRefreshExpiration);
