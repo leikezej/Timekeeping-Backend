@@ -11,8 +11,15 @@ module.exports = function(app) {
     next();
   });
 
-  app.get("/api/test/all", controller.allAccess);
-  app.get("/api/user/users", controller.findAll);
+       app.get("/api/test/all", controller.allAccess);
+
+      app.get("/api/auth/users", controller.findAll);
+      app.get("/api/auth/user/:id", controller.findOne);
+      app.get("/api/auth/user/:email", controller.findOne);
+      app.put("/api/auth/user/:id", controller.update);
+      app.delete("/api/auth/user/:id", controller.delete);
+      app.delete("/api/auth/users", controller.deleteAll);
+      
 
   app.get(
     "/api/test/user",
@@ -20,11 +27,11 @@ module.exports = function(app) {
     controller.userBoard
   );
 
-  app.get(
-    "/api/test/mod",
-    [authJwt.verifyToken, authJwt.isModerator],
-    controller.moderatorBoard
-  );
+  // app.get(
+  //   "/api/test/mod",
+  //   [authJwt.verifyToken, authJwt.isModerator],
+  //   controller.moderatorBoard
+  // );
 
   app.get(
     "/api/test/admin",

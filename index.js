@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cookieSession({
     name: "bugtech-session",
-    secret: "COOKIE_SECRET",
+    secret: "jepski-cokes",
     httpOnly: false
   })
 );
@@ -40,6 +40,7 @@ require('./routes/user.routes')(app);
 require('./routes/timein.routes')(app);
 require('./routes/timeout.routes')(app);
 require('./routes/upload.routes')(app);
+// require('./routes/user.routes')(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
