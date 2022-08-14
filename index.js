@@ -1,10 +1,15 @@
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
+const { logger } = require('./middleware/logEvents');
 const router = express.Router();
 const controller = require("./controllers/file.controller");
 const app = express();
+const requestIp = require('request-ip');
+
 global.__basedir = __dirname;
+
+app.use(logger);
 
 var corsOptions = {
   origin: "http://localhost:3000"
@@ -14,11 +19,11 @@ var corsOptions = {
 const db = require("./models");
 const Role = db.role ;
 
-db.sequelize.sync();
-db.sequelize.sync({force: true}).then(() => {
-  console.log('Drop and Resync Db');
-  initial();
-});
+// db.sequelize.sync();
+// db.sequelize.sync({force: true}).then(() => {
+//   console.log('Drop and Resync Db');
+//   initial();
+// });
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -30,6 +35,13 @@ app.use(
     httpOnly: false
   })
 );
+
+app.get('/',function(request, response) {
+  var clientIp = requestIp.getClientIp(request);
+  console.log(clientIp);
+ 
+});
+
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Jepski application." });

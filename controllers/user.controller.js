@@ -15,6 +15,12 @@ exports.adminBoard = (req, res) => {
    res.status(200).send("Admin Content.");
 };
 
+exports.loggedUser = (req, res) => {
+  //res.send({ "user": req.user })
+  res.status(200).send({ "user": req.user })
+}
+
+// GET ALL
 exports.findAll = (req, res) => {
   const name = req.query.name;
   var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
@@ -50,6 +56,7 @@ exports.findOne = (req, res) => {
     });
 }
 
+// FIND BY ID
 exports.findOne = (req, res) => {
   const id = req.params.id;
   User.findByPk(id)
@@ -69,6 +76,7 @@ exports.findOne = (req, res) => {
     });
 }
 
+// UPDATE USER
 exports.update = (req, res) => {
   const id = req.params.id;
   User.update(req.body, {
@@ -92,6 +100,7 @@ exports.update = (req, res) => {
     });
 };
 
+// DELETE USER BY ID
 exports.delete = (req, res) => {
   const id = req.params.id;
   User.destroy({
@@ -115,6 +124,7 @@ exports.delete = (req, res) => {
     });
 };
 
+// DELETE ALL USER
 exports.deleteAll = (req, res) => {
   User.destroy({
       where: {},

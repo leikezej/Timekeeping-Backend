@@ -76,21 +76,24 @@ exports.signin = async (req, res) => {
     }
 
     req.session.token = token;
-    return res.status(200).send({
-      id: user.id,
-      fullname: user.fullname,
-      email: user.email,
-      image: user.image,
-      role: authorities,
-      accessToken: token,
-      refreshToken: refreshToken,
+      return res.status(200).send({
+        id: user.id,
+        // fullname: user.fullname,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+        role: authorities,
+        accessToken: token,
+        refreshToken: refreshToken,
     });
+
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
   console.log("Success")
 };
 
+// REFRESH TOKEN
 exports.refreshToken = async (req, res) => {
   const { refreshToken: requestToken } = req.body;
   if (requestToken == null) {
@@ -208,17 +211,19 @@ exports.signout = async (req, res) => {
     res.sendStatus(204);
 };
 
-exports.findAll = (req, res) => {
-  const name = req.query.name;
-  var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-  User.findAll({ where: condition })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    });
+// PASSWORD CHANGE
+exports.changePassword = async (req, res) => {
+  const { password, password_confirmation } = req.body
+  if (password && password_confirmation) {
+    if (password !== password_confirmation) {
+      res.send({ "status": "failed", "message": "New Password and Confirm New Password doesn't match" })
+    } else {
+      const salt = await bcrypt.genSalt(10)
+      const newHashPassword = await bcrypt.hash(password, salt)
+      await UserModel.findByIdAndUpdate(req.user._id, { $set: { password: newHashPassword } })
+      res.send({ "status": "success", "message": "Password changed succesfully" })
+    }
+  } else {
+    res.send({ "status": "failed", "message": "All Fields are Required" })
+  }
 };

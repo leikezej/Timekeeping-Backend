@@ -14,6 +14,7 @@
     "bcryptjs": "^2.4.3",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
+    "date-fns": "^2.29.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "fs": "0.0.1-security",
@@ -21,6 +22,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^2.3.3",
+    "request-ip": "^3.3.0",
     "sequelize": "^6.21.3"
   },
   "devDependencies": {

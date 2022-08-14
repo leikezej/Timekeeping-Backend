@@ -13,6 +13,8 @@ module.exports = function(app) {
 
        app.get("/api/test/all", controller.allAccess);
 
+      //app.use("/loggedUser", authJwt.verifyToken, contoller.oggedUser);
+
       app.get("/api/auth/users", controller.findAll);
       app.get("/api/auth/user/:id", controller.findOne);
       app.get("/api/auth/user/:email", controller.findOne);
