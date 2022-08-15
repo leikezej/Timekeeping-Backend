@@ -6,6 +6,10 @@ const router = express.Router();
 const controller = require("./controllers/file.controller");
 const app = express();
 const requestIp = require('request-ip');
+//const mysql = require('mysql')
+
+const path = require('path');
+const multer = require('multer')
 
 global.__basedir = __dirname;
 
@@ -19,11 +23,11 @@ var corsOptions = {
 const db = require("./models");
 const Role = db.role ;
 
-// db.sequelize.sync();
-// db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Db');
-//   initial();
-// });
+//  db.sequelize.sync();
+//  db.sequelize.sync({force: true}).then(() => {
+//    console.log('Drop and Resync Db');
+//    initial();
+//  });
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -39,7 +43,20 @@ app.use(
 app.get('/',function(request, response) {
   var clientIp = requestIp.getClientIp(request);
   console.log(clientIp);
- 
+});
+
+//! Use of Multer
+var storage = multer.diskStorage({
+  destination: (req, file, callBack) => {
+      callBack(null, './assets/images/')     // './public/images/' directory name where save the file
+  },
+  filename: (req, file, callBack) => {
+      callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+  }
+})
+
+var upload = multer({
+  storage: storage
 });
 
 

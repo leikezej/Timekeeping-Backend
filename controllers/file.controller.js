@@ -1,7 +1,8 @@
 const uploadFile = require("../middleware/upload");
 const fs = require('fs');
-const baseUrl = "http://localhost:8080/files/";
+const baseUrl = "http://localhost:8080/auth/files/";
 
+// UPLOAD
 const upload = async (req, res) => {
   try {
     await uploadFile(req, res);
@@ -23,7 +24,7 @@ const upload = async (req, res) => {
   }
 };
 
-
+// GET ALL
 const getListFiles = (req, res) => {
   const directoryPath = __basedir + "/assets/uploads/";
   fs.readdir(directoryPath, function (err, files) {
@@ -43,7 +44,7 @@ const getListFiles = (req, res) => {
   });
 };
 
-
+// DOWNLOAD
 const download = (req, res) => {
   const fileName = req.params.name;
   const directoryPath = __basedir + "/assets/uploads/";
@@ -56,9 +57,26 @@ const download = (req, res) => {
   });
 };
 
+const user_upload = (req, res) => {
+  if (!req.file) {
+    console.log("No file upload");
+} else {
+    console.log(req.file.filename)
+    var imgsrc = 'http://127.0.0.1:8080/user/images/' + req.file.filename
+    var insertData = "INSERT INTO users_image(file_src)VALUES(?)"
+    db.query(insertData, [imgsrc], (err, result) => {
+        if (err) throw err
+        console.log("file uploaded")
+    })
+}
+};
+
+
 
 module.exports = {
   upload,
   getListFiles,
   download,
+  user_upload
 };
+

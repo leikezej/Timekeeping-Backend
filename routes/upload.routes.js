@@ -6,6 +6,9 @@ let routes = (app) => {
   router.post("/auth/upload", controller.upload);
   router.get("/auth/files", controller.getListFiles);
   router.get("/auth/files/:name", controller.download);
+
+  router.post("/auth/user/user_upload", controller.user_upload);
+  
   app.use(router);
 };
 module.exports = routes;
