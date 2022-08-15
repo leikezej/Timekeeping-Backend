@@ -44,13 +44,13 @@ exports.findOne = (req, res) => {
           res.send(data);
         } else {
           res.status(404).send({
-            message: `Cannot find Tutorial with id=${id}.`
+            message: `Cannot find Timeout with id=${id}.`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Tutorial with id=" + id
+          message: "Error retrieving Timeout with id=" + id
         });
       });
   }
@@ -63,17 +63,17 @@ exports.update = (req, res) => {
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Tutorial was updated successfully."
+            message: "Timeout was updated successfully."
           });
         } else {
           res.send({
-            message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
+            message: `Cannot update Timeout with id=${id}. Maybe Timeout was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Tutorial with id=" + id
+          message: "Error updating Timeout with id=" + id
         });
       });
   };
@@ -86,17 +86,17 @@ exports.delete = (req, res) => {
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Tutorial was deleted successfully!"
+            message: "Timeout was deleted successfully!"
           });
         } else {
           res.send({
-            message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`
+            message: `Cannot delete Timeout with id=${id}. Maybe Timeout was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Tutorial with id=" + id
+          message: "Could not delete Timeout with id=" + id
         });
       });
   };
@@ -107,12 +107,12 @@ exports.deleteAll = (req, res) => {
       truncate: false
     })
       .then(nums => {
-        res.send({ message: `${nums} Tutorials were deleted successfully!` });
+        res.send({ message: `${nums} Timeouts were deleted successfully!` });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all tutorials."
+            err.message || "Some error occurred while removing all Timeouts."
         });
       });
   };
@@ -125,7 +125,7 @@ exports.findAllPublished = (req, res) => {
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving tutorials."
+            err.message || "Some error occurred while retrieving Timeout."
         });
       });
   };

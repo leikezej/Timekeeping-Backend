@@ -14,6 +14,11 @@ Authentication:
 POST /api/auth/signup
 POST /api/auth/signin
 
+http://192.168.1.150:8080/api/auth/user/change-password/1
+   {
+      "password": "123123"
+   }
+
 POST	/users	         create user
 POST	/password-reset	Send password reset link
 POST	/password-reset/:userId/:token	Reset user password

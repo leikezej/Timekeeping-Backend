@@ -140,3 +140,27 @@ exports.deleteAll = (req, res) => {
         });
       });
 };
+
+// CHANGE PASSWORD
+exports.change = (req, res) => {
+  const id = req.params.id;
+  User.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Password Updated Successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot Change Password id=${id}` 
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Change Password Failed with id=" + id
+      });
+    });
+};
