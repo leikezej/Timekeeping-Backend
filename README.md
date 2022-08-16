@@ -68,3 +68,17 @@ localhost:8080/api/auth/signup
    "password": "hahaha123!"
    
 }
+
+
+// app.post("/reset_password", controller.resetPassword)
+
+// changen password
+app.post("/change_Password", controller.changePassword)
+
+
+// reset password. request reset password
+axios.post(`http://localhost:8080/api/auth/reset_password/${email}`)
+
+// update password insert new password
+axios.post(`http://localhost:8080/api/auth/update_password/${userId}/${token}`)
+

@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 const { logger } = require('./middleware/logEvents');
-const router = express.Router();
+const router = express.Router();;
 const controller = require("./controllers/file.controller");
 const app = express();
 const requestIp = require('request-ip');
@@ -23,11 +23,11 @@ var corsOptions = {
 const db = require("./models");
 const Role = db.role ;
 
-//  db.sequelize.sync();
-//  db.sequelize.sync({force: true}).then(() => {
-//    console.log('Drop and Resync Db');
-//    initial();
-//  });
+ db.sequelize.sync();
+ db.sequelize.sync({force: true}).then(() => {
+   console.log('Drop and Resync Db');
+   initial();
+ });
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -69,6 +69,7 @@ require('./routes/user.routes')(app);
 require('./routes/timein.routes')(app);
 require('./routes/timeout.routes')(app);
 require('./routes/upload.routes')(app);
+require('./routes/email.routes')(app);
 // require('./routes/user.routes')(app);
 
 const PORT = process.env.PORT || 8080;

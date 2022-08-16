@@ -22,6 +22,6 @@ module.exports = function(app) {
   
   app.post("/api/auth/signout", controller.signout);
   app.post("/api/auth/refreshtoken", controller.refreshToken);
-  app.post("/api/auth/forgot", controller.forgot);
-  app.use("/api/auth/reset", controller.reset);
+  // app.post("/api/auth/forgot", controller.forgot);
+  // app.use("/api/auth/reset", controller.reset);
 };

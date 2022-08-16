@@ -31175,3 +31175,5 @@
 20220815	20:42:48	2d6c1497-2072-4977-b3ed-1cff20a9aa13	OPTIONS	http://localhost:3001	/api/auth/signin
 20220815	20:42:48	f6b47f49-a60b-426f-8d1f-1125b902ce0b	OPTIONS	http://localhost:3001	/api/auth/signin
 20220815	20:43:41	f354e4ef-68fa-4b8b-abb6-a25661ddf63b	OPTIONS	http://localhost:3001	/api/auth/signin
+20220816	20:39:08	7f485723-54ff-46dd-aad6-73a05c1296a7	GET	undefined	/api/auth/reset_password/$%7Bemail%7D
+20220816	20:39:08	af92a977-05b6-4369-a2d9-b092a3b0a589	GET	undefined	/favicon.ico

@@ -19,7 +19,7 @@ module.exports = function(app) {
       app.get("/api/auth/user/:id", controller.findOne);
       app.get("/api/auth/user/:email", controller.findOne);
       app.put("/api/auth/user/:id", controller.update);
-      app.put("/api/auth/user/change-password/:id", controller.change);
+      // app.put("/api/auth/user/change-password/:id", controller.change);
       app.delete("/api/auth/user/:id", controller.delete);
       app.delete("/api/auth/users", controller.deleteAll);
       

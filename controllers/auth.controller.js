@@ -155,31 +155,31 @@ exports.forgot = async (req, res) => {
 };
 
 // RESET PASSWORD
-exports.reset = async (req, res) => {
-  try {
-      // const schema = Joi.object({ password: Joi.string().required() });
-      const { error } = schema.validate(req.body);
-        if (error) return res.status(400).send(error.details[0].message);
+// exports.reset = async (req, res) => {
+//   try {
+//       // const schema = Joi.object({ password: Joi.string().required() });
+//       const { error } = schema.validate(req.body);
+//         if (error) return res.status(400).send(error.details[0].message);
 
-      const user = await User.findById(req.params.user_id);
-        if (!user) return res.status(400).send("invalid link or expired");
+//       const user = await User.findById(req.params.user_id);
+//         if (!user) return res.status(400).send("invalid link or expired");
 
-      const token = await token.findOne({
-          user_id: user._id,
-          token: req.params.token,
-      });
-       if (!token) return res.status(400).send("Invalid link or expired");
+//       const token = await token.findOne({
+//           user_id: user._id,
+//           token: req.params.token,
+//       });
+//        if (!token) return res.status(400).send("Invalid link or expired");
 
-      user.password = req.body.password;
-        await user.save();
-        await token.delete();
+//       user.password = req.body.password;
+//         await user.save();
+//         await token.delete();
 
-      res.send("password reset sucessfully.");
-  } catch (error) {
-      res.send("An error occured");
-      console.log(error);
-  }
-};
+//       res.send("password reset sucessfully.");
+//   } catch (error) {
+//       res.send("An error occured");
+//       console.log(error);
+//   }
+// };
 
 // SIGNOUT
 exports.signout = async (req, res) => {
@@ -212,18 +212,18 @@ exports.signout = async (req, res) => {
 };
 
 // PASSWORD CHANGE
-exports.changePassword = async (req, res) => {
-  const { password, password_confirmation } = req.body
-  if (password && password_confirmation) {
-    if (password !== password_confirmation) {
-      res.send({ "status": "failed", "message": "New Password and Confirm New Password doesn't match" })
-    } else {
-      const salt = await bcrypt.genSalt(10)
-      const newHashPassword = await bcrypt.hash(password, salt)
-      await UserModel.findByIdAndUpdate(req.user._id, { $set: { password: newHashPassword } })
-      res.send({ "status": "success", "message": "Password changed succesfully" })
-    }
-  } else {
-    res.send({ "status": "failed", "message": "All Fields are Required" })
-  }
-};
+// exports.changePassword = async (req, res) => {
+//   const { password, password_confirmation } = req.body
+//   if (password && password_confirmation) {
+//     if (password !== password_confirmation) {
+//       res.send({ "status": "failed", "message": "New Password and Confirm New Password doesn't match" })
+//     } else {
+//       const salt = await bcrypt.genSalt(10)
+//       const newHashPassword = await bcrypt.hash(password, salt)
+//       await UserModel.findByIdAndUpdate(req.user._id, { $set: { password: newHashPassword } })
+//       res.send({ "status": "success", "message": "Password changed succesfully" })
+//     }
+//   } else {
+//     res.send({ "status": "failed", "message": "All Fields are Required" })
+//   }
+// };
