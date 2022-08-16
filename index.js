@@ -6,7 +6,6 @@ const router = express.Router();;
 const controller = require("./controllers/file.controller");
 const app = express();
 const requestIp = require('request-ip');
-//const mysql = require('mysql')
 
 const path = require('path');
 const multer = require('multer')
@@ -28,6 +27,15 @@ const Role = db.role ;
    console.log('Drop and Resync Db');
    initial();
  });
+const User = db.user;
+
+
+// db.sequelize.sync({
+//   // force: true
+// }).then(() => {
+//   console.log('Drop and Resync Db');
+//   // initial();
+// });
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -59,7 +67,6 @@ var upload = multer({
   storage: storage
 });
 
-
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Jepski application." });
 });
@@ -87,4 +94,5 @@ function initial() {
      id: 2,
      name: "admin"
    });
- }
+
+  }
