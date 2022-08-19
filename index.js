@@ -29,7 +29,6 @@ const Role = db.role ;
  });
 const User = db.user;
 
-
 // db.sequelize.sync({
 //   // force: true
 // }).then(() => {
@@ -48,15 +47,19 @@ app.use(
   })
 );
 
-app.get('/',function(request, response) {
-  var clientIp = requestIp.getClientIp(request);
-  console.log(clientIp);
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to Jepski application." });
 });
+
+// app.get('/',function(request, response) {
+//   var clientIp = requestIp.getClientIp(request);
+//   console.log(clientIp);
+// });
 
 //! Use of Multer
 var storage = multer.diskStorage({
   destination: (req, file, callBack) => {
-      callBack(null, './assets/images/')     // './public/images/' directory name where save the file
+      callBack(null, './assets/images/')     
   },
   filename: (req, file, callBack) => {
       callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -67,17 +70,12 @@ var upload = multer({
   storage: storage
 });
 
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Jepski application." });
-});
-
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/timein.routes')(app);
 require('./routes/timeout.routes')(app);
 require('./routes/upload.routes')(app);
 require('./routes/email.routes')(app);
-// require('./routes/user.routes')(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

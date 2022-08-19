@@ -31177,3 +31177,12 @@
 20220815	20:43:41	f354e4ef-68fa-4b8b-abb6-a25661ddf63b	OPTIONS	http://localhost:3001	/api/auth/signin
 20220816	20:39:08	7f485723-54ff-46dd-aad6-73a05c1296a7	GET	undefined	/api/auth/reset_password/$%7Bemail%7D
 20220816	20:39:08	af92a977-05b6-4369-a2d9-b092a3b0a589	GET	undefined	/favicon.ico
+20220816	22:42:37	3fd56bc8-0ef8-493b-a1a9-c197cf993042	GET	undefined	/
+20220816	22:42:51	366ecc22-5a27-4177-905f-3239d0182c0d	GET	undefined	/
+20220816	22:43:52	9005dd7d-2e77-4682-bed2-05b02d66a2e6	GET	undefined	/
+20220816	22:45:06	abdcb8d3-2f72-47ea-93dc-a0d2e15b7b8c	GET	undefined	/
+20220816	22:45:13	0123b6bd-991f-4a73-a4a2-644ffbdfe3b2	GET	undefined	/
+20220816	22:47:36	a7413004-fff6-4a83-8241-3cf6ddf3ca59	GET	undefined	/
+20220816	22:58:49	af52c322-e4f3-4ef3-9694-e45cd0c68576	GET	undefined	/
+20220816	22:58:54	73c52b9f-81bf-47e6-a27e-12e1f6315da1	GET	undefined	/
+20220816	22:59:07	2a05f85c-4b4d-4a21-b6f2-63c9e748ce00	GET	undefined	/
