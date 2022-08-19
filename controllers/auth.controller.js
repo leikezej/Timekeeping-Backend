@@ -1,7 +1,5 @@
 const db = require("../models");
 const config = require("../config/auth.config");
-// const User = db.user;
-// const Role = db.role;
 const Op = db.Sequelize.Op;
 const { user: User, role: Role, refreshToken: RefreshToken } = db;
 
@@ -44,7 +42,6 @@ exports.signup = (req, res) => {
     });
 };
 
-
 // LOGIN
 exports.signin = async (req, res) => {
   try {
@@ -65,30 +62,38 @@ exports.signin = async (req, res) => {
         message: "Invalid Password!",
       });
     }
+
     const token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 86400, // 24 hours
     });
+
+    let refreshToken = await RefreshToken.createToken(user);
+
     let authorities = [];
     const roles = await user.getRoles();
     for (let i = 0; i < roles.length; i++) {
       authorities.push("ROLE_" + roles[i].name.toUpperCase());
     }
+
     req.session.token = token;
-    return res.status(200).send({
-      id: user.id,
-      fullname: user.fullname,
-      email: user.email,
-      image: user.image,
-      role: authorities,
-      accessToken: token,
-      RefreshToken: RefreshToken,
+      return res.status(200).send({
+        id: user.id,
+        // fullname: user.fullname,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+        role: authorities,
+        accessToken: token,
+        refreshToken: refreshToken,
     });
+
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
   console.log("Success")
 };
 
+// REFRESH TOKEN
 exports.refreshToken = async (req, res) => {
   const { refreshToken: requestToken } = req.body;
   if (requestToken == null) {
@@ -109,14 +114,17 @@ exports.refreshToken = async (req, res) => {
       });
       return;
     }
+
     const user = await refreshToken.getUser();
     let newAccessToken = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: config.jwtExpiration,
     });
+
     return res.status(200).json({
       accessToken: newAccessToken,
       refreshToken: refreshToken.token,
     });
+    
   } catch (err) {
     return res.status(500).send({ message: err });
   }
@@ -147,31 +155,31 @@ exports.forgot = async (req, res) => {
 };
 
 // RESET PASSWORD
-exports.reset = async (req, res) => {
-  try {
-      // const schema = Joi.object({ password: Joi.string().required() });
-      const { error } = schema.validate(req.body);
-        if (error) return res.status(400).send(error.details[0].message);
+// exports.reset = async (req, res) => {
+//   try {
+//       // const schema = Joi.object({ password: Joi.string().required() });
+//       const { error } = schema.validate(req.body);
+//         if (error) return res.status(400).send(error.details[0].message);
 
-      const user = await User.findById(req.params.userId);
-        if (!user) return res.status(400).send("invalid link or expired");
+//       const user = await User.findById(req.params.user_id);
+//         if (!user) return res.status(400).send("invalid link or expired");
 
-      const token = await token.findOne({
-          userId: user._id,
-          token: req.params.token,
-      });
-       if (!token) return res.status(400).send("Invalid link or expired");
+//       const token = await token.findOne({
+//           user_id: user._id,
+//           token: req.params.token,
+//       });
+//        if (!token) return res.status(400).send("Invalid link or expired");
 
-      user.password = req.body.password;
-        await user.save();
-        await token.delete();
+//       user.password = req.body.password;
+//         await user.save();
+//         await token.delete();
 
-      res.send("password reset sucessfully.");
-  } catch (error) {
-      res.send("An error occured");
-      console.log(error);
-  }
-};
+//       res.send("password reset sucessfully.");
+//   } catch (error) {
+//       res.send("An error occured");
+//       console.log(error);
+//   }
+// };
 
 // SIGNOUT
 exports.signout = async (req, res) => {
@@ -183,4 +191,39 @@ exports.signout = async (req, res) => {
       } catch (err) {
         this.next(err);
     }
+        const cookies = req.cookies;
+    if (!cookies?.jwt) return res.sendStatus(204); //No content
+    const refreshToken = cookies.jwt;
+
+    // Is refreshToken in db?
+    const foundUser = await User.findOne({ refreshToken }).exec();
+    if (!foundUser) {
+        res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+        return res.sendStatus(204);
+    }
+
+    // Delete refreshToken in db
+    foundUser.refreshToken = foundUser.refreshToken.filter(rt => rt !== refreshToken);;
+    const result = await foundUser.save();
+    console.log(result);
+
+    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+    res.sendStatus(204);
 };
+
+// PASSWORD CHANGE
+// exports.changePassword = async (req, res) => {
+//   const { password, password_confirmation } = req.body
+//   if (password && password_confirmation) {
+//     if (password !== password_confirmation) {
+//       res.send({ "status": "failed", "message": "New Password and Confirm New Password doesn't match" })
+//     } else {
+//       const salt = await bcrypt.genSalt(10)
+//       const newHashPassword = await bcrypt.hash(password, salt)
+//       await UserModel.findByIdAndUpdate(req.user._id, { $set: { password: newHashPassword } })
+//       res.send({ "status": "success", "message": "Password changed succesfully" })
+//     }
+//   } else {
+//     res.send({ "status": "failed", "message": "All Fields are Required" })
+//   }
+// };
