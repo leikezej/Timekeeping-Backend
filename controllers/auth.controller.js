@@ -27,7 +27,7 @@ exports.signup = (req, res) => {
           }
         }).then(roles => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "User was registered successfully!" });
+            res.send({ message: 'User was registered with' + '${roles} '});
           });
         });
       } else {
@@ -51,7 +51,7 @@ exports.signin = async (req, res) => {
       },
     });
     if (!user) {
-      return res.status(404).send({ message: "User Not found." });
+      return res.status(404).send({ status: "failed", message: "User Not found." });
     }
     const passwordIsValid = bcrypt.compareSync(
       req.body.password,
@@ -59,10 +59,10 @@ exports.signin = async (req, res) => {
     );
     if (!passwordIsValid) {
       return res.status(401).send({
+        status: "failed",
         message: "Invalid Password!",
       });
     }
-
     const token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 86400, // 24 hours
     });
@@ -90,7 +90,7 @@ exports.signin = async (req, res) => {
   } catch (error) {
     return res.status(500).send({ message: error.message });
   }
-  console.log("Success")
+  console.log(Success);
 };
 
 // REFRESH TOKEN
@@ -227,3 +227,4 @@ exports.signout = async (req, res) => {
 //     res.send({ "status": "failed", "message": "All Fields are Required" })
 //   }
 // };
+

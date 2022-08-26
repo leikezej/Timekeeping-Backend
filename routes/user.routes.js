@@ -1,4 +1,4 @@
-const { authJwt } = require("../middleware");
+const { authJwt, checkUserAuth } = require("../middleware");
 const controller = require("../controllers/user.controller");
 
 module.exports = function(app) {
@@ -13,7 +13,14 @@ module.exports = function(app) {
 
        app.get("/api/test/all", controller.allAccess);
 
-      //app.use("/loggedUser", authJwt.verifyToken, contoller.oggedUser);
+      app.use("/loggedUser", checkUserAuth);
+      app.get('/loggeduser', controller.loggedUser);
+
+      app.use("/changepassword", checkUserAuth);
+      app.post("/changepassword", controller.changeUserPassword);
+
+      app.post("/send-reset-password-email", controller.sendUserPasswordResetEmail);
+      app.post("/reset-password/:id/:token", controller.userPasswordReset);
 
       app.get("/api/auth/users", controller.findAll);
       app.get("/api/auth/user/:id", controller.findOne);

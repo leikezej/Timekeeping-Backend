@@ -1,9 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
    const Timein = sequelize.define("timein", {
-     id: {
-       type: Sequelize.INTEGER,
-       primaryKey: true,
-     },
      name: {
        type: Sequelize.STRING
      },
@@ -12,8 +8,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     date: {
       type: Sequelize.DATEONLY
-    },
-
+    }
    });
    return Timein;
  };

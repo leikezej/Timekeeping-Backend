@@ -1,3 +1,5 @@
+// import dotenv from 'dotenv'
+// dotenv.config()
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
@@ -21,20 +23,13 @@ var corsOptions = {
 
 const db = require("./models");
 const Role = db.role ;
-
- db.sequelize.sync();
- db.sequelize.sync({force: true}).then(() => {
-   console.log('Drop and Resync Db');
-   initial();
- });
 const User = db.user;
 
-// db.sequelize.sync({
-//   // force: true
-// }).then(() => {
-//   console.log('Drop and Resync Db');
-//   // initial();
-// });
+//  db.sequelize.sync();
+//  db.sequelize.sync({force: true}).then(() => {
+//    console.log('Drop and Resync Db');
+//    initial();
+//  });
 
 app.use(cors(corsOptions));
 app.use(express.json());

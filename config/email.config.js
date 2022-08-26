@@ -1,15 +1,14 @@
-import dotenv from 'dotenv'
-dotenv.config()
-import nodemailer from 'nodemailer'
+const nodemailer  = require('nodemailer');
+// import dotenv from 'dotenv'
+// dotenv.config()
+// import nodemailer from 'nodemailer'
 
-let transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
+module.exports = {
+  host: 'smtp.gmail.com',
+  port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
-    user: process.env.EMAIL_USER, // Admin Gmail ID
-    pass: process.env.EMAIL_PASS, // Admin Gmail Password
+    user: 'jezedevkiel21@gmail.com', // Admin Gmail ID
+    pass: 'DevJeps420230!@!', // Admin Gmail Password
   },
-})
-
-export default transporter
+}

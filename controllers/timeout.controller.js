@@ -107,12 +107,12 @@ exports.deleteAll = (req, res) => {
       truncate: false
     })
       .then(nums => {
-        res.send({ message: `${nums} Timeouts were deleted successfully!` });
+        res.send({ message: `${nums} Timeout were deleted successfully!` });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all Timeouts."
+            err.message || "Some error occurred while removing all Timeout."
         });
       });
   };
