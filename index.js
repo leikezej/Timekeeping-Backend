@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 const { logger } = require('./middleware/logEvents');
-const router = express.Router();;
+const router = express.Router();
 const controller = require("./controllers/file.controller");
 const app = express();
 const requestIp = require('request-ip');
@@ -25,7 +25,7 @@ const db = require("./models");
 const Role = db.role ;
 const User = db.user;
 
-//  db.sequelize.sync();
+ db.sequelize.sync();
 //  db.sequelize.sync({force: true}).then(() => {
 //    console.log('Drop and Resync Db');
 //    initial();
@@ -72,7 +72,7 @@ require('./routes/timeout.routes')(app);
 require('./routes/upload.routes')(app);
 require('./routes/email.routes')(app);
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 0420;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
