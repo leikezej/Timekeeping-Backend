@@ -35,7 +35,6 @@ exports.findAll = (req, res) => {
         });
       });
 };
-
 exports.findOne = (req, res) => {
     const id = req.params.id;
     Timein.findByPk(id)
@@ -53,8 +52,7 @@ exports.findOne = (req, res) => {
           message: "Error retrieving Tutorial with id=" + id
         });
       });
-  }
-
+};
 exports.update = (req, res) => {
     const id = req.params.id;
     Timein.update(req.body, {
@@ -76,8 +74,7 @@ exports.update = (req, res) => {
           message: "Error updating Tutorial with id=" + id
         });
       });
-  };
-
+};
 exports.delete = (req, res) => {
     const id = req.params.id;
     Timein.destroy({
@@ -99,8 +96,7 @@ exports.delete = (req, res) => {
           message: "Could not delete Tutorial with id=" + id
         });
       });
-  };
-
+};
 exports.deleteAll = (req, res) => {
   Timein.destroy({
       where: {},
@@ -115,7 +111,7 @@ exports.deleteAll = (req, res) => {
             err.message || "Some error occurred while removing all tutorials."
         });
       });
-  };
+};
 
 exports.findAllPublished = (req, res) => {
   Timein.findAll({ where: { published: true } })
@@ -128,4 +124,4 @@ exports.findAllPublished = (req, res) => {
             err.message || "Some error occurred while retrieving tutorials."
         });
       });
-  };
+};

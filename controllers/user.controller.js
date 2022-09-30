@@ -21,38 +21,40 @@ exports.loggedUser = (req, res) => {
   res.status(200).send({ "user": req.user })
 }
 
-// GET ALL
-exports.findAll = (req, res) => {
-  const name = req.query.name;
-  var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-  User.findAll({ where: condition })
-    .then(data => {
-      res.send(data);
+// GET ALL RECORDS
+exports.getAllRecords = async (req, res) => {
+  console.log('Sulod')
+    User.findAll({
+        where: { deletedAt: { [Op.is]: null }},
+        include: [{model: Businesses, as: 'business'}, {model: Roles}, {model: Phones }],
+        attributes: { exclude: ['password'] }
+    })
+    .then(doc => {
+      res.send(doc);
+ 
     })
     .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving users."
-      });
+      console.log(err)
+      res.status(500).send({ message: err.message });
     });
 };
 
 // GET USER BY EMAIL
-exports.findOne = (req, res) => {
+exports.findEmail = (req, res) => {
   const email = req.params.email;
-  User.findByPk(email)
-    .then(data => {
-      if (data) {
-        res.send(data);
-      } else {
-        res.status(404).send({
-          message: `Cannot find User with id=${id}.`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error retrieving User with id=" + id
+    User.findAll(email)
+      .then(data => {
+        if (data) {
+          res.send(data);
+        } else {
+          res.status(404).send({
+            message: `Cannot find User with ${email}.`
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error retrieving User with email=" + email
       });
     });
 }
@@ -142,6 +144,7 @@ exports.deleteAll = (req, res) => {
       });
 };
 
+// CHANGE USER PASSWORD
 exports.changeUserPassword = async (req, res) => {
   const { password, password_confirmation } = req.body
   if (password && password_confirmation) {

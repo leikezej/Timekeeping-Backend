@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
       name: {
         type: Sequelize.STRING
       },
-     file: {
+     type: {
        type: Sequelize.STRING
      },
  

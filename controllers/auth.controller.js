@@ -2,11 +2,12 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const Op = db.Sequelize.Op;
 const { user: User, role: Role, refreshToken: RefreshToken } = db;
+const { v4: uuidv4 } = require("uuid");
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
-// REGISTER
+// REGISTER USER
 exports.signup = (req, res) => {
   User.create({
     name: req.body.name,
@@ -42,7 +43,7 @@ exports.signup = (req, res) => {
     });
 };
 
-// LOGIN
+// LOGIN USER
 exports.signin = async (req, res) => {
   try {
     const user = await User.findOne({
@@ -78,7 +79,6 @@ exports.signin = async (req, res) => {
     req.session.token = token;
       return res.status(200).send({
         id: user.id,
-        // fullname: user.fullname,
         name: user.name,
         email: user.email,
         image: user.image,
@@ -154,34 +154,7 @@ exports.forgot = async (req, res) => {
     });
 };
 
-// RESET PASSWORD
-// exports.reset = async (req, res) => {
-//   try {
-//       // const schema = Joi.object({ password: Joi.string().required() });
-//       const { error } = schema.validate(req.body);
-//         if (error) return res.status(400).send(error.details[0].message);
-
-//       const user = await User.findById(req.params.user_id);
-//         if (!user) return res.status(400).send("invalid link or expired");
-
-//       const token = await token.findOne({
-//           user_id: user._id,
-//           token: req.params.token,
-//       });
-//        if (!token) return res.status(400).send("Invalid link or expired");
-
-//       user.password = req.body.password;
-//         await user.save();
-//         await token.delete();
-
-//       res.send("password reset sucessfully.");
-//   } catch (error) {
-//       res.send("An error occured");
-//       console.log(error);
-//   }
-// };
-
-// SIGNOUT
+// SIGNOUT USER
 exports.signout = async (req, res) => {
       try {
         req.session = null;
@@ -210,6 +183,53 @@ exports.signout = async (req, res) => {
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
     res.sendStatus(204);
 };
+
+// LOGOUT USER
+exports.logout = async (req,res) => { 
+  let id  = req.userId;
+ 
+  User.update({lastLoginAt: new Date, status: "inactive"}, {where: { id: id }})
+  .then (doc => {
+  res.send({message: "user logout succesfully"})
+  })
+
+  .catch(err => {
+  console.log(err)
+  res.status(500).send({message: err.message})
+  })
+};
+
+// RESET PASSWORD
+// exports.reset = async (req, res) => {
+//   try {
+//       // const schema = Joi.object({ password: Joi.string().required() });
+//       const { error } = schema.validate(req.body);
+//         if (error) return res.status(400).send(error.details[0].message);
+
+//       const user = await User.findById(req.params.user_id);
+//         if (!user) return res.status(400).send("invalid link or expired");
+
+//       const token = await token.findOne({
+//           user_id: user._id,
+//           token: req.params.token,
+//       });
+//        if (!token) return res.status(400).send("Invalid link or expired");
+
+//       user.password = req.body.password;
+//         await user.save();
+//         await token.delete();
+
+//       res.send("password reset sucessfully.");
+//   } catch (error) {
+//       res.send("An error occured");
+//       console.log(error);
+//   }
+// };
+
+// SIGNOUT
+
+// SIGNOUT USER
+
 
 // PASSWORD CHANGE
 // exports.changePassword = async (req, res) => {

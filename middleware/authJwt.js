@@ -12,8 +12,6 @@ const catchError = (err, res) => {
   return res.sendStatus(401).send({ message: "Unauthorized!" });
 }
 
-
-
 const verifyToken = (req, res, next) => {
   let token = req.header["x-access-token"];
   if (!token) {
@@ -45,9 +43,57 @@ isAdmin = (req, res, next) => {
   });
 };
 
+// isModeratorOrAdmin = async (req, res, next) => {
+//   try {
+//     const user = await User.findByPk(req.userId);
+//     const roles = await user.getRoles();
+
+//     for (let i = 0; i < roles.length; i++) {
+//       if (roles[i].name === "moderator") {
+//         return next();
+//       }
+
+//       if (roles[i].name === "admin") {
+//         return next();
+//       }
+//     }
+
+//     return res.status(403).send({
+//       message: "Require Moderator or Admin Role!",
+//     });
+//   } catch (error) {
+//     return res.status(500).send({
+//       message: "Unable to validate Moderator or Admin role!",
+//     });
+//   }
+// };
+
+// isModerator = async (req, res, next) => {
+//   try {
+//     const user = await User.findByPk(req.userId);
+//     const roles = await user.getRoles();
+
+//     for (let i = 0; i < roles.length; i++) {
+//       if (roles[i].name === "moderator") {
+//         return next();
+//       }
+//     }
+
+//     return res.status(403).send({
+//       message: "Require Moderator Role!",
+//     });
+//   } catch (error) {
+//     return res.status(500).send({
+//       message: "Unable to validate Moderator role!",
+//     });
+//   }
+// };
+
 const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
+  // isModerator,
+  // isModeratorOrAdmin,
 };
 
 module.exports = authJwt;
