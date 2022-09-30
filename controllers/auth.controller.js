@@ -2,11 +2,13 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const Op = db.Sequelize.Op;
 const { user: User, role: Role, refreshToken: RefreshToken } = db;
+const { v4: uuidv4 } = require("uuid");
+const nodemailer = require('nodemailer');
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
-// REGISTER
+// REGISTER USER
 exports.signup = (req, res) => {
   User.create({
     name: req.body.name,
@@ -42,7 +44,7 @@ exports.signup = (req, res) => {
     });
 };
 
-// LOGIN
+// LOGIN USER
 exports.signin = async (req, res) => {
   try {
     const user = await User.findOne({
@@ -78,7 +80,6 @@ exports.signin = async (req, res) => {
     req.session.token = token;
       return res.status(200).send({
         id: user.id,
-        // fullname: user.fullname,
         name: user.name,
         email: user.email,
         image: user.image,
@@ -154,6 +155,135 @@ exports.forgot = async (req, res) => {
     });
 };
 
+// SIGNOUT USER
+exports.signout = async (req, res) => {
+      try {
+        req.session = null;
+        return res.status(200).send({
+          message: "Logged Out Successful!"
+        });
+      } catch (err) {
+        this.next(err);
+    }
+    const cookies = req.cookies;
+    if (!cookies?.jwt) return res.sendStatus(204); //No content
+    const refreshToken = cookies.jwt;
+
+    // Is refreshToken in db?
+    const foundUser = await User.findOne({ refreshToken }).exec();
+    if (!foundUser) {
+        res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+        return res.sendStatus(204);
+    }
+
+    // Delete refreshToken in db
+    foundUser.refreshToken = foundUser.refreshToken.filter(rt => rt !== refreshToken);;
+    const result = await foundUser.save();
+    console.log(result);
+
+    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+    res.sendStatus(204);
+};
+
+// LOGOUT USER
+exports.logout = async (req,res) => { 
+  let id  = req.userId;
+ 
+  User.update({lastLoginAt: new Date, status: "inactive"}, {where: { id: id }})
+  .then (doc => {
+  res.send({message: "user logout succesfully"})
+  })
+
+  .catch(err => {
+  console.log(err)
+  res.status(500).send({message: err.message})
+  })
+};
+
+// SUBMIT OTP
+exports.submitOtp = (req, res) => {
+   console.log(req.body)
+   
+   UserModel.findOne({ otp: req.body.otp }).then(result => {
+      // update password 
+      
+      // UserModel.updateOne({ email: result.email}, { otp: _otp })
+      UserModel.updateOne({ email: result.email}, { password: req.body.password })
+      .then(result => {
+         res.send({ code: 200, message: 'Password Updated' })
+      })
+      .catch(error => {
+         res.send({ code: 500, message: 'Something Went Wong!' })
+      })
+      
+   }).catch(error => {
+      
+      res.send({ code: 500, message: 'Fuck ERROR!' }) 
+   
+   })
+   
+}
+
+// SEND OTP
+exports.sendOtp = async (req, res) => {
+   console.log(req.body)
+   
+   // const _otp = Math.floor(Math.random * 1000000)
+   const _otp = Math.floor(100000 + Math.random() * 900000)
+   console.log(_otp)
+   
+   let user = await UserModel.findOne({email: req.body.email})
+      if (!user) {
+         res.send({ code: 500, message: 'User Not Found!' })
+      }
+   
+   let testAccount = await nodemailer.createTestAccount()
+   
+   let transporter = nodemailer.createTransport({
+      // sendmail: true,
+//    service: 'gmail',
+      // host: process.env.HOST,
+      // service: process.env.SERVICE,
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.USER,
+        pass: process.env.PASS,
+      }
+   })
+   
+   let info = await transporter.sendMail({
+      // from: process.env.USER,
+      from: "jezedevkiel21@gmail.com",
+      to: req.body.email, // Listat Mga Email Na Se Sendan
+      subject: "OTP Generate",
+      text: String(_otp),
+      html: `<html>
+            < body >
+               Hello and Welcome
+         </ >
+         </html > `,
+   })
+   
+   if(info.messageId){
+      console.log(info, 84)
+
+      UserModel.updateOne({ email: req.body.email}, { otp: _otp })
+         .then(result => {
+            res.send({ code: 200, message: 'OTP Sent' })
+         })
+         .catch(error => {
+            res.send({ code: 500, message: 'Something Went Wong!' })
+         })
+         
+      } else {
+         
+         res.send({ code: 500, message: 'Server Error'})
+      }
+}
+   
+
 // RESET PASSWORD
 // exports.reset = async (req, res) => {
 //   try {
@@ -182,34 +312,9 @@ exports.forgot = async (req, res) => {
 // };
 
 // SIGNOUT
-exports.signout = async (req, res) => {
-      try {
-        req.session = null;
-        return res.status(200).send({
-          message: "Logged Out Successful!"
-        });
-      } catch (err) {
-        this.next(err);
-    }
-        const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(204); //No content
-    const refreshToken = cookies.jwt;
 
-    // Is refreshToken in db?
-    const foundUser = await User.findOne({ refreshToken }).exec();
-    if (!foundUser) {
-        res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
-        return res.sendStatus(204);
-    }
+// SIGNOUT USER
 
-    // Delete refreshToken in db
-    foundUser.refreshToken = foundUser.refreshToken.filter(rt => rt !== refreshToken);;
-    const result = await foundUser.save();
-    console.log(result);
-
-    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
-    res.sendStatus(204);
-};
 
 // PASSWORD CHANGE
 // exports.changePassword = async (req, res) => {

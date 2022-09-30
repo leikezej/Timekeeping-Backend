@@ -21,12 +21,12 @@ module.exports = function(app) {
 
       app.post("/send-reset-password-email", controller.sendUserPasswordResetEmail);
       app.post("/reset-password/:id/:token", controller.userPasswordReset);
-
-      app.get("/api/auth/users", controller.findAll);
-      app.get("/api/auth/user/:id", controller.findOne);
-      app.get("/api/auth/user/:email", controller.findOne);
-      app.put("/api/auth/user/:id", controller.update);
       // app.put("/api/auth/user/change-password/:id", controller.change);
+
+      app.get("/api/auth/users", controller.getAllRecords);
+      app.get("/api/auth/user/:id", controller.findOne);
+      app.get("/api/auth/user/:email", controller.findEmail);
+      app.put("/api/auth/user/:id", controller.update);
       app.delete("/api/auth/user/:id", controller.delete);
       app.delete("/api/auth/users", controller.deleteAll);
       

@@ -1,14 +1,17 @@
+// import the multer module before configuring it to use the disc storage engine
 const util = require("util");
 const multer = require("multer");
 const maxSize = 2 * 1024 * 1024;
 
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, __basedir + "/assets/uploads/");
+    cb(null, __basedir + "./assets/uploads/");
   },
   filename: (req, file, cb) => {
     console.log(file.originalname);
     cb(null, file.originalname);
+    // cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+    
   },
 });
 
@@ -18,5 +21,4 @@ let uploadFile = multer({
 }).single("file");
 
 let uploadFileMiddleware = util.promisify(uploadFile);
-
 module.exports = uploadFileMiddleware;
