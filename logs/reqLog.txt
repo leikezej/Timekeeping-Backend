@@ -155,3 +155,7 @@
 20220930	08:17:24	c976ad40-db8e-4236-be8d-f685b4f6ec41	POST	undefined	/api/auth/signin
 20220930	08:17:49	40f9f269-7d26-46f1-8ab1-586770bf6ce6	POST	undefined	/api/auth/refresh
 20220930	08:17:59	e2c4a971-514e-495a-99da-4013d4e4cf01	POST	undefined	/api/auth/refreshToken
+20220930	09:52:12	3ad3f96c-30de-4dcf-93ee-d9e1f3c5d14a	OPTIONS	http://localhost:3000	/api/auth/signin
+20220930	09:52:12	734b5235-2e78-46c2-afd5-eb01ff346393	POST	http://localhost:3000	/api/auth/signin
+20220930	09:59:30	747581c4-896a-48a8-b82f-d7afac2733da	OPTIONS	http://localhost:3000	/api/auth/signin
+20220930	09:59:30	ef7bd435-5e64-4ecc-ad5f-fbb2d4ffbc27	POST	http://localhost:3000	/api/auth/signin

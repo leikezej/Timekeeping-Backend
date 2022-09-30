@@ -18,6 +18,9 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       type: Sequelize.STRING
     },
+    otp: {
+      type: Sequelize.INTEGER
+    },
      password: {
       allowNull: false,
       type: Sequelize.STRING
