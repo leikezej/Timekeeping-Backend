@@ -469,3 +469,9 @@
 20221001	23:10:55	b8c7f6f0-8f0e-4adc-8e56-8e66a82c88f3	GET	undefined	/api/auth/users
 20221001	23:11:14	21874bbe-3ac2-4929-9676-ba20e47615e9	POST	undefined	/api/auth/signin
 20221001	23:11:27	bd261b20-2123-4a61-be6c-2263544e479b	POST	undefined	/api/auth/signin
+20221002	00:48:04	88c9f94d-17b6-4a17-a985-dc1dbe03d1fa	POST	undefined	/upload
+20221002	00:50:55	21e97f65-48a8-402a-be9f-8eb2011d82dc	POST	undefined	/upload
+20221002	00:51:08	ce3ef75f-d69c-4195-baf7-bd3186ca5f24	GET	undefined	/files
+20221002	00:54:14	1193c66a-8b6f-41b5-a7cd-84171abb6bbd	POST	undefined	/uploads
+20221002	00:54:16	62a6634b-2b04-461a-823e-47070d3bd960	POST	undefined	/uploads
+20221002	00:54:26	3a500f45-9ef2-4cf5-9a05-dfe0a834022f	POST	undefined	/upload

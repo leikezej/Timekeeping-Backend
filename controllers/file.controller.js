@@ -3,8 +3,8 @@ const fs = require('fs');
 const baseUrl = "http://localhost:8080/auth/files/";
 
 // UPLOAD
-const upload = async (req, res) => {
-  try {
+exports.upload = async (req, res) => {
+    try {
     await uploadFile(req, res);
 
     const newFile = await File.create({
@@ -19,10 +19,10 @@ const upload = async (req, res) => {
       error,
     });
   }
-};
+}
 
 // UPLOAD1
-const uploads = async (req, res) => {
+exports.uploads = async (req, res) => {
   try {
     await uploadFile(req, res);
     if (req.file == undefined) {
@@ -45,7 +45,7 @@ const uploads = async (req, res) => {
 };
 
 // GET ALL FILES
-const getListFiles = (req, res) => {
+exports.getListFiles = (req, res) => {
   const directoryPath = __basedir + "/assets/uploads/";
   fs.readdir(directoryPath, function (err, files) {
     if (err) {
@@ -65,7 +65,7 @@ const getListFiles = (req, res) => {
 };
 
 // DOWNLOAD
-const download = (req, res) => {
+exports.download = (req, res) => {
   const fileName = req.params.name;
   const directoryPath = __basedir + "/assets/uploads/";
   res.download(directoryPath + fileName, fileName, (err) => {
@@ -77,7 +77,7 @@ const download = (req, res) => {
   });
 };
 
-const userUpload = (req, res) => {
+exports.userUpload = (req, res) => {
   if (!req.file) {
     console.log("No file upload");
 } else {
@@ -90,16 +90,6 @@ const userUpload = (req, res) => {
     })
 }
 };
-
-module.exports = {
-  upload,
-  uploads,
-  getListFiles,
-  download,
-  userUpload
-};
-
-
 
 // const uploadFile = require("../middleware/upload");
 // const fs = require('fs');

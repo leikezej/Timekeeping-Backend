@@ -51,31 +51,13 @@ app.use(
 //    initial();
 //  });
 
-
-// app.get("/", (req, res) => {
-//   res.json({ message: "Welcome to Jepski application." });
-// });
-
-// app.get('/', (req, res) => {
-//   const clientIp = requestIp.getClientIp(req);
-//   console.log(clientIp);
-// });
-
-// var storage = multer.diskStorage({   
-//    destination: (req, file, callBack) { 
-//       callBack(null, './assets/new/uploads');    
-//    }, 
-//    filename:  (req, file, callBack) { 
-//       callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-//    }
-// });
-
 const storage = multer.diskStorage({
   destination: (req, file, callBack) => {
     callBack(null, './assets/uploads/')
   },
   filename: (req, file, callBack) => {
-      callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+      callBack(null, new Data().getTime() + path.extname(file.originalname));
+  
   },
 });
 const upload = multer({
