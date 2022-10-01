@@ -25,8 +25,6 @@ exports.loggedUser = (req, res) => {
 exports.getAllRecords = async (req, res) => {
   console.log('Sulod')
     User.findAll({
-        where: { deletedAt: { [Op.is]: null }},
-        include: [{model: Businesses, as: 'business'}, {model: Roles}, {model: Phones }],
         attributes: { exclude: ['password'] }
     })
     .then(doc => {

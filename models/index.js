@@ -27,6 +27,7 @@ db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.refreshToken = require("../models/refreshToken.model.js")(sequelize, Sequelize);
 db.timein = require("../models/timein.model.js")(sequelize, Sequelize);
 db.timeout = require("../models/timeout.model.js")(sequelize, Sequelize);
+// db.timesheet = require("../models/timesheet.model.js")(sequelize, Sequelize);
 db.file = require("../models/file.model.js")(sequelize, Sequelize);
 // db.upload = require("../models/file.model.js")(sequelize, Sequelize);
 
@@ -44,15 +45,16 @@ db.user.belongsToMany(db.role, {
 
 db.timein.belongsToMany(db.user, {
   through: "timesheets",
-  foreignKey: "timesheet_id",
-  otherKey: "user_id"
+  foreignKey: "start_time",
+  otherKey: "end_time",
+  // otherKey: "total_time",
 });
 
-db.user.belongsToMany(db.role, {
-  through: "timesheets",
-  foreignKey: "user_id",
-  otherKey: "timesheet_id"
-});
+// db.user.belongsToMany(db.role, {
+//   through: "timesheets",
+//   foreignKey: "user_id",
+//   otherKey: "timesheet_id"
+// });
 
 // db.timeout.belongsTo(db.user, {
 //   foreignKey: 'user_id', targetKey: 'id'

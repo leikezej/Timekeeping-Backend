@@ -13,10 +13,8 @@ exports.signup = (req, res) => {
   User.create({
     name: req.body.name,
     email: req.body.email,
-    birthdate: req.body.birthdate,
-    gender: req.body.gender,
-    address: req.body.address,
     phone: req.body.phone,
+    // avatar: req.body.avatar,
     password: bcrypt.hashSync(req.body.password, 8)
   })
     .then(user => {
@@ -131,30 +129,6 @@ exports.refreshToken = async (req, res) => {
   }
 };
 
-// FORGOT PASSWORD
-exports.forgot = async (req, res) => {
-  const id = req.params.id;
-  User.update(req.body, {
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Password Updated"
-        });
-      } else {
-        res.send({
-          message: "Cannot Reset, Email Not Found!"
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "error"
-      });
-    });
-};
-
 // SIGNOUT USER
 exports.signout = async (req, res) => {
       try {
@@ -200,12 +174,56 @@ exports.logout = async (req,res) => {
   })
 };
 
+// RESET PASSWORD
+exports.resetPassword = (req, res) => {
+  const {resetLink, newPass} = req.body;
+  
+  if(resetLink){
+    jwt.verify(resetLink, process.env.RESET_PASSWORD_KEY, function(error, decodedData) {
+      if(error) {
+        return res.status(401).json({
+          error: "Incorrect Token or Expired  "
+        })
+      }
+      User.findOne({resetLink}, (err, user) => {
+        if(err || !user) {
+            return res.status(401).json({error: "This Email Does Not Exist in our Database"});
+        }
+      })
+    }) 
+  } else {
+    return res.status(401).json({ error: "Authentication Error!"});
+  }
+}
+
+// FORGOT PASSWORD
+exports.forgot = async (req, res) => {
+  const id = req.params.id;
+  User.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Password Updated"
+        });
+      } else {
+        res.send({
+          message: "Cannot Reset, Email Not Found!"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "error"
+      });
+    });
+};
+
 // SUBMIT OTP
 exports.submitOtp = (req, res) => {
    console.log(req.body)
-   
    UserModel.findOne({ otp: req.body.otp }).then(result => {
-      // update password 
       
       // UserModel.updateOne({ email: result.email}, { otp: _otp })
       UserModel.updateOne({ email: result.email}, { password: req.body.password })
