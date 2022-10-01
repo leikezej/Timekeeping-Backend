@@ -20,7 +20,8 @@ exports.create = (req, res) => {
           err.message || "Some error occurred while creating the Timein."
       });
     }); 
-}
+};
+
 exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
@@ -53,7 +54,7 @@ exports.findOne = (req, res) => {
           message: "Error retrieving Tutorial with id=" + id
         });
       });
-  }
+};
 
 exports.update = (req, res) => {
     const id = req.params.id;
@@ -76,7 +77,7 @@ exports.update = (req, res) => {
           message: "Error updating Tutorial with id=" + id
         });
       });
-  };
+};
 
 exports.delete = (req, res) => {
     const id = req.params.id;
@@ -99,7 +100,7 @@ exports.delete = (req, res) => {
           message: "Could not delete Tutorial with id=" + id
         });
       });
-  };
+};
 
 exports.deleteAll = (req, res) => {
   Timein.destroy({
@@ -115,7 +116,7 @@ exports.deleteAll = (req, res) => {
             err.message || "Some error occurred while removing all tutorials."
         });
       });
-  };
+};
 
 exports.findAllPublished = (req, res) => {
   Timein.findAll({ where: { published: true } })
@@ -128,4 +129,4 @@ exports.findAllPublished = (req, res) => {
             err.message || "Some error occurred while retrieving tutorials."
         });
       });
-  };
+};

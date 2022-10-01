@@ -4,11 +4,9 @@ const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 const { logger } = require('./middleware/logEvents');
-const router = express.Router();
 const controller = require("./controllers/file.controller");
 const app = express();
-const requestIp = require('request-ip');
-
+// const router = express.Router();
 const path = require('path');
 const multer = require('multer')
 
@@ -46,12 +44,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Jepski application." });
 });
 
-// app.get('/',function(request, response) {
-//   var clientIp = requestIp.getClientIp(request);
-//   console.log(clientIp);
-// });
-
-//! Use of Multer
+// Use of Multer
 var storage = multer.diskStorage({
   destination: (req, file, callBack) => {
       callBack(null, './assets/images/')     

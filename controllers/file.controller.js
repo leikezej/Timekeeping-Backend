@@ -1,23 +1,18 @@
-const uploadFile = require("../middleware/upload");
+const upload = require("../middleware/upload");
 const fs = require('fs');
 const baseUrl = "http://localhost:8080/auth/files/";
 
 // UPLOAD
-const upload = async (req, res) => {
+exports.upload = async (req, res) => {
   try {
-    await uploadFile(req, res);
-    if (req.file == undefined) {
-      return res.status(400).send({ message: "Please upload a file!" });
-    }
-    res.status(200).send({
-      message: "Uploaded the file successfully: " + req.file.originalname,
-    });
+    await upload(req, res);
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {
       return res.status(500).send({
         message: "File size cannot be larger than 2MB!",
       });
     }
+
     res.status(500).send({
       message: `Could not upload the file: ${req.file.originalname}. ${err}`,
     });
@@ -25,8 +20,8 @@ const upload = async (req, res) => {
 };
 
 // GET ALL
-const getListFiles = (req, res) => {
-  const directoryPath = __basedir + "/assets/uploads/";
+exports.getListFiles = (req, res) => {
+  const directoryPath = __basedir + "./assets/uploads/";
   fs.readdir(directoryPath, function (err, files) {
     if (err) {
       res.status(500).send({
@@ -45,9 +40,9 @@ const getListFiles = (req, res) => {
 };
 
 // DOWNLOAD
-const download = (req, res) => {
+exports.download = (req, res) => {
   const fileName = req.params.name;
-  const directoryPath = __basedir + "/assets/uploads/";
+  const directoryPath = __basedir + "./assets/uploads/";
   res.download(directoryPath + fileName, fileName, (err) => {
     if (err) {
       res.status(500).send({
@@ -57,7 +52,7 @@ const download = (req, res) => {
   });
 };
 
-const user_upload = (req, res) => {
+exports.user_upload = (req, res) => {
   if (!req.file) {
     console.log("No file upload");
 } else {
@@ -71,12 +66,36 @@ const user_upload = (req, res) => {
 }
 };
 
+exports.remove = (req, res) => {
+  const fileName = req.params.name;
+  const directoryPath = __basedir + "/assets/uploads/";
 
+  fs.unlink(directoryPath + fileName, (err) => {
+    if (err) {
+      res.status(500).send({
+        message: "Could not delete the file. " + err,
+      });
+    }
 
-module.exports = {
-  upload,
-  getListFiles,
-  download,
-  user_upload
+    res.status(200).send({
+      message: "File is deleted.",
+    });
+  });
 };
 
+exports.removeSync = (req, res) => {
+  const fileName = req.params.name;
+  const directoryPath = __basedir + "/assets/uploads/";
+
+  try {
+    fs.unlinkSync(directoryPath + fileName);
+
+    res.status(200).send({
+      message: "File is deleted.",
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: "Could not delete the file. " + err,
+    });
+  }
+};
