@@ -7,6 +7,7 @@ var checkUserAuth = async (req, res, next) => {
   const { authorization } = req.headers
   if (authorization && authorization.startsWith('Bearer')) {
     try {
+    
       // Get Token from header
       token = authorization.split(' ')[1]
 
@@ -14,7 +15,7 @@ var checkUserAuth = async (req, res, next) => {
       const { user_id } = jwt.verify(token, process.env.JWT_SECRET_KEY)
 
       // Get User from Token
-      req.user = await UserModel.findById(user_id).select('-password')
+      req.user = await User.findById(user_id).select('-password')
 
       next()
     } catch (error) {

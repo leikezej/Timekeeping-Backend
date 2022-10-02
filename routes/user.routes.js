@@ -7,14 +7,13 @@ module.exports = function(app) {
       "Access-Control-Allow-Headers",
       'Access-Control-Allow-Origin: *',
       "x-access-token, Origin, Content-Type, Accept"
-    );
-    next();
+    );changeUserPassword
   });
 
        app.get("/api/test/all", controller.allAccess);
 
-      app.use("/loggedUser", checkUserAuth);
-      app.get('/loggeduser', controller.loggedUser);
+      app.use("/changedpassword", checkUserAuth, controller.changeUserPassword);
+      app.use('/loggeduser', checkUserAuth);
 
       // app.use("/changepassword", checkUserAuth);
       // app.post("/changepassword", controller.changeUserPassword);
@@ -36,11 +35,13 @@ module.exports = function(app) {
       app.post("/api/user/resetPassword", controller.resetPassword);
       app.post("/api/user/logoutUser", controller.logoutUser);
       
-  app.get(
+      app.post('/api/user/send-reset-password-email', controller.sendUserPasswordResetEmail)
+      app.post('/api/user/reset-password/:id/:token', controller.userPasswordReset)
+
+      
     "/api/test/user",
     [authJwt.verifyToken],
     controller.userBoard
-  );
 
   app.get(
     "/api/test/admin",

@@ -683,3 +683,244 @@ exports.facebookLogin = function _callee9(req, res) {
 // const createRefreshToken = (payload) => {
 //     return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '7d'})
 // }
+
+
+exports.changeUserPassword = function _callee10(req, res) {
+  var _req$body2, password, password_confirmation, salt, newHashPassword;
+
+  return regeneratorRuntime.async(function _callee10$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          _req$body2 = req.body, password = _req$body2.password, password_confirmation = _req$body2.password_confirmation;
+
+          if (!(password && password_confirmation)) {
+            _context10.next = 17;
+            break;
+          }
+
+          if (!(password !== password_confirmation)) {
+            _context10.next = 6;
+            break;
+          }
+
+          res.send({
+            "status": "failed",
+            "message": "New Password and Confirm New Password doesn't match"
+          });
+          _context10.next = 15;
+          break;
+
+        case 6:
+          _context10.next = 8;
+          return regeneratorRuntime.awrap(bcrypt.genSalt(10));
+
+        case 8:
+          salt = _context10.sent;
+          _context10.next = 11;
+          return regeneratorRuntime.awrap(bcrypt.hash(password, salt));
+
+        case 11:
+          newHashPassword = _context10.sent;
+          _context10.next = 14;
+          return regeneratorRuntime.awrap(UserModel.findByIdAndUpdate(req.user._id, {
+            $set: {
+              password: newHashPassword
+            }
+          }));
+
+        case 14:
+          res.send({
+            "status": "success",
+            "message": "Password changed succesfully"
+          });
+
+        case 15:
+          _context10.next = 18;
+          break;
+
+        case 17:
+          res.send({
+            "status": "failed",
+            "message": "All Fields are Required"
+          });
+
+        case 18:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  });
+};
+
+exports.loggedUser = function _callee11(req, res) {
+  return regeneratorRuntime.async(function _callee11$(_context11) {
+    while (1) {
+      switch (_context11.prev = _context11.next) {
+        case 0:
+          res.send({
+            "user": req.user
+          });
+
+        case 1:
+        case "end":
+          return _context11.stop();
+      }
+    }
+  });
+};
+
+exports.sendUserPasswordResetEmail = function _callee12(req, res) {
+  var email, user, secret, token, link;
+  return regeneratorRuntime.async(function _callee12$(_context12) {
+    while (1) {
+      switch (_context12.prev = _context12.next) {
+        case 0:
+          email = req.body.email;
+
+          if (!email) {
+            _context12.next = 8;
+            break;
+          }
+
+          _context12.next = 4;
+          return regeneratorRuntime.awrap(UserModel.findOne({
+            email: email
+          }));
+
+        case 4:
+          user = _context12.sent;
+
+          if (user) {
+            secret = user._id + process.env.JWT_SECRET_KEY;
+            token = jwt.sign({
+              userID: user._id
+            }, secret, {
+              expiresIn: '15m'
+            });
+            link = "http://127.0.0.1:3000/api/user/reset/".concat(user._id, "/").concat(token);
+            console.log(link); // // Send Email
+            // let info = await transporter.sendMail({
+            //   from: process.env.EMAIL_FROM,
+            //   to: user.email,
+            //   subject: "GeekShop - Password Reset Link",
+            //   html: `<a href=${link}>Click Here</a> to Reset Your Password`
+            // })
+
+            res.send({
+              "status": "success",
+              "message": "Password Reset Email Sent... Please Check Your Email"
+            });
+          } else {
+            res.send({
+              "status": "failed",
+              "message": "Email doesn't exists"
+            });
+          }
+
+          _context12.next = 9;
+          break;
+
+        case 8:
+          res.send({
+            "status": "failed",
+            "message": "Email Field is Required"
+          });
+
+        case 9:
+        case "end":
+          return _context12.stop();
+      }
+    }
+  });
+};
+
+exports.userPasswordReset = function _callee13(req, res) {
+  var _req$body3, password, password_confirmation, _req$params, id, token, user, new_secret, salt, newHashPassword;
+
+  return regeneratorRuntime.async(function _callee13$(_context13) {
+    while (1) {
+      switch (_context13.prev = _context13.next) {
+        case 0:
+          _req$body3 = req.body, password = _req$body3.password, password_confirmation = _req$body3.password_confirmation;
+          _req$params = req.params, id = _req$params.id, token = _req$params.token;
+          _context13.next = 4;
+          return regeneratorRuntime.awrap(UserModel.findById(id));
+
+        case 4:
+          user = _context13.sent;
+          new_secret = user._id + process.env.JWT_SECRET_KEY;
+          _context13.prev = 6;
+          jwt.verify(token, new_secret);
+
+          if (!(password && password_confirmation)) {
+            _context13.next = 24;
+            break;
+          }
+
+          if (!(password !== password_confirmation)) {
+            _context13.next = 13;
+            break;
+          }
+
+          res.send({
+            "status": "failed",
+            "message": "New Password and Confirm New Password doesn't match"
+          });
+          _context13.next = 22;
+          break;
+
+        case 13:
+          _context13.next = 15;
+          return regeneratorRuntime.awrap(bcrypt.genSalt(10));
+
+        case 15:
+          salt = _context13.sent;
+          _context13.next = 18;
+          return regeneratorRuntime.awrap(bcrypt.hash(password, salt));
+
+        case 18:
+          newHashPassword = _context13.sent;
+          _context13.next = 21;
+          return regeneratorRuntime.awrap(UserModel.findByIdAndUpdate(user._id, {
+            $set: {
+              password: newHashPassword
+            }
+          }));
+
+        case 21:
+          res.send({
+            "status": "success",
+            "message": "Password Reset Successfully"
+          });
+
+        case 22:
+          _context13.next = 25;
+          break;
+
+        case 24:
+          res.send({
+            "status": "failed",
+            "message": "All Fields are Required"
+          });
+
+        case 25:
+          _context13.next = 31;
+          break;
+
+        case 27:
+          _context13.prev = 27;
+          _context13.t0 = _context13["catch"](6);
+          console.log(_context13.t0);
+          res.send({
+            "status": "failed",
+            "message": "Invalid Token"
+          });
+
+        case 31:
+        case "end":
+          return _context13.stop();
+      }
+    }
+  }, null, null, [[6, 27]]);
+};
