@@ -1,18 +1,20 @@
-const express = require("express");
-const router = express.Router();
 const controller = require("../controllers/file.controller");
+const upload = require("../middleware/upload");
 
-let routes = (app) => {
-  router.post("/upload", controller.upload);
-  router.post("/uploads", controller.uploads);
-  router.get("/files", controller.getListFiles);
-  router.get("/files/:name", controller.download);
-  router.post("/user_upload", controller.userUpload)
+module.exports = function(app) {
   
-  app.use(router);
+  app.post("/upload", controller.upload);
+  app.post("/uploads", controller.uploads);
+  app.post("/uploadss", controller.uploadss);
+  app.post("/uploadd", controller.uploadd);
+  app.post("/uploadds", controller.uploadds);
+  app.get("/files", controller.getListFiles);
+  app.get("/files/:name", controller.download);
+  app.post("/user_upload", controller.userUpload)
+  
+  app.delete("/remove", controller.remove);
+  app.delete("/removeSync", controller.removeSync);
 };
-
-module.exports = routes;
 
 // const controller = require("../controllers/file.controller");
 
@@ -23,5 +25,19 @@ module.exports = routes;
 //   app.post("/user_upload", controller.userUpload)
   
 // };
+// const express = require("express");
+// const router = express.Router();
+// const controller = require("../controllers/file.controller");
+
+// let routes = (app) => {
+//   router.post("/upload", controller.upload);
+//   router.get("/files", controller.getListFiles);
+//   router.get("/files/:name", controller.download);
+
+//   router.post("/user/user_upload", controller.user_upload);
+  
+//   app.use(router);
+// };
+// module.exports = routes;
 
 

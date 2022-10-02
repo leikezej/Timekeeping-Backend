@@ -1,9 +1,11 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize, DataTypes) => {
    const User = sequelize.define("user", {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
+      // type: DataTypes.UUID,
+      // defaultValue: Sequelize.UUIDV4,
      },
      name: {
        type: Sequelize.STRING,
@@ -18,9 +20,13 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       type: Sequelize.STRING
     },
-    otp: {
-      type: Sequelize.INTEGER
-    },
+    // avatar: {
+    //   // allowNull: false,
+    //   type: Sequelize.STRING
+    // },
+    // otp: {
+    //   type: Sequelize.INTEGER
+    // },
      password: {
       allowNull: false,
       type: Sequelize.STRING

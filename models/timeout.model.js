@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize, DataTypes) => {
    const Timeout = sequelize.define("timeout", {
      name: {
        type: Sequelize.STRING

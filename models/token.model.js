@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize, DataTypes) => {
     const Token = sequelize.define("token", {
         userId: {
            type: Sequelize.STRING

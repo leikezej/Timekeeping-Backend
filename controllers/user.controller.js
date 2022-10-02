@@ -3,30 +3,13 @@ const config = require("../config/auth.config");
 const transporter = require("../config/email.config");
 const Op = db.Sequelize.Op;
 const { user: User, role: Role, roles: Roles, refreshToken: RefreshToken } = db;
+const fileUpload = require("express-fileupload");
 
-exports.allAccess = (req, res) => {
-   res.status(200).send("Public Content.");
-};
- 
-exports.userBoard = (req, res) => {
-   res.status(200).send("User Content.");
-};
- 
-exports.adminBoard = (req, res) => {
-   res.status(200).send("Admin Content.");
-};
-
-exports.loggedUser = (req, res) => {
-  //res.send({ "user": req.user })
-  res.status(200).send({ "user": req.user })
-}
 
 // GET ALL RECORDS
 exports.getAllRecords = async (req, res) => {
   console.log('Sulod')
     User.findAll({
-        where: { deletedAt: { [Op.is]: null }},
-        include: [{model: Businesses, as: 'business'}, {model: Roles}, {model: Phones }],
         attributes: { exclude: ['password'] }
     })
     .then(doc => {
@@ -38,6 +21,17 @@ exports.getAllRecords = async (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+// LOGOUT USER
+exports.logoutUser = async (req, res) => {
+    try {
+        res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
+        return res.json({msg: "Logged out."})
+    } catch (err) {
+        return res.status(500).json({msg: err.message})
+    }
+},
+
 
 // GET USER BY EMAIL
 exports.findEmail = (req, res) => {
@@ -144,70 +138,240 @@ exports.deleteAll = (req, res) => {
       });
 };
 
-// CHANGE USER PASSWORD
-exports.changeUserPassword = async (req, res) => {
-  const { password, password_confirmation } = req.body
-  if (password && password_confirmation) {
-    if (password !== password_confirmation) {
-      res.send({ "status": "failed", "message": "New Password and Confirm New Password doesn't match" })
-    } else {
-      const salt = await bcrypt.genSalt(10)
-      const newHashPassword = await bcrypt.hash(password, salt)
-      await UserModel.findByIdAndUpdate(req.user._id, { $set: { password: newHashPassword } })
-      res.send({ "status": "success", "message": "Password changed succesfully" })
-    }
-  } else {
-    res.send({ "status": "failed", "message": "All Fields are Required" })
-  }
-};
 
-
-exports.sendUserPasswordResetEmail = async (req, res) => {
-  const { email } = req.body
-  if (email) {
-    const user = await UserModel.findOne({ email: email })
-    if (user) {
-      const secret = user._id + process.env.JWT_SECRET_KEY
-      const token = jwt.sign({ userID: user._id }, secret, { expiresIn: '15m' })
-      const link = `http://127.0.0.1:3000/api/user/reset/${user._id}/${token}`
-      console.log(link)
-      // // Send Email
-      // let info = await transporter.sendMail({
-      //   from: process.env.EMAIL_FROM,
-      //   to: user.email,
-      //   subject: "GeekShop - Password Reset Link",
-      //   html: `<a href=${link}>Click Here</a> to Reset Your Password`
-      // })
-      res.send({ "status": "success", "message": "Password Reset Email Sent... Please Check Your Email" })
-    } else {
-      res.send({ "status": "failed", "message": "Email doesn't exists" })
-    }
-  } else {
-    res.send({ "status": "failed", "message": "Email Field is Required" })
-  }
-};
-
-exports.userPasswordReset = async (req, res) => {
-  const { password, password_confirmation } = req.body
-  const { id, token } = req.params
-  const user = await UserModel.findById(id)
-  const new_secret = user._id + process.env.JWT_SECRET_KEY
+// UPLOAD PROFILE
+exports.uploadProfile = async (req, res, next) => {
   try {
-    jwt.verify(token, new_secret)
-    if (password && password_confirmation) {
-      if (password !== password_confirmation) {
-        res.send({ "status": "failed", "message": "New Password and Confirm New Password doesn't match" })
-      } else {
-        const salt = await bcrypt.genSalt(10)
-        const newHashPassword = await bcrypt.hash(password, salt)
-        await UserModel.findByIdAndUpdate(user._id, { $set: { password: newHashPassword } })
-        res.send({ "status": "success", "message": "Password Reset Successfully" })
-      }
-    } else {
-      res.send({ "status": "failed", "message": "All Fields are Required" })
+    const id = req.params.id;
+    const user = await User.findByPk(id);
+  
+    if (!user) {
+      return res.status(404).json({ message: "Resource not found" });
     }
+    const profile = req.files.profile;
+    const fileSize = profile.size / 1000;
+    const fileExt = profile.name.split(".")[1];
+    if (fileSize > 500) {
+      return res
+        .status(400)
+        .json({ message: "file size must be lower than 500kb" });
+    }
+
+    if (!["jpg", "png"].includes(fileExt)) {
+      return res
+        .status(400)
+        .json({ message: "file extension must be jpg or png" });
+    }
+
+    const fileName = `${req.params.id}${path.extname(profile.name)}`;
+    profile.mv(`/uploads/${fileName}`, async (err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
+      }
+      await User.findByIdAndUpdate(req.params.id, { profile: fileName });
+      res.status(200).json({
+        data: {
+          file: `${req.protocol}://${req.get("host")}/${fileName}`,
+        },
+      });
+    });
   } catch (error) {
-    console.log(error)
-    res.send({ "status": "failed", "message": "Invalid Token" })
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// ACTIVATE EMAIL
+exports.activateEmail =  async (req, res) => {
+    try {
+        const {activation_token} = req.body
+        const user = jwt.verify(activation_token, process.env.ACTIVATION_TOKEN_SECRET)
+
+        const {name, email, password} = user
+
+        const check = await User.findOne({email})
+        if(check) return res.status(400).json({msg:"This email already exists."})
+
+        const newUser = new User({
+            name, email, password
+        })
+
+        await newUser.save()
+
+        res.json({msg: "Account has been activated!"})
+
+    } catch (err) {
+        return res.status(500).json({msg: err.message})
+    }
+},
+
+// FORGOT PASSWORD
+exports.forgotPassword = async (req, res) => {
+        try {
+            const {email} = req.body
+            const user = await Users.findOne({email})
+            if(!user) return res.status(400).json({msg: "This email does not exist."})
+
+            const access_token = createAccessToken({id: user._id})
+            const url = `${CLIENT_URL}/user/reset/${access_token}`
+
+            sendMail(email, url, "Reset your password")
+            res.json({msg: "Re-send the password, please check your email."})
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+},
+
+// RESET PASSWORD
+exports.resetPassword = async (req, res) => {
+  try {
+      const {password} = req.body
+      console.log(password)
+      const passwordHash = await bcrypt.hash(password, 12)
+
+      await Users.findOneAndUpdate({_id: req.user.id}, {
+          password: passwordHash
+      })
+
+      res.json({msg: "Password successfully changed!"})
+  } catch (err) {
+      return res.status(500).json({msg: err.message})
+  }
+},
+
+
+
+exports.allAccess = (req, res) => {
+   res.status(200).send("Public Content.");
+};
+ 
+exports.userBoard = (req, res) => {
+   res.status(200).send("User Content.");
+};
+ 
+exports.adminBoard = (req, res) => {
+   res.status(200).send("Admin Content.");
+};
+
+exports.loggedUser = (req, res) => {
+  //res.send({ "user": req.user })
+  res.status(200).send({ "user": req.user })
+}
+
+
+// GOOGLE LOGIN
+exports.googleLogin = async (req, res) => {
+        try {
+            const {tokenId} = req.body
+
+            const verify = await client.verifyIdToken({idToken: tokenId, audience: process.env.MAILING_SERVICE_CLIENT_ID})
+            
+            const {email_verified, email, name, picture} = verify.payload
+
+            const password = email + process.env.GOOGLE_SECRET
+
+            const passwordHash = await bcrypt.hash(password, 12)
+
+            if(!email_verified) return res.status(400).json({msg: "Email verification failed."})
+
+            const user = await Users.findOne({email})
+
+            if(user){
+                const isMatch = await bcrypt.compare(password, user.password)
+                if(!isMatch) return res.status(400).json({msg: "Password is incorrect."})
+
+                const refresh_token = createRefreshToken({id: user._id})
+                res.cookie('refreshtoken', refresh_token, {
+                    httpOnly: true,
+                    path: '/user/refresh_token',
+                    maxAge: 7*24*60*60*1000 // 7 days
+                })
+
+                res.json({msg: "Login success!"})
+            }else{
+                const newUser = new Users({
+                    name, email, password: passwordHash, avatar: picture
+                })
+
+                await newUser.save()
+                
+                const refresh_token = createRefreshToken({id: newUser._id})
+                res.cookie('refreshtoken', refresh_token, {
+                    httpOnly: true,
+                    path: '/user/refresh_token',
+                    maxAge: 7*24*60*60*1000 // 7 days
+                })
+
+                res.json({msg: "Login success!"})
+            }
+
+
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+}
+
+// FACEBOOK LOGIN
+exports.facebookLogin = async (req, res) => {
+        try {
+            const {accessToken, userID} = req.body
+
+            const URL = `https://graph.facebook.com/v2.9/${userID}/?fields=id,name,email,picture&access_token=${accessToken}`
+            
+            const data = await fetch(URL).then(res => res.json()).then(res => {return res})
+
+            const {email, name, picture} = data
+
+            const password = email + process.env.FACEBOOK_SECRET
+
+            const passwordHash = await bcrypt.hash(password, 12)
+
+            const user = await Users.findOne({email})
+
+            if(user){
+                const isMatch = await bcrypt.compare(password, user.password)
+                if(!isMatch) return res.status(400).json({msg: "Password is incorrect."})
+
+                const refresh_token = createRefreshToken({id: user._id})
+                res.cookie('refreshtoken', refresh_token, {
+                    httpOnly: true,
+                    path: '/user/refresh_token',
+                    maxAge: 7*24*60*60*1000 // 7 days
+                })
+
+                res.json({msg: "Login success!"})
+            }else{
+                const newUser = new Users({
+                    name, email, password: passwordHash, avatar: picture.data.url
+                })
+
+                await newUser.save()
+                
+                const refresh_token = createRefreshToken({id: newUser._id})
+                res.cookie('refreshtoken', refresh_token, {
+                    httpOnly: true,
+                    path: '/user/refresh_token',
+                    maxAge: 7*24*60*60*1000 // 7 days
+                })
+
+                res.json({msg: "Login success!"})
+            }
+
+
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
+        }
+}
+
+// const createActivationToken = (payload) => {
+//     return jwt.sign(payload, process.env.ACTIVATION_TOKEN_SECRET, {expiresIn: '5m'})
+// }
+
+// const createAccessToken = (payload) => {
+//     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'})
+// }
+
+// const createRefreshToken = (payload) => {
+//     return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '7d'})
+// }

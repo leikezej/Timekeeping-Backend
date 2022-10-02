@@ -94,6 +94,6 @@ const authJwt = {
   isAdmin: isAdmin,
   // isModerator,
   // isModeratorOrAdmin,
-};
+};  
 
 module.exports = authJwt;

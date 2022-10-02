@@ -16,11 +16,11 @@ module.exports = function(app) {
       app.use("/loggedUser", checkUserAuth);
       app.get('/loggeduser', controller.loggedUser);
 
-      app.use("/changepassword", checkUserAuth);
-      app.post("/changepassword", controller.changeUserPassword);
+      // app.use("/changepassword", checkUserAuth);
+      // app.post("/changepassword", controller.changeUserPassword);
 
-      app.post("/send-reset-password-email", controller.sendUserPasswordResetEmail);
-      app.post("/reset-password/:id/:token", controller.userPasswordReset);
+      // app.post("/send-reset-password-email", controller.sendUserPasswordResetEmail);
+      // app.post("/reset-password/:id/:token", controller.userPasswordReset);
       // app.put("/api/auth/user/change-password/:id", controller.change);
 
       app.get("/api/auth/users", controller.getAllRecords);
@@ -30,7 +30,12 @@ module.exports = function(app) {
       app.delete("/api/auth/user/:id", controller.delete);
       app.delete("/api/auth/users", controller.deleteAll);
       
-
+      
+      app.post("/api/user/activateEmail", controller.activateEmail);
+      app.post("/api/user/forgotPassword", controller.forgotPassword);
+      app.post("/api/user/resetPassword", controller.resetPassword);
+      app.post("/api/user/logoutUser", controller.logoutUser);
+      
   app.get(
     "/api/test/user",
     [authJwt.verifyToken],

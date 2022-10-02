@@ -1,6 +1,6 @@
 const moment = require('moment-timezone');
 
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize, DataTypes) => {
    const Timein = sequelize.define("timein", {
      name: {
        type: Sequelize.STRING,

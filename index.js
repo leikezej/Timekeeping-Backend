@@ -1,14 +1,16 @@
-// import dotenv from 'dotenv'
-// dotenv.config()
+const dotenv = require('dotenv');
+dotenv.config()
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require('body-parser');
 const cookieSession = require("cookie-session");
 const { logger } = require('./middleware/logEvents');
 const controller = require("./controllers/file.controller");
+
 const app = express();
 const requestIp = require('request-ip');
 const morgan = require('morgan');
+const fileUpload = require("express-fileupload");
 
 const path = require('path');
 const multer = require('multer');
@@ -24,24 +26,28 @@ var corsOptions = {
   // origin: "*"
 };
 
-app.use(cors(corsOptions));
-
 const db = require("./models");
 const Role = db.role ;
 const User = db.user;
 
+app.use(express.static("files"));
 
-app.use(express.static(__dirname + '/public'));
+app.use(cors(corsOptions));
+app.use(logger);
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors(corsOptions));
+app.use(fileUpload());
 app.use(express.json());
 app.use(
   cookieSession({
     name: "bugtech-session",
-    secret: "jepski-cokes",
-    httpOnly: false
+    secret: "process.env.SESSION_SECRET",
+    httpOnly: false,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 }
   })
 );
 
@@ -50,38 +56,6 @@ app.use(
 //    console.log('Drop and Resync Db');
 //    initial();
 //  });
-
-
-// app.get("/", (req, res) => {
-//   res.json({ message: "Welcome to Jepski application." });
-// });
-
-// app.get('/', (req, res) => {
-//   const clientIp = requestIp.getClientIp(req);
-//   console.log(clientIp);
-// });
-
-// var storage = multer.diskStorage({   
-//    destination: (req, file, callBack) { 
-//       callBack(null, './assets/new/uploads');    
-//    }, 
-//    filename:  (req, file, callBack) { 
-//       callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-//    }
-// });
-
-const storage = multer.diskStorage({
-  destination: (req, file, callBack) => {
-    callBack(null, './assets/uploads/')
-  },
-  filename: (req, file, callBack) => {
-      callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-  },
-});
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: maxSize },
-});
 
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
