@@ -32,7 +32,6 @@ exports.logoutUser = async (req, res) => {
     }
 },
 
-
 // GET USER BY EMAIL
 exports.findEmail = (req, res) => {
   const email = req.params.email;

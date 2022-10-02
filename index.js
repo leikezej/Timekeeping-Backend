@@ -32,7 +32,6 @@ const User = db.user;
 
 app.use(express.static("files"));
 
-app.use(cors(corsOptions));
 app.use(logger);
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));

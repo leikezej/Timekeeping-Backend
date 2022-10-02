@@ -172,19 +172,17 @@ exports.signout = async (req, res) => {
 };
 
 // LOGOUT USER
-exports.logout = async (req,res) => { 
-    try {
-        res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
-        return res.json({msg: "Logged out."})
-    } catch (err) {
-        return res.status(500).json({msg: err.message})
-    }
+exports.logout = (req,res) => {
+    req.session.destroy((err) =>{
+      res.clearCookie('jwt');
+       res.redirect('/');
+       navigate('/');
+    })
 };
 
 // LOGOUT
 exports.logouts =  (req, res) => { 
     return res.json({ message: 'Logged out successfully' });
-      //  res.redirect('shop/signin');
 }
 
 // RESET PASSWORD
@@ -210,7 +208,6 @@ exports.resetPassword = (req, res) => {
 }
 
 // CHANGE USER PASSWORD
-
 exports.changeUserPassword = async (req, res) => {
   const { password, confirmPassword } = req.body;
   if (password !== confirmPassword) {
