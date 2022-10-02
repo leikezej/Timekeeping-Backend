@@ -12,7 +12,6 @@ const multer = require('multer')
 
 global.__basedir = __dirname;
 
-app.use(logger);
 
 var corsOptions = {
   origin: "http://localhost:3000"
@@ -28,6 +27,9 @@ const User = db.user;
 //    console.log('Drop and Resync Db');
 //    initial();
 //  });
+
+
+app.use(logger);
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -77,12 +79,12 @@ app.listen(PORT, () => {
 
 function initial() {
    Role.create({
-     id: 1,
+     id: 0420,
      name: "user"
    });
 
    Role.create({
-     id: 2,
+     id: 0230,
      name: "admin"
    });
 
