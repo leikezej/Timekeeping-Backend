@@ -11,9 +11,6 @@ exports.signup = (req, res) => {
   User.create({
     name: req.body.name,
     email: req.body.email,
-    birthdate: req.body.birthdate,
-    gender: req.body.gender,
-    address: req.body.address,
     phone: req.body.phone,
     password: bcrypt.hashSync(req.body.password, 8)
   })
@@ -63,7 +60,7 @@ exports.signin = async (req, res) => {
         message: "Invalid Password!",
       });
     }
-    const token = jwt.sign({ id: user.id }, config.secret, {
+    const token = jwt.sign({ id: user_id.id }, config.secret, {
       expiresIn: 86400, // 24 hours
     });
 
@@ -77,11 +74,9 @@ exports.signin = async (req, res) => {
 
     req.session.token = token;
       return res.status(200).send({
-        id: user.id,
-        // fullname: user.fullname,
+        id: user_id.id,
         name: user.name,
         email: user.email,
-        image: user.image,
         role: authorities,
         accessToken: token,
         refreshToken: refreshToken,
