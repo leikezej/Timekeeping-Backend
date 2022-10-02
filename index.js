@@ -5,16 +5,38 @@ const cors = require("cors");
 const bodyParser = require('body-parser');
 const cookieSession = require("cookie-session");
 const { logger } = require('./middleware/logEvents');
-const controller = require("./controllers/file.controller");
 
 const app = express();
 const requestIp = require('request-ip');
 const morgan = require('morgan');
 const fileUpload = require("express-fileupload");
 
-const path = require('path');
 const multer = require('multer');
 const maxSize = 2 * 1024 * 1024;
+
+const path = require("path");
+
+app.use(fileUpload({
+      limits: { fileSize: 50 * 1024 * 1024 },
+      useTempFiles : true,
+      tempFileDir : '/assets/new',
+       createParentPath: true,
+    abortOnLimit: true
+}));
+
+
+app.post('/uploadimage',(req,res)=>{
+  if (!req.files) {
+      return res.status(400).send("No files were uploaded.");
+    }
+    const file = req.files.myFile;
+
+    if(req.files)
+    {
+        console.log(req.files);
+        res.send('file upload working!!')
+  }}
+)
 
 global.__basedir = __dirname;
 

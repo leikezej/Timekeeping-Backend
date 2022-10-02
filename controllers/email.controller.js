@@ -1,110 +1,56 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const Op = db.Sequelize.Op;
+const { user: User, role: Role, refreshToken: RefreshToken } = db;
+const { v4: uuidv4 } = require("uuid");
+const nodemailer = require('nodemailer');
+const sendEmail = require('../middleware/sendEmail');
 
-const email = require("../middleware/email");
-// const { user: User, role: Role, email: email, refreshToken: RefreshToken } = db;
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
 
+// FORGOT PASSWORD
+exports.forgotPassword = async (req, res) => {
+        try {
+            const {email} = req.body
+            const user = await Users.findOne({email})
+            if(!user) return res.status(400).json({msg: "This email does not exist."})
 
-exports.usePasswordHashToMakeToken = ({
-    password: passwordHash,
-    _id: userId,
-    createdAt
-  }) => {
-    // highlight-start
-    const secret = passwordHash + "-" + createdAt
-    const token = jwt.sign({ userId }, secret, {
-      expiresIn: 3600 // 1 hour
-    })
-    // highlight-end
-    return token
-};  
-  
-// getPasswordResetURL
-exports.sendPasswordResetEmail = async (req, res) => {
-    const { email } = req.params
-    let user
-    try {
-      user = await User.findOne({ email }).exec()
-    } catch (err) {
-      res.status(404).json("No user with that email")
-    }
-    const token = usePasswordHashToMakeToken(user)
-    const url = getPasswordResetURL(user, token)
-    const emailTemplate = resetPasswordTemplate
-    resetPasswordTemplate(user, url)
-  
-    const sendEmail = () => {
-      transporter.sendMail(emailTemplate, (err, info) => {
-        if (err) {
-          res.status(500).json("Error sending email")
+            const access_token = createAccessToken({id: user._id})
+            const url = `${CLIENT_URL}/user/reset/${access_token}`
+
+            sendMail(email, url, "Reset your password")
+            res.json({msg: "Re-send the password, please check your email."})
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
         }
-        console.log(`** Email sent **`, info.response)
-      })
-    }
-    sendEmail()
-};
+},
 
-// receiveNewPassword
-exports.receiveNewPassword = (req, res) => {
-    const { userId, token } = req.params
-    const { password } = req.body
-    // highlight-start
-    User.findOne({ _id: userId })
-      .then(user => {
-        const secret = user.password + "-" + user.createdAt
-        const payload = jwt.decode(token, secret)
-        if (payload.userId === user.id) {
-          bcrypt.genSalt(10, function(err, salt) {
-            // Call error-handling middleware:
-            if (err) return
-            bcrypt.hash(password, salt, function(err, hash) {
-              // Call error-handling middleware:
-              if (err) return
-              User.findOneAndUpdate({ _id: userId }, { password: hash })
-                .then(() => res.status(202).json("Password changed accepted"))
-                .catch(err => res.status(500).json(err))
-            })
-          })
-        }
-      })
-      .catch(() => {
-        res.status(404).json("Invalid user")
-      })
-};
+// RESET PASSWORD
+exports.resetPassword = async (req, res) => {
+  try {
+      const {password} = req.body
+      console.log(password)
+      const passwordHash = await bcrypt.hash(password, 12)
 
-//  
+      await Users.findOneAndUpdate({_id: req.user.id}, {
+          password: passwordHash
+      })
+
+      res.json({msg: "Password successfully changed!"})
+  } catch (err) {
+      return res.status(500).json({msg: err.message})
+  }
+},
+
+
+// CHANGE PASSWORD
 exports.changePassword = async (req, res) => {
-  const { email, oldPassword, newPassword } = req.body
-  // find if old password is valid
-  User.findOne({ email: email })
-    .then(oldUser => {
-      if (!oldUser) return res.status(404).send("User does not exist")
-      oldUser.comparePassword(oldPassword, (err, isMatch) => {
-        if (err) {
-          return res.status(401).send("Unauthorized")
-        }
-        if (isMatch) {
-          // change to new password
-          oldUser.password = newPassword
-          oldUser
-            .save()
-            .then(newUser => {
-              res.status(200).send(newUser)
-            })
-            .catch(err => {
-              const message = err.message
-              res.status(500).json({
-                status: "change password failed",
-                msg: message
-              })
-            })
-        } else {
-          return res.status(401).send("Invalid old password")
-        }
-      })
-    })
-    .catch(err => {
-      res.status(500).send(err)
-    })
-};
+  const { password, confirmPassword } = req.body;
+  if (password !== confirmPassword) {
+    res.send({ "status": "failed", "message": "Error" })
+  } else {
+    const salt = await bcrypt.genSalt(10)
+    const newHashPassword = await bcrypt.hash(password, salt)
+  }
+} 

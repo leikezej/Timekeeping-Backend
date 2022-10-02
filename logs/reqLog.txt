@@ -1143,3 +1143,9 @@
 20221002	11:12:58	11c68279-4d0f-4f61-bc26-8d54fc866bad	POST	undefined	/uploads
 20221002	11:13:05	34a16916-4a9b-49ba-8f41-bb8fe5507c20	POST	undefined	/uploadss
 20221002	11:13:05	5cb26e47-15d9-4b8a-93e0-33fd9cc01002	POST	undefined	/uploadss
+20221002	11:29:17	de47886e-e82e-403d-8de1-cdcb6feddc74	GET	undefined	/api/auth/resetPasswordEmail
+20221002	11:29:17	116e146f-c66a-4d03-87b9-ec4cfe2340f9	GET	undefined	/api/auth/resetPasswordEmail
+20221002	11:29:22	7cf1c090-c505-435b-b018-96dbdaeb590b	POST	undefined	/api/auth/resetPasswordEmail
+20221002	11:29:22	e1f58d66-43d2-47da-bf8a-358905904720	POST	undefined	/api/auth/resetPasswordEmail
+20221002	11:30:03	2323116b-9425-444a-9ed2-6882a9bf3781	POST	undefined	/api/auth/updatePassword
+20221002	11:30:03	4d95055b-6a52-46d6-b342-76dea9812100	POST	undefined	/api/auth/updatePassword

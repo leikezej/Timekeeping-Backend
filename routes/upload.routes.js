@@ -8,6 +8,7 @@ module.exports = function(app) {
   app.post("/uploadss", controller.uploadss);
   app.post("/uploadd", controller.uploadd);
   app.post("/uploadds", controller.uploadds);
+  app.post("/uploaders", controller.uploaders);
   app.get("/files", controller.getListFiles);
   app.get("/files/:name", controller.download);
   app.post("/user_upload", controller.userUpload)

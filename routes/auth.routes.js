@@ -36,4 +36,10 @@ module.exports = function(app) {
   
   app.post('/api/auth/send-otp', controller.sendOtp)
   app.post('/api/auth/submit-otp', controller.submitOtp)
+  
+  
+  app.post('/api/auth/reset-password-email', controller.resetPasswordEmail)
+  app.post('/api/auth/update-password', controller.updatePassword)
+  
+  
 };
