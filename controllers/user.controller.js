@@ -1,10 +1,10 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const transporter = require("../config/email.config");
-const Op = db.Sequelize.Op;
 const { user: User, role: Role, roles: Roles, refreshToken: RefreshToken } = db;
-const fileUpload = require("express-fileupload");
 
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
 
 // GET ALL RECORDS
 exports.getAllRecords = async (req, res) => {
@@ -31,7 +31,6 @@ exports.logoutUser = async (req, res) => {
         return res.status(500).json({msg: err.message})
     }
 },
-
 
 // GET USER BY EMAIL
 exports.findEmail = (req, res) => {
@@ -73,7 +72,7 @@ exports.findOne = (req, res) => {
     });
 }
 
-// UPDATE USER
+// UPDATE USER BY ID
 exports.update = (req, res) => {
   const id = req.params.id;
   User.update(req.body, {
@@ -97,7 +96,6 @@ exports.update = (req, res) => {
     });
 };
 
-// DELETE USER BY ID
 exports.delete = (req, res) => {
   const id = req.params.id;
   User.destroy({
@@ -137,6 +135,78 @@ exports.deleteAll = (req, res) => {
         });
       });
 };
+
+
+
+/* send reset password link in email */
+// exports.resetPasswordEmail = (req, res, next) => {
+//     var email = req.body.email;
+//     //console.log(sendEmail(email, fullUrl));
+//     connection.query('SELECT * FROM users WHERE email ="' + email + '"', function(err, result) {
+//         if (err) throw err;
+//         var type = ''
+//         var msg = ''
+//         console.log(result[0]);
+//         if (result[0].email.length > 0) {
+//            var token = randtoken.generate(20);
+//            var sent = sendEmail(email, token);
+//              if (sent != '0') {
+//                 var data = {
+//                     token: token
+//                 }
+//                 connection.query('UPDATE users SET ? WHERE email ="' + email + '"', data, function(err, result) {
+//                     if(err) throw err
+//                 })
+//                 type = 'success';
+//                 msg = 'The reset password link has been sent to your email address';
+//             } else {
+//                 type = 'error';
+//                 msg = 'Something goes to wrong. Please try again';
+//             }
+//         } else {
+//             console.log('2');
+//             type = 'error';
+//             msg = 'The Email is not registered with us';
+//         }
+//         req.flash(type, msg);
+//         res.redirect('/');
+//     });
+// }
+
+// UPDATE PASSWORD
+// exports.updatePasswordEmail = async (req, res) => {
+//     var accessToken = req.body.accessToken;
+//     var password = req.body.password;
+//    connection.query('SELECT * FROM users WHERE accessToken ="' + accessToken + '"', function(err, result) {
+//         if (err) throw err;
+//         var type
+//         var msg
+//         if (result.length > 0) {
+//               var saltRounds = 10;
+//              // var hash = bcrypt.hash(password, saltRounds);
+//             bcrypt.genSalt(saltRounds, function(err, salt) {
+//                   bcrypt.hash(password, salt, function(err, hash) {
+//                    var data = {
+//                         password: hash
+//                     }
+//                     connection.query('UPDATE users SET ? WHERE email ="' + result[0].email + '"', data, function(err, result) {
+//                         if(err) throw err
+//                     });
+//                   });
+//               });
+//             type = 'success';
+//             msg = 'Your password has been updated successfully';
+//         } else {
+//             console.log('2');
+//             type = 'success';
+//             msg = 'Invalid link; please try again';
+//             }
+//         req.flash(type, msg);
+//         res.redirect('/');
+//     });
+// }
+
+// DELETE USER BY ID
 
 
 // UPLOAD PROFILE
@@ -186,21 +256,15 @@ exports.uploadProfile = async (req, res, next) => {
 exports.activateEmail =  async (req, res) => {
     try {
         const {activation_token} = req.body
-        const user = jwt.verify(activation_token, process.env.ACTIVATION_TOKEN_SECRET)
-
+        const user = jwt.verify(activation_token, 'jepski420230!@!')
         const {name, email, password} = user
-
         const check = await User.findOne({email})
         if(check) return res.status(400).json({msg:"This email already exists."})
-
         const newUser = new User({
             name, email, password
         })
-
         await newUser.save()
-
         res.json({msg: "Account has been activated!"})
-
     } catch (err) {
         return res.status(500).json({msg: err.message})
     }
@@ -210,7 +274,7 @@ exports.activateEmail =  async (req, res) => {
 exports.forgotPassword = async (req, res) => {
         try {
             const {email} = req.body
-            const user = await Users.findOne({email})
+            const user = await User.findOne({email})
             if(!user) return res.status(400).json({msg: "This email does not exist."})
 
             const access_token = createAccessToken({id: user._id})
@@ -230,7 +294,7 @@ exports.resetPassword = async (req, res) => {
       console.log(password)
       const passwordHash = await bcrypt.hash(password, 12)
 
-      await Users.findOneAndUpdate({_id: req.user.id}, {
+      await User.findOneAndUpdate({ _id: req.user.id}, {
           password: passwordHash
       })
 

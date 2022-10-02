@@ -11,34 +11,39 @@ const requestIp = require('request-ip');
 const morgan = require('morgan');
 const fileUpload = require("express-fileupload");
 
-const multer = require('multer');
-const maxSize = 2 * 1024 * 1024;
+var nodemailer = require('nodemailer');
+var bcrypt = require("bcryptjs");
+var randtoken = require('rand-token');
 
 const path = require("path");
-
-app.use(fileUpload({
-      limits: { fileSize: 50 * 1024 * 1024 },
-      useTempFiles : true,
-      tempFileDir : '/assets/new',
-       createParentPath: true,
-    abortOnLimit: true
-}));
-
-
-app.post('/uploadimage',(req,res)=>{
-  if (!req.files) {
-      return res.status(400).send("No files were uploaded.");
-    }
-    const file = req.files.myFile;
-
-    if(req.files)
-    {
-        console.log(req.files);
-        res.send('file upload working!!')
-  }}
-)
-
 global.__basedir = __dirname;
+
+//send email
+function sendEmail(email, token) {
+  var email = email;
+  var token = token;
+  var mail = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+    user: 'jezedevkiel21@gmail.com', // Your email id
+    pass: 'Hahaha123!' // Your password
+     }
+    });
+      var mailOptions = {
+        // from: '[email protected]',
+        from: 'jeze2kiel@pm.me',
+        to: process.env.MAIL_FROM_ADDRESS,
+        subject: 'Reset Password Link - Jepski.com',
+        html: '<p>You requested for reset password, kindly use this <a href="http://localhost:4000/reset-password?token=' + token + '">link</a> to reset your password</p>'
+        };
+      mail.sendMail(mailOptions, function(error, info) {
+        if (error) {
+        console.log(1)
+      } else {
+         console.log(0)
+    }
+  });
+}
 
 app.use(morgan('dev'));
 app.use(logger);
@@ -85,6 +90,8 @@ require('./routes/timein.routes')(app);
 require('./routes/timeout.routes')(app);
 require('./routes/upload.routes')(app);
 require('./routes/email.routes')(app);
+
+
 
 const PORT = process.env.PORT || 0420;
 app.listen(PORT, () => {

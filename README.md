@@ -1,18 +1,13 @@
-POST	/api/auth/signup	signup new account
-POST	/api/auth/signin	login an account
-GET	/api/test/all	retrieve public content
-GET	/api/test/user	access User’s content
-GET	/api/test/admin	access Admin’s content
+Methods Urls Actions
+POST /users create user
+POST /password-reset Send password reset link
+POST /password-reset/:userId/:token Reset user password
 
 POST	/api/auth/signup	signup new account
 POST	/api/auth/signin	login an account
 GET	/api/test/all	retrieve public content
 GET	/api/test/user	access User’s content
 GET	/api/test/admin	access Admin’s content
-
-Authentication:
-POST /api/auth/signup
-POST /api/auth/signin
 
 http://192.168.1.150:8080/api/auth/user/change-password/1
    {
