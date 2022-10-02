@@ -1,4 +1,3 @@
-const uploadFile = require("../middleware/upload");
 const fs = require('fs');
 const baseUrl = "http://localhost:8080/auth/files/";
 
@@ -70,7 +69,6 @@ const user_upload = (req, res) => {
     })
 }
 };
-
 
 
 module.exports = {

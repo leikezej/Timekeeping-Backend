@@ -46,12 +46,6 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Jepski application." });
 });
 
-// app.get('/',function(request, response) {
-//   var clientIp = requestIp.getClientIp(request);
-//   console.log(clientIp);
-// });
-
-//! Use of Multer
 var storage = multer.diskStorage({
   destination: (req, file, callBack) => {
       callBack(null, './assets/images/')     
