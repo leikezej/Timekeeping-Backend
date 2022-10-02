@@ -3,6 +3,7 @@ const fs = require('fs');
 const baseUrl = "http://localhost:8080/auth/files/";
 
 // UPLOAD
+// dapat ig input it name ht file tas upload name same ht pic
 exports.upload = async (req, res) => {
   try {
     const filename = Date.now() + "_" + req.files.aws.name;
@@ -22,6 +23,7 @@ exports.upload = async (req, res) => {
 }
 
 // UPLOAD1
+// Please upload a file kuno
 exports.uploads = (req, res) => {
    const file = req.file;
    if (!file) {
@@ -34,6 +36,7 @@ exports.uploads = (req, res) => {
 };
 
 // UPLOAD2 
+// storage errors kuno
 exports.uploadss = async (req, res) => {
   try {
     await uploadFile(req, res);
@@ -51,6 +54,7 @@ exports.uploadss = async (req, res) => {
   }
 };
 
+// kadaan nga error
 exports.uploadd = async (req, res) => {
   try {
     await uploadFile(req, res);
@@ -71,6 +75,8 @@ exports.uploadd = async (req, res) => {
     });
   }
 };
+
+// you must select a file kuno
 exports.uploadds =  (req, res) => {
   // const filename = Date.now() + "_" + req.file.originalname;
   // const file = req.file;
@@ -100,6 +106,46 @@ exports.uploadds =  (req, res) => {
     return res.send(`Error when trying upload images: ${error}`);
   }
 };
+
+// storage errors kuno
+// {
+// var storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, "/uploads/")
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, file.fieldname + "-" + Date.now()+".jpg")
+//     }
+//   })
+    
+// var upload = multer({ 
+//     storage: storage,
+//     limits: { fileSize: maxSize },
+//     fileFilter: function (req, file, cb){
+//         var filetypes = /jpeg|jpg|png/;
+//         var mimetype = filetypes.test(file.mimetype);
+//         var extname = filetypes.test(path.extname(
+//                     file.originalname).toLowerCase());
+//         if (mimetype && extname) {
+//             return cb(null, true);
+//         }
+//         cb("Error: File upload only supports the "
+//                 + "following filetypes - " + filetypes);
+//       } 
+// }).single("mypic"); 
+
+
+// app.post("/uploadProfilePicture",function (req, res, next) {
+//     upload(req,res,function(err) {
+//         if(err) {
+//             res.send(err)
+//         }
+//         else {
+//             res.send("Success, Image uploaded!")
+//         }
+//     })
+// })
+// }
 
 // GET ALL FILES
 exports.getListFiles = (req, res) => {

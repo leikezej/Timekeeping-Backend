@@ -44,18 +44,75 @@ app.use(
   cookieSession({
     name: "bugtech-session",
     secret: "process.env.SESSION_SECRET",
-    httpOnly: false,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 60000 }
+    httpOnly: false
   })
 );
+
+app.use(express.static("uploads"));
+
 
 //  db.sequelize.sync();
 //  db.sequelize.sync({force: true}).then(() => {
 //    console.log('Drop and Resync Db');
 //    initial();
 //  });
+
+
+// handle storage using multer
+// var storage = multer.diskStorage({
+//    destination: function (req, file, cb) {
+//       cb(null, 'uploads');
+//    },
+//    filename: function (req, file, cb) {
+//       cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+//    }
+// });
+// var upload = multer({ storage: storage });
+  
+// var storage = multer.diskStorage({
+//    destination: function (req, file, cb) {
+//       cb(null, 'uploads');
+//    },
+//    filename: function (req, file, cb) {
+//       cb(null, Date.now() + '-' + file.originalname);
+//    }
+// });
+// var upload = multer({ storage: storage });
+
+// app.post('/api/image-upload', upload.single('image'),(req, res) => {
+//   const image = req.image;
+//     res.send(apiResponse({message: 'File uploaded successfully.', image}));
+// });
+  
+// function apiResponse(results){
+//     return JSON.stringify({"status": 200, "error": null, "response": results});
+// }
+
+app.use('/uploads', express.static('uploads'));
+// handle storage using multer
+var storage = multer.diskStorage({
+   destination: function (req, file, cb) {
+      cb(null, 'uploads');
+   },
+   filename: function (req, file, cb) {
+      cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+   }
+});
+ 
+var upload = multer({ storage: storage });
+
+
+// handle single file upload
+app.post('/upload-avatar', upload.single('dataFile'), (req, res, next) => {
+   const file = req.file;
+   if (!file) {
+      return res.status(400).send({ message: 'Please upload a file.' });
+   }
+   var sql = "INSERT INTO `file`(`name`) VALUES ('" + req.file.filename + "')";
+   var query = db.query(sql, function(err, result) {
+       return res.send({ message: 'File is successfully.', file });
+    });
+});
 
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
