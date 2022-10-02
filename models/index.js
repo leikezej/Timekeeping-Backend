@@ -30,29 +30,31 @@ db.timeout = require("../models/timeout.model.js")(sequelize, Sequelize);
 db.file = require("../models/file.model.js")(sequelize, Sequelize);
 db.upload = require("../models/file.model.js")(sequelize, Sequelize);
 
-// db.role.belongsToMany(db.user, {
-//   through: "user_roles",
-//   foreignKey: "role_id",
-//   otherKey: "user_id"
-// });
+// db.upload = require("../models/file.model.js")(sequelize, Sequelize);
 
-// db.user.belongsToMany(db.role, {
-//   through: "user_roles",
-//   foreignKey: "user_id",
-//   otherKey: "role_id"
-// });
+db.role.belongsToMany(db.user, {
+  through: "user_roles",
+  foreignKey: "role_id",
+  otherKey: "user_id"
+});
 
-// db.timein.belongsToMany(db.user, {
-//   through: "timesheets",
-//   foreignKey: "timesheet_id",
-//   otherKey: "user_id"
-// });
+db.user.belongsToMany(db.role, {
+  through: "user_roles",
+  foreignKey: "user_id",
+  otherKey: "role_id"
+});
 
-// db.user.belongsToMany(db.role, {
-//   through: "timesheets",
-//   foreignKey: "user_id",
-//   otherKey: "timesheet_id"
-// });
+db.timein.belongsToMany(db.user, {
+  through: "timesheets",
+  foreignKey: "timesheet_id",
+  otherKey: "user_id"
+});
+
+db.user.belongsToMany(db.role, {
+  through: "timesheets",
+  foreignKey: "user_id",
+  otherKey: "timesheet_id"
+});
 
 // db.timeout.belongsTo(db.user, {
 //   foreignKey: 'user_id', targetKey: 'id'
@@ -62,9 +64,9 @@ db.upload = require("../models/file.model.js")(sequelize, Sequelize);
 //   foreignKey: 'user_id', targetKey: 'id'
 // });
 
-// db.timein.belongsTo(db.user, {
-//   foreignKey: 'user_id', targetKey: 'id'
-// });
+db.timein.belongsTo(db.user, {
+  foreignKey: 'user_id', targetKey: 'id'
+});
 
 // db.user.hasOne(db.timein, {
 //   foreignKey: 'user_id', targetKey: 'id'

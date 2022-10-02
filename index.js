@@ -1,12 +1,12 @@
-// import dotenv from 'dotenv'
-// dotenv.config()
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 const { logger } = require('./middleware/logEvents');
+const router = express.Router();;
 const controller = require("./controllers/file.controller");
 const app = express();
-// const router = express.Router();
+const requestIp = require('request-ip');
+
 const path = require('path');
 const multer = require('multer')
 
@@ -44,7 +44,12 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Jepski application." });
 });
 
-// Use of Multer
+// app.get('/',function(request, response) {
+//   var clientIp = requestIp.getClientIp(request);
+//   console.log(clientIp);
+// });
+
+//! Use of Multer
 var storage = multer.diskStorage({
   destination: (req, file, callBack) => {
       callBack(null, './assets/images/')     
@@ -72,12 +77,12 @@ app.listen(PORT, () => {
 
 function initial() {
    Role.create({
-     id: 420,
+     id: 1,
      name: "user"
    });
 
    Role.create({
-     id: 230,
+     id: 2,
      name: "admin"
    });
 
