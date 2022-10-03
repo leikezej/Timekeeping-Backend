@@ -46,6 +46,7 @@ exports.signup = (req, res) => {
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
+    res.end("Your IP address is " + ip.address());
 };
 
 // LOGIN USER
@@ -63,10 +64,13 @@ exports.signin = async (req, res) => {
       req.body.password,
       user.password
     );
+    
     if (!passwordIsValid) {
       return res.status(401).send({
         status: "failed",
         message: "Invalid Password!",
+        userIP: "ip",
+        userIPs: ip.address()
       });
     }
     const token = jwt.sign({ id: user.id }, config.secret, {
@@ -90,6 +94,8 @@ exports.signin = async (req, res) => {
         role: authorities,
         accessToken: token,
         refreshToken: refreshToken,
+        userIp: getUserIp,
+        expiryDate: config.jwtExpiration,
     });
 
   } catch (error) {
@@ -130,6 +136,8 @@ exports.refreshToken = async (req, res) => {
     });
 
     return res.status(200).json({
+      expiryDate: config.jwtExpiration,
+      userIp: getUserIp,
       accessToken: newAccessToken,
       refreshToken: refreshToken.token,
     });
