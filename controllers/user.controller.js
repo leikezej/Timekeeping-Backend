@@ -4,8 +4,10 @@ const transporter = require("../config/email.config");
 const Op = db.Sequelize.Op;
 const { user: User, role: Role, roles: Roles, refreshToken: RefreshToken } = db;
 const fileUpload = require("express-fileupload");
-const ip = require('ip');
 
+var ip = require('ip');
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
 
 // GET IP
 exports.getIp = (req, res) => {
@@ -29,7 +31,7 @@ exports.getAllRecords = async (req, res) => {
 };
 
 // LOGOUT USER
-exports.logoutUser = async (req, res) => {
+exports.logout = async (req, res) => {
     try {
         res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
         return res.json({msg: "Logged out."})
@@ -142,6 +144,78 @@ exports.deleteAll = (req, res) => {
         });
       });
 };
+
+// CHANGE USER PASSWORD
+exports.changeUserPassword = async (req, res) => {
+  const { password, password_confirmation } = req.body
+  if (password && password_confirmation) {
+    if (password !== password_confirmation) {
+      res.send({ "status": "failed", "message": "New Password and Confirm New Password doesn't match" })
+    } else {
+      const salt = await bcrypt.genSalt(10)
+      const newHashPassword = await bcrypt.hash(password, salt)
+      await UserModel.findByIdAndUpdate(req.user._id, { $set: { password: newHashPassword } })
+      res.send({ "status": "success", "message": "Password changed succesfully" })
+    }
+  } else {
+    res.send({ "status": "failed", "message": "All Fields are Required" })
+  }
+}
+
+// SEND RESET EMAIL LILNK
+exports.sendUserPasswordResetEmail = async (req, res) => {
+  const { email } = req.body
+  if (email) {
+    const user = await User.findOne({ email: email })
+    if (user) {
+      const secret = user._id + process.env.RESET_PASSWORD_KEY
+      const token = jwt.sign({ user_id: user._id }, secret, { expiresIn: '15m' })
+        const link = `http://127.0.0.1:3000/api/user/reset/${user._id}/${token}`
+        console.log(link)
+        // let info = await transporter.sendMail({
+        //   from: process.env.EMAIL_FROM,
+        //   to: user.email,
+        //   subject: "Jepski - Password Reset Link",
+        //   html: `<a href=${link}>Click Here</a> to Reset Your Password`
+        // })
+        res.send({ "status": "success", "message": "Password Reset Email Sent... Please Check Your Email" })
+    } else {
+      res.send({ "status": "failed", "message": "Email doesn't exists" })
+    }
+  } else {
+    res.send({ "status": "failed", "message": "Email Field is Required" })
+  }
+}
+
+// USER PASSWORD RESET
+exports. userPasswordReset = async (req, res) => {
+
+  const { password, password_confirmation } = req.body
+  const { id, token } = req.params
+  
+  const user = await User.findByPk(id)
+  const new_secret = user._id + process.env.JWT_SECRET_KEY
+    
+    try {
+      jwt.verify(token, new_secret)
+      if (password && password_confirmation) {
+        if (password !== password_confirmation) {
+          res.send({ "status": "failed", "message": "New Password and Confirm New Password doesn't match" })
+        } else {
+          const salt = await bcrypt.genSalt(10)
+          const newHashPassword = await bcrypt.hash(password, salt)
+          // await User.findByIdAndUpdate(user._id, { $set: { password: newHashPassword } })
+          await User.findOne(user._id, { $set: { password: newHashPassword } })
+          res.send({ "status": "success", "message": "Password Reset Successfully" })
+        }
+      } else {
+        res.send({ "status": "failed", "message": "All Fields are Required" })
+      }
+    } catch (error) {
+      console.log(error)
+      res.send({ "status": "failed", "message": "Invalid Token" })
+    }
+}
 
 
 exports.allAccess = (req, res) => {

@@ -21,9 +21,11 @@ exports.create = (req, res) => {
       });
     }); 
 }
+
 exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+    
     Timein.findAll({ where: condition })
       .then(data => {
         res.send(data);
@@ -35,6 +37,7 @@ exports.findAll = (req, res) => {
         });
       });
 };
+
 exports.findOne = (req, res) => {
     const id = req.params.id;
     Timein.findByPk(id)

@@ -1,4 +1,4 @@
-{
+{ 
   "name": "bugtech-timekeeping",
   "version": "1.0.0",
   "description": "POST\t/api/auth/signup\tsignup new account\r POST\t/api/auth/signin\tlogin an account\r GET\t/api/test/all\tretrieve public content\r GET\t/api/test/user\taccess User’s content\r GET\t/api/test/admin\taccess Admin’s content",

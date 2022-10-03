@@ -71,8 +71,6 @@ exports.signin = async (req, res) => {
       return res.status(401).send({
         status: "failed",
         message: "Invalid Password!",
-        userIP: "ip",
-        userIPs: ip.address()
       });
     }
     const token = jwt.sign({ id: user.id }, config.secret, {
@@ -96,7 +94,8 @@ exports.signin = async (req, res) => {
         role: authorities,
         accessToken: token,
         refreshToken: refreshToken,
-        userIp: getUserIp,
+        // userIp: getUserIp,
+        // userIPs: ip.address(),
         expiryDate: config.jwtExpiration,
     });
 

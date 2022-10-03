@@ -5,7 +5,8 @@ const models = require("../models/user.model");
 var checkUserAuth = async (req, res, next) => {
   let token
   const { authorization } = req.headers
-  if (authorization && authorization.startsWith('Bearer')) {
+  // if (authorization && authorization.startsWith('Bearer')) {
+  if (authorization && authorization.startsWith('x-access-token')) {
     try {
     
       // Get Token from header

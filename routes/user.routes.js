@@ -13,8 +13,8 @@ module.exports = function(app) {
 
        app.get("/api/test/all", controller.allAccess);
 
-      app.use('/loggeduser', checkUserAuth);
-      
+      app.post('/changepassword, checkUserAuth')
+      app.post('/loggeduser', checkUserAuth);
       app.get('/getIp', controller.getIp);
 
       app.get("/api/users", controller.getAllRecords);
@@ -24,8 +24,14 @@ module.exports = function(app) {
       app.delete("/api/user/:id", controller.delete);
       app.delete("/api/users", controller.deleteAll);
       
-      app.post("/api/user/logoutUser", controller.logoutUser);
+      app.post("/api/user/logout", controller.logout);
       
+      app.post('/api/user/send-reset-password-email', controller.sendUserPasswordResetEmail)
+      app.post('/api/user/reset-password/:id/:token', controller.userPasswordReset)
+      
+      // Protected Routes
+      app.post('/api/user/changepassword', controller.changeUserPassword)
+      app.get('/api/user/loggeduser', controller.loggedUser)
       
     "/api/test/user",
     [authJwt.verifyToken],

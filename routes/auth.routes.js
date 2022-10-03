@@ -23,7 +23,7 @@ module.exports = function(app) {
   
   app.post("/api/auth/signin", 
       [
-        userLogger.getUserIp,
+        // userLogger.getUserIp,
         userLogger.getLoggedUser
       ],
   controller.signin);
