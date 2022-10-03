@@ -19,7 +19,6 @@ jobs:
       node-version: [12.x, 14.x, 16.x]
       # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -37,7 +36,6 @@ jobs:
           branch: main
           folder: build
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
 - run: npm ci
 - run: npm run build --if-present
 - run: npm test
