@@ -5,22 +5,24 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
      name: {
        type: Sequelize.STRING,
        allowNull: false,
-      //  default: name,
      },
      time: {
       allowNull: false,
-      // defaultValue: new Time(),
-      
       type: Sequelize.TIME,
-      // type: Sequelize.TIME,
+      // defaultValue: new Time(),
       // defaultValue: moment.utc().format('YYYY-MM-DD HH:mm:ss a'),
     },
     date: {
-      // type: Sequelize.DATE
       defaultValue: new Date(),
       type: Sequelize.DATEONLY,
       allowNull: false
+      // type: Sequelize.DATE
       // type: 'Array'
+    },
+    status: {
+      type: Sequelize.STRING,
+      defaultValue: "IN",
+      allowNull: false
     }
    });
    return Timein;

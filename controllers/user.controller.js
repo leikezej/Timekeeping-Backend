@@ -459,3 +459,91 @@ exports.facebookLogin = async (req, res) => {
       res.send({ "status": "failed", "message": "Invalid Token" })
     }
   }
+  
+  // SUBMIT OTP
+module.exports.submitOtp = (req, res) => {
+   console.log(req.body)
+   
+   UserModel.findOne({ otp: req.body.otp }).then(result => {
+      // update password 
+      
+      // UserModel.updateOne({ email: result.email}, { otp: _otp })
+      UserModel.updateOne({ email: result.email}, { password: req.body.password })
+      .then(result => {
+         res.send({ code: 200, message: 'Password Updated' })
+      })
+      .catch(error => {
+         res.send({ code: 500, message: 'Something Went Wong!' })
+      })
+      
+   }).catch(error => {
+      
+      res.send({ code: 500, message: 'Fuck ERROR!' }) 
+   
+   })
+   
+}
+
+// SEND OTP
+module.exports.sendOtp = async (req, res) => {
+   console.log(req.body)
+   
+   // const _otp = Math.floor(Math.random * 1000000)
+   const _otp = Math.floor(100000 + Math.random() * 900000)
+   console.log(_otp)
+   
+   let user = await UserModel.findOne({email: req.body.email})
+      if (!user) {
+         res.send({ code: 500, message: 'User Not Found!' })
+      }
+   
+   let testAccount = await nodemailer.createTestAccount()
+   
+   let transporter = nodemailer.createTransport({
+      // sendmail: true,
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false,
+      auth: {
+         user: testAccount.user,
+         pass: testAccount.pass
+      }
+   })
+   
+   // let transporter = nodemailer.createTransport({
+   //    service: 'gmail',
+   //    auth: { 
+   //       user: '',
+   //       password: 'haha123!'
+   //    }
+   // })
+   
+   let info = await transporter.sendMail({
+      from: "jezedevkiel21@gmail.com",
+      to: req.body.email, // Listat Mga Email Na Se Sendan
+      subject: "OTP Generate",
+      text: String(_otp),
+      html: `<html>
+            < body >
+               Hello and Welcome
+         </ >
+         </html > `,
+   })
+   
+   if(info.messageId){
+      console.log(info, 84)
+
+      UserModel.updateOne({ email: req.body.email}, { otp: _otp })
+         .then(result => {
+            res.send({ code: 200, message: 'OTP Sent' })
+         })
+         .catch(error => {
+            res.send({ code: 500, message: 'Something Went Wong!' })
+         })
+         
+      } else {
+         
+         res.send({ code: 500, message: 'Server Error'})
+      }
+}
+   
