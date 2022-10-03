@@ -4,7 +4,13 @@ const transporter = require("../config/email.config");
 const Op = db.Sequelize.Op;
 const { user: User, role: Role, roles: Roles, refreshToken: RefreshToken } = db;
 const fileUpload = require("express-fileupload");
+const ip = require('ip');
 
+
+// GET IP
+exports.getIp = (req, res) => {
+  res.end("Your IP address is " + ip.address());
+}
 
 // GET ALL RECORDS
 exports.getAllRecords = async (req, res) => {
@@ -384,21 +390,21 @@ exports.facebookLogin = async (req, res) => {
 
 
 
-  exports.changeUserPassword = async (req, res) => {
-    const { password, password_confirmation } = req.body
-    if (password && password_confirmation) {
-      if (password !== password_confirmation) {
-        res.send({ "status": "failed", "message": "New Password and Confirm New Password doesn't match" })
-      } else {
-        const salt = await bcrypt.genSalt(10)
-        const newHashPassword = await bcrypt.hash(password, salt)
-        await UserModel.findByIdAndUpdate(req.user._id, { $set: { password: newHashPassword } })
-        res.send({ "status": "success", "message": "Password changed succesfully" })
-      }
-    } else {
-      res.send({ "status": "failed", "message": "All Fields are Required" })
-    }
-  }
+  // exports.changeUserPassword = async (req, res) => {
+  //   const { password, password_confirmation } = req.body
+  //   if (password && password_confirmation) {
+  //     if (password !== password_confirmation) {
+  //       res.send({ "status": "failed", "message": "New Password and Confirm New Password doesn't match" })
+  //     } else {
+  //       const salt = await bcrypt.genSalt(10)
+  //       const newHashPassword = await bcrypt.hash(password, salt)
+  //       await UserModel.findByIdAndUpdate(req.user._id, { $set: { password: newHashPassword } })
+  //       res.send({ "status": "success", "message": "Password changed succesfully" })
+  //     }
+  //   } else {
+  //     res.send({ "status": "failed", "message": "All Fields are Required" })
+  //   }
+  // }
 
   exports.loggedUser = async (req, res) => {
     res.send({ "user": req.user })

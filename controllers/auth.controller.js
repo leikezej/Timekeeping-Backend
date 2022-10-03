@@ -5,11 +5,13 @@ const { user: User, role: Role, refreshToken: RefreshToken } = db;
 const { v4: uuidv4 } = require("uuid");
 const nodemailer = require('nodemailer');
 
+var ip = require('ip');
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 // LOG USER 
-exports.loggedUser = async (req, res) => {
+exports.loggedUser =  (req, res) => {
+    res.end("Your IP address is " + ip.address());
     res.send({ "user": req.users })
 }
 
@@ -19,7 +21,6 @@ exports.signup = (req, res) => {
     name: req.body.name,
     email: req.body.email,
     phone: req.body.phone,
-    // avatar: req.body.avatar,
     password: bcrypt.hashSync(req.body.password, 8)
   })
     .then(user => {
@@ -99,8 +100,7 @@ exports.signin = async (req, res) => {
 
 // VERIFY USER EMAIL
 exports.verify = async (req, res) => {
-  
-}
+};
 
 // REFRESH TOKEN
 exports.refreshToken = async (req, res) => {
@@ -208,15 +208,15 @@ exports.resetPassword = (req, res) => {
 }
 
 // CHANGE USER PASSWORD
-exports.changeUserPassword = async (req, res) => {
-  const { password, confirmPassword } = req.body;
-  if (password !== confirmPassword) {
-    res.send({ "status": "failed", "message": "Error" })
-  } else {
-    const salt = await bcrypt.genSalt(10)
-    const newHashPassword = await bcrypt.hash(password, salt)
-  }
-} 
+// exports.changeUserPassword = async (req, res) => {
+//   const { password, confirmPassword } = req.body;
+//   if (password !== confirmPassword) {
+//     res.send({ "status": "failed", "message": "Error" })
+//   } else {
+//     const salt = await bcrypt.genSalt(10)
+//     const newHashPassword = await bcrypt.hash(password, salt)
+//   }
+// } 
 
 // CHANGE USER PASSWORD
 exports.changePassword = async (req, res) => {

@@ -9,11 +9,11 @@ var controller = require("../controllers/user.controller");
 module.exports = function (app) {
   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", 'Access-Control-Allow-Origin: *', "x-access-token, Origin, Content-Type, Accept");
-    changeUserPassword;
+    next();
   });
   app.get("/api/test/all", controller.allAccess);
-  app.use("/changedpassword", checkUserAuth, controller.changeUserPassword);
-  app.use('/loggeduser', checkUserAuth); // app.use("/changepassword", checkUserAuth);
+  app.use('/loggeduser', checkUserAuth);
+  app.get('/getIp', controller.getIp); // app.use("/changepassword", checkUserAuth);
   // app.post("/changepassword", controller.changeUserPassword);
   // app.post("/send-reset-password-email", controller.sendUserPasswordResetEmail);
   // app.post("/reset-password/:id/:token", controller.userPasswordReset);
