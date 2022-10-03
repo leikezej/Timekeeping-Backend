@@ -21,6 +21,9 @@ exports.signup = (req, res) => {
     name: req.body.name,
     email: req.body.email,
     phone: req.body.phone,
+    userIp: req.body.ip,
+    userIp: ip,
+    userIp: ip.address(),
     password: bcrypt.hashSync(req.body.password, 8)
   })
     .then(user => {
@@ -34,11 +37,12 @@ exports.signup = (req, res) => {
         }).then(roles => {
           user.setRoles(roles).then(() => {
             res.send({ message: 'User was registered with' + '${roles} '});
+            res.end("Your IP address is " + ip.address());
           });
         });
       } else {
         // user role = 1
-        user.setRoles([1]).then(() => {
+        user.setRoles([0420]).then(() => {
           res.send({ message: "User was registered successfully!" });
         });
       }
