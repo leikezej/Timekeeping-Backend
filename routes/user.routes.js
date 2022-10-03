@@ -17,29 +17,15 @@ module.exports = function(app) {
       
       app.get('/getIp', controller.getIp);
 
-      // app.use("/changepassword", checkUserAuth);
-      // app.post("/changepassword", controller.changeUserPassword);
-
-      // app.post("/send-reset-password-email", controller.sendUserPasswordResetEmail);
-      // app.post("/reset-password/:id/:token", controller.userPasswordReset);
-      // app.put("/api/auth/user/change-password/:id", controller.change);
-
-      app.get("/api/auth/users", controller.getAllRecords);
-      app.get("/api/auth/user/:id", controller.findOne);
-      app.get("/api/auth/user/:email", controller.findEmail);
-      app.put("/api/auth/user/:id", controller.update);
-      app.delete("/api/auth/user/:id", controller.delete);
-      app.delete("/api/auth/users", controller.deleteAll);
+      app.get("/api/users", controller.getAllRecords);
+      app.get("/api/user/:id", controller.findOne);
+      app.get("/api/user/:email", controller.findEmail);
+      app.put("/api/user/:id", controller.update);
+      app.delete("/api/user/:id", controller.delete);
+      app.delete("/api/users", controller.deleteAll);
       
-      
-      app.post("/api/user/activateEmail", controller.activateEmail);
-      app.post("/api/user/forgotPassword", controller.forgotPassword);
-      app.post("/api/user/resetPassword", controller.resetPassword);
       app.post("/api/user/logoutUser", controller.logoutUser);
       
-      app.post('/api/user/send-reset-password-email', controller.sendUserPasswordResetEmail)
-      app.post('/api/user/reset-password/:id/:token', controller.userPasswordReset)
-
       
     "/api/test/user",
     [authJwt.verifyToken],

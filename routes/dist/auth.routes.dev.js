@@ -18,10 +18,4 @@ module.exports = function (app) {
   app.post("/api/auth/logout", controller.logout);
   app.post("/api/auth/logouts", controller.logouts);
   app.post("/api/auth/refreshtoken", controller.refreshToken);
-  app.post("/api/auth/forgotPassword", controller.forgotPassword);
-  app.post("/api/auth/resetPassword", controller.resetPassword);
-  app.post("/api/auth/submitOtp", controller.submitOtp);
-  app.post("/api/auth/sendOtp", controller.sendOtp);
-  app.post('/api/auth/send-otp', controller.sendOtp);
-  app.post('/api/auth/submit-otp', controller.submitOtp);
 };

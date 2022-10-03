@@ -42,8 +42,8 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 app.use(
   cookieSession({
-    name: process.env.SESSION_NAME,
-    secret: process.env.SESSION_SECRET,
+    name: "bugtech-session",
+    secret: "process.env.SESSION_SECRET",
     httpOnly: false,
     resave: false,
     saveUninitialized: true,
@@ -58,7 +58,7 @@ app.get("/",function(req,res){
       console.log(res.ip)
 })
 
-//  db.sequelize.sync();
+ db.sequelize.sync();
 //  db.sequelize.sync({force: true}).then(() => {
 //    console.log('Drop and Resync Db');
 //    initial();

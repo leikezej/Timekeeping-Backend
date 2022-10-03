@@ -2,18 +2,17 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const Op = db.Sequelize.Op;
 
-const email = require("../middleware/email");
 // const { user: User, role: Role, email: email, refreshToken: RefreshToken } = db;
 
 
 exports.usePasswordHashToMakeToken = ({
     password: passwordHash,
-    _id: userId,
+    _id: user_id,
     createdAt
   }) => {
     // highlight-start
     const secret = passwordHash + "-" + createdAt
-    const token = jwt.sign({ userId }, secret, {
+    const token = jwt.sign({ user_id }, secret, {
       expiresIn: 3600 // 1 hour
     })
     // highlight-end
@@ -25,7 +24,7 @@ exports.sendPasswordResetEmail = async (req, res) => {
     const { email } = req.params
     let user
     try {
-      user = await User.findOne({ email }).exec()
+      user = await user.findOne({ email }).exec()
     } catch (err) {
       res.status(404).json("No user with that email")
     }
@@ -47,21 +46,21 @@ exports.sendPasswordResetEmail = async (req, res) => {
 
 // receiveNewPassword
 exports.receiveNewPassword = (req, res) => {
-    const { userId, token } = req.params
+    const { user_id, token } = req.params
     const { password } = req.body
     // highlight-start
-    User.findOne({ _id: userId })
+    User.findOne({ _id: user_id })
       .then(user => {
         const secret = user.password + "-" + user.createdAt
         const payload = jwt.decode(token, secret)
-        if (payload.userId === user.id) {
+        if (payload.user_id === user.id) {
           bcrypt.genSalt(10, function(err, salt) {
             // Call error-handling middleware:
             if (err) return
             bcrypt.hash(password, salt, function(err, hash) {
               // Call error-handling middleware:
               if (err) return
-              User.findOneAndUpdate({ _id: userId }, { password: hash })
+              User.findOneAndUpdate({ _id: user_id }, { password: hash })
                 .then(() => res.status(202).json("Password changed accepted"))
                 .catch(err => res.status(500).json(err))
             })
