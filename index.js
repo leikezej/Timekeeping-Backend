@@ -58,7 +58,7 @@ app.get("/",function(req,res){
       console.log(res.ip)
 })
 
-//  db.sequelize.sync();
+ db.sequelize.sync();
 //  db.sequelize.sync({force: true}).then(() => {
 //    console.log('Drop and Resync Db');
 //    initial();
