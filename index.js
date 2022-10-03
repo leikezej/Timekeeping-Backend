@@ -39,10 +39,11 @@ app.use(cors(corsOptions));
 app.use(fileUpload());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'static')));
+
 app.use(
   cookieSession({
-    name: "bugtech-session",
-    secret: "process.env.SESSION_SECRET",
+    name: process.env.SESSION_NAME,
+    secret: process.env.SESSION_SECRET,
     httpOnly: false,
     resave: false,
     saveUninitialized: true,

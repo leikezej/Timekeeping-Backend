@@ -877,4 +877,129 @@ exports.userPasswordReset = function _callee12(req, res) {
       }
     }
   }, null, null, [[6, 27]]);
+}; // SUBMIT OTP
+
+
+module.exports.submitOtp = function (req, res) {
+  console.log(req.body);
+  UserModel.findOne({
+    otp: req.body.otp
+  }).then(function (result) {
+    // update password 
+    // UserModel.updateOne({ email: result.email}, { otp: _otp })
+    UserModel.updateOne({
+      email: result.email
+    }, {
+      password: req.body.password
+    }).then(function (result) {
+      res.send({
+        code: 200,
+        message: 'Password Updated'
+      });
+    })["catch"](function (error) {
+      res.send({
+        code: 500,
+        message: 'Something Went Wong!'
+      });
+    });
+  })["catch"](function (error) {
+    res.send({
+      code: 500,
+      message: 'Fuck ERROR!'
+    });
+  });
+}; // SEND OTP
+
+
+module.exports.sendOtp = function _callee13(req, res) {
+  var _otp, user, testAccount, transporter, info;
+
+  return regeneratorRuntime.async(function _callee13$(_context13) {
+    while (1) {
+      switch (_context13.prev = _context13.next) {
+        case 0:
+          console.log(req.body); // const _otp = Math.floor(Math.random * 1000000)
+
+          _otp = Math.floor(100000 + Math.random() * 900000);
+          console.log(_otp);
+          _context13.next = 5;
+          return regeneratorRuntime.awrap(UserModel.findOne({
+            email: req.body.email
+          }));
+
+        case 5:
+          user = _context13.sent;
+
+          if (!user) {
+            res.send({
+              code: 500,
+              message: 'User Not Found!'
+            });
+          }
+
+          _context13.next = 9;
+          return regeneratorRuntime.awrap(nodemailer.createTestAccount());
+
+        case 9:
+          testAccount = _context13.sent;
+          transporter = nodemailer.createTransport({
+            // sendmail: true,
+            host: "smtp.ethereal.email",
+            port: 587,
+            secure: false,
+            auth: {
+              user: testAccount.user,
+              pass: testAccount.pass
+            }
+          }); // let transporter = nodemailer.createTransport({
+          //    service: 'gmail',
+          //    auth: { 
+          //       user: '',
+          //       password: 'haha123!'
+          //    }
+          // })
+
+          _context13.next = 13;
+          return regeneratorRuntime.awrap(transporter.sendMail({
+            from: "jezedevkiel21@gmail.com",
+            to: req.body.email,
+            // Listat Mga Email Na Se Sendan
+            subject: "OTP Generate",
+            text: String(_otp),
+            html: "<html>\n            < body >\n               Hello and Welcome\n         </ >\n         </html > "
+          }));
+
+        case 13:
+          info = _context13.sent;
+
+          if (info.messageId) {
+            console.log(info, 84);
+            UserModel.updateOne({
+              email: req.body.email
+            }, {
+              otp: _otp
+            }).then(function (result) {
+              res.send({
+                code: 200,
+                message: 'OTP Sent'
+              });
+            })["catch"](function (error) {
+              res.send({
+                code: 500,
+                message: 'Something Went Wong!'
+              });
+            });
+          } else {
+            res.send({
+              code: 500,
+              message: 'Server Error'
+            });
+          }
+
+        case 15:
+        case "end":
+          return _context13.stop();
+      }
+    }
+  });
 };

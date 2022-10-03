@@ -1,7 +1,5 @@
 // const { FaRegPaperPlane } = require('react-icons/fa');
-
 // require('dotenv/config');
-
 // module.exports = {
 //    MAILER: process.env.MAIL_MAILER,
 //    HOST: process.env.MAIL_HOST,
@@ -12,3 +10,4 @@
 //    FROM_ADDRESS: process.env.MAIL_FROM_ADDRESS,
 //    FROM_NAME: process.env.MAIL_FROM_NAME
 // }
+"use strict";
