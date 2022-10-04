@@ -86,3 +86,7 @@
 20221004	19:43:29	8f415993-0dd6-4b8f-a667-3144e0ff6b70	GET	undefined	/api/user/timeout
 20221004	19:43:32	3a9752a6-7449-4d51-842e-6d35046ab270	GET	undefined	/api/user/timeout/2
 20221004	19:43:36	d6b1e5b3-3f84-499a-bfd2-97c549eff758	DELETE	undefined	/api/user/timeout/2
+20221004	20:12:41	353ef6ef-640a-4401-a831-2db6855135ba	POST	undefined	/api/user/upload
+20221004	20:13:00	729deef3-7f4e-4760-a0c1-f8a76a984dfa	GET	undefined	/api/user/files
+20221004	20:14:28	f3ec144b-595b-4fdc-8aa6-0d72636ed604	POST	undefined	/api/user/upload
+20221004	20:16:13	cc3f7732-1ca5-491c-9793-9bce9ca8da24	POST	undefined	/api/user/upload

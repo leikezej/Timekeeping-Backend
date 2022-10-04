@@ -7,8 +7,6 @@ const morgan = require('morgan');
 const cookieSession = require("cookie-session");
 const app = express();
 
-
-
 const db = require("./models");
 const Role = db.role;
 
@@ -23,6 +21,10 @@ var corsOptions = {
   origin: "http://localhost:8081"
 };
 
+const initRoutes = require("./routes/upload.routes");
+
+app.use(express.urlencoded({ extended: true }));
+initRoutes;
 
 app.use(cors());
 app.use(logger);
@@ -54,6 +56,7 @@ require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/timein.routes')(app);
 require('./routes/timeout.routes')(app);
+require('./routes/upload.routes')(app);
 
 const PORT = process.env.PORT || 0420;
   app.listen(PORT, () => {
