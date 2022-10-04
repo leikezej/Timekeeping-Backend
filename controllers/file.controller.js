@@ -3,33 +3,24 @@ const fs = require('fs');
 baseUrl = "http://localhost:272/api/user/files";
 
 const upload = (req, res) => {
-    try {
-        if(!req.files) {
-            res.send({
-                status: false,
-                message: 'No file uploaded'
-            });
-        } else {
-            //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
-            let avatar = req.files.avatar;
-            
-            //Use the mv() method to place the file in the upload directory (i.e. "uploads")
-            avatar.mv('/assets/uploads/' + avatar.name);
-
-            //send response
-            res.send({
-                status: true,
-                message: 'File is uploaded',
-                data: {
-                    name: avatar.name,
-                    mimetype: avatar.mimetype,
-                    size: avatar.size
-                }
-            });
-        }
-    } catch (err) {
-        res.status(500).send(err);
-    }
+    const files = req.files
+        console.log(files)
+    Object.keys(files).forEach(key => {
+    const filepath = path.join(__dirname, '/assets/uploads', files[key].name)
+        files[key].mv(filepath, (err) => {
+            if (err) 
+         return res.status(500).send(err);
+                res.send({
+          status: true,
+          message: 'File Uploaded to' + filepath,
+          data: {
+              name: req.files.name,
+              mimetype: req.files.mimetype,
+              size: req.files.size
+          }
+      });
+        })
+    })
 };
 
 const getListFiles = (req, res) => {

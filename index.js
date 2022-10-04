@@ -13,8 +13,8 @@ const app = express();
 const db = require("./models");
 const Role = db.role;
 
-const fileDir = path.join(__dirname, 'files');
-const tempDir = path.join(__dirname, 'temp');
+// const fileDir = path.join(__dirname, 'files');
+// const tempDir = path.join(__dirname, 'temp');
 const uploadDir = path.join(__dirname, '/assets/uploaders');
 const fs = require('fs');
 global.__basedir = __dirname;
@@ -28,6 +28,7 @@ db.sequelize.sync();
 
 var corsOptions = {
   origin: "http://localhost:8081"
+    // origin: '*'
 };
 app.use('/img', express.static('storage'))
 app.use(express.static('public'))
@@ -54,34 +55,25 @@ app.use(
   })
 );
 
-app.post('/upload-avatar', async (req, res) => {
-    try {
-        if(!req.files) {
-            res.send({
-                status: false,
-                message: 'No file uploaded'
-            });
-        } else {
-            //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
-            let avatar = req.files.avatar;
-            
-            //Use the mv() method to place the file in the upload directory (i.e. "uploads")
-            avatar.mv('/assets/uploads/' + avatar.name);
-
-            //send response
-            res.send({
-                status: true,
-                message: 'File is uploaded',
-                data: {
-                    name: avatar.name,
-                    mimetype: avatar.mimetype,
-                    size: avatar.size
-                }
-            });
-        }
-    } catch (err) {
-        res.status(500).send(err);
-    }
+app.post('/upload-avatar', async (req, res, next) => {
+    const files = req.files
+        console.log(files)
+    Object.keys(files).forEach(key => {
+    const filepath = path.join(__dirname, '/assets/uploads', files[key].name)
+        files[key].mv(filepath, (err) => {
+            if (err) 
+         return res.status(500).send(err);
+                res.send({
+          status: true,
+          message: 'File Uploaded to' + filepath,
+          data: {
+              name: req.files.name,
+              mimetype: req.files.mimetype,
+              size: req.files.size
+          }
+      });
+        })
+    })
 });
 
 app.post('/api/user/uploader', function(req, res) {
