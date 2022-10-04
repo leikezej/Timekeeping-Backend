@@ -5,10 +5,13 @@ const cors = require("cors");
 const { logger } = require('./middleware/logEvents');
 const morgan = require('morgan');
 const cookieSession = require("cookie-session");
+const fileUpload = require('express-fileupload');
 const app = express();
 
 const db = require("./models");
 const Role = db.role;
+
+global.__basedir = __dirname;
 
 db.sequelize.sync();
 // db.sequelize.sync({force: true}).then(() => {
@@ -20,11 +23,7 @@ db.sequelize.sync();
 var corsOptions = {
   origin: "http://localhost:8081"
 };
-
-const initRoutes = require("./routes/upload.routes");
-
-app.use(express.urlencoded({ extended: true }));
-initRoutes;
+app.use(fileUpload());
 
 app.use(cors());
 app.use(logger);
@@ -46,6 +45,26 @@ app.use(
   })
 );
 
+app.post('/uploader', function(req, res) {
+  let uploadedFile;
+  let uploadPath;
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  uploadedFile = req.files.uploadedFile;
+  uploadPath = __dirname + '/assets/uploads/' + uploadedFile.name;
+
+  // Use the mv() method to place the file somewhere on your server
+  uploadedFile.mv(uploadPath, function(err) {
+    if (err)
+      return res.status(500).send(err);
+
+    res.send('File uploaded!');
+  });
+});
 
 // simple route
 app.get("/", (req, res) => {
