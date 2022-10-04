@@ -704,3 +704,9 @@
 20221003	16:11:50	41008101-5108-4f3e-96df-b0dc11b5dd76	GET	undefined	/api/user/timein
 20221003	16:12:55	8367bd29-ffd8-4782-bedf-2c0ad1677700	GET	undefined	/api/user/timein
 20221003	16:12:55	f27c43bd-e725-4a1c-aae6-beb3c261e470	GET	undefined	/api/user/timein
+20221004	15:51:41	b3306c5a-8840-4a03-92ec-926a6c1f31c9	GET	undefined	/api/auth/users
+20221004	15:51:41	0242e500-6120-41d6-ae3d-44a162ee25ff	GET	undefined	/api/auth/users
+20221004	15:52:03	de1f408c-5b67-41af-8d4b-fd886c25f5c3	POST	undefined	/api/auth/signin
+20221004	15:52:03	2f55d855-0aba-4210-8cc8-274848ccfa83	POST	undefined	/api/auth/signin
+20221004	15:52:21	560483d0-3265-4eed-a22e-6e624af95c54	GET	undefined	/api/auth/users
+20221004	15:52:21	2cb187b0-a2f7-4128-a199-20c6f44857e3	GET	undefined	/api/auth/users
