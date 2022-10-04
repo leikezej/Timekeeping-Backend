@@ -52,7 +52,11 @@ exports.signin = (req, res) => {
   })
     .then(async (user) => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(404).send({ 
+          STATUS: "Status 404",
+          MESSAGE: "Email Not found",
+          ERROR: "Error Email Incorrect"
+        });
       }
 
       const passwordIsValid = bcrypt.compareSync(
@@ -62,13 +66,17 @@ exports.signin = (req, res) => {
 
       if (!passwordIsValid) {
         return res.status(401).send({
-          accessToken: null,
-          message: "Invalid Password!"
+          // accessToken: null,
+          STATUS: "Status 401",
+          MESSAGE: "Invalid Password!",
+          ERROR: "Error Password Incorrect",
+          // ok: "NOT OK"
         });
       }
 
       const token = jwt.sign({ id: user.id }, config.secret, {
         expiresIn: config.jwtExpiration
+              // expiresIn: 86400, // 24 hours
       });
 
       let refreshToken = await RefreshToken.createToken(user);
@@ -79,13 +87,17 @@ exports.signin = (req, res) => {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
 
+    req.session.token = token;
         res.status(200).send({
+          status: 'OK',
           id: user.id,
-          // username: user.username,
+          name: user.name,
           email: user.email,
           roles: authorities,
           accessToken: token,
           refreshToken: refreshToken,
+          expiryDate: config.jwtExpiration,
+          // cookies: user.cookies,
         });
       });
     })
@@ -98,12 +110,31 @@ exports.signin = (req, res) => {
 exports.signout = async (req, res) => {
   try {
     req.session = null;
+    res.clearCookie('accessToken');
     return res.status(200).send({
       message: "You've been signed out!"
     });
   } catch (err) {
     this.next(err);
   }
+    const cookies = req.cookies;
+    if (!cookies?.jwt) return res.sendStatus(204); //No content
+    const refreshToken = cookies.jwt;
+
+    // Is refreshToken in db?
+    const foundUser = await User.findOne({ refreshToken }).exec();
+    if (!foundUser) {
+        res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+        return res.sendStatus(204);
+    }
+
+    // Delete refreshToken in db
+    foundUser.refreshToken = foundUser.refreshToken.filter(rt => rt !== refreshToken);;
+    const result = await foundUser.save();
+    console.log(result);
+
+    res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+    res.sendStatus(204);
 };
 
 // user refresh token
@@ -141,6 +172,7 @@ exports.refreshToken = async (req, res) => {
     return res.status(200).json({
       accessToken: newAccessToken,
       refreshToken: refreshToken.token,
+      expiryDate: config.jwtExpiration
     });
   } catch (err) {
     return res.status(500).send({ message: err });

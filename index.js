@@ -33,9 +33,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cookieSession({
-    name: "Jepski-User-Session",
+    name: process.env.SESSION_COOKIE_NAME,
         // keys: ['key1', 'key2'], 
-    secret: "process.env.SESSION_SECRET",
+    secret: process.env.SESSION_COOKIE_SECRET,
     // httpOnly: false,
     httpOnly: true,
     resave: false,
