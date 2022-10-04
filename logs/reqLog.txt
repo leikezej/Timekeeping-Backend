@@ -8,3 +8,11 @@
 20221005	01:01:16	2c2b837c-0f36-4c08-b975-5cb33b7d2c03	GET	http://localhost:3000	/api/user/timeout
 20221005	01:01:16	103dac46-91bb-4cdc-aaa9-4a2c974656fc	GET	http://localhost:3000	/api/user/timein
 20221005	01:01:24	a05486e2-acd7-4d8a-9c7d-2e4a9e57003f	POST	http://localhost:3000	/api/auth/signout
+20221005	01:17:18	9c57de3d-5b7c-41a3-a7f9-7f3aef1f05e7	OPTIONS	http://localhost:3000	/api/auth/signin
+20221005	01:17:18	344ec508-bca8-476f-97c7-7c5292c92d6a	POST	http://localhost:3000	/api/auth/signin
+20221005	01:17:19	48a6c78f-aa23-4410-9cbf-6675367f448d	GET	http://localhost:3000	/api/user/timeout
+20221005	01:17:19	be5b8068-926c-4f20-8b74-841dae444078	GET	http://localhost:3000	/api/user/timein
+20221005	01:18:51	4d1a1c88-895e-46e7-8bca-7d284b8d5817	GET	http://localhost:3000	/api/user/timein
+20221005	01:18:51	47dd98dd-864a-45e3-8eb3-114b64ea2558	GET	http://localhost:3000	/api/user/timeout
+20221005	01:18:54	9f3b4b8f-64fc-409f-acb8-ad861aaf7c8f	GET	http://localhost:3000	/api/user/timein
+20221005	01:18:54	78d9b8c2-4bb0-4759-a31b-fc3f4b560bb5	GET	http://localhost:3000	/api/user/timeout
