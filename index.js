@@ -45,7 +45,7 @@ app.use(
   })
 );
 
-app.post('/uploader', function(req, res) {
+app.post('/api/user/uploader', function(req, res) {
   let uploadedFile;
   let uploadPath;
 
@@ -62,13 +62,14 @@ app.post('/uploader', function(req, res) {
     if (err)
       return res.status(500).send(err);
 
-    res.send('File uploaded!');
+    res.send('File Added To ' + uploadPath);
+    console.log('success')
   });
 });
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to JEPSKI application." });
+app.get('/black', function(req, res) {
+  res.send('Jack');
 });
 
 require('./routes/auth.routes')(app);
