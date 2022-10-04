@@ -1,5 +1,3 @@
-const { FaRegPaperPlane } = require('react-icons/fa');
-
 require('dotenv/config');
 
 module.exports = {

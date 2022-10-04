@@ -1,7 +1,7 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const Op = db.Sequelize.Op;
-const { user: User, role: Role, refreshToken: RefreshToken } = db;
+const { user: User, role: Roles, refreshToken: RefreshToken } = db;
 const { v4: uuidv4 } = require("uuid");
 const nodemailer = require('nodemailer');
 
@@ -80,7 +80,6 @@ exports.signin = async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
-        image: user.image,
         role: authorities,
         accessToken: token,
         refreshToken: refreshToken,
