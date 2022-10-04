@@ -79,3 +79,10 @@
 20221004	19:33:00	e6a4fd47-2eed-423f-9126-f4eeb14a19d9	GET	undefined	/api/user/timein
 20221004	19:33:07	900185cf-d59e-4474-a5a8-103d13b77e8e	GET	undefined	/api/user/timein/2
 20221004	19:33:10	d4db49c1-acc6-4551-ba36-462f86efc8c2	DELETE	undefined	/api/user/timein/2
+20221004	19:42:03	787f633b-3220-4e54-a7fe-9bda6f7404d0	POST	undefined	/api/user/timeout
+20221004	19:42:12	a018f417-a134-41ee-9663-a83191e095be	POST	undefined	/api/user/timeout
+20221004	19:43:18	82d14277-5ab6-49d9-a22c-0f2c61ada02a	POST	undefined	/api/user/timeout
+20221004	19:43:27	1b2073d9-5ac2-4fad-80ec-014bec567218	POST	undefined	/api/user/timeout
+20221004	19:43:29	8f415993-0dd6-4b8f-a667-3144e0ff6b70	GET	undefined	/api/user/timeout
+20221004	19:43:32	3a9752a6-7449-4d51-842e-6d35046ab270	GET	undefined	/api/user/timeout/2
+20221004	19:43:36	d6b1e5b3-3f84-499a-bfd2-97c549eff758	DELETE	undefined	/api/user/timeout/2

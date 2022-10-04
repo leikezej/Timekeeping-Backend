@@ -1,34 +1,30 @@
 const db = require("../models");
-const Timein = db.timein;
+const Timeout = db.timeout;
 const Op = db.Sequelize.Op;
-const { user: User, role: Role } = db;
 
-// CREATE NEW TIMEIN
 exports.create = (req, res) => {
-  const timein = {
+  const timeout = {
     name: req.body.name,
     time: req.body.time,
     date: req.body.date,
   };
   
-  Timein.create(timein)
+  Timeout.create(timeout)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Timein."
+          err.message || "Some error occurred while creating the Timeout."
       });
     }); 
 }
 
-// GET ALL TIMEIN
 exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    
-    Timein.findAll({ where: condition })
+    Timeout.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })
@@ -40,100 +36,96 @@ exports.findAll = (req, res) => {
       });
 };
 
-//  GET SINGLE TIMEIN
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Timein.findByPk(id)
+    Timeout.findByPk(id)
       .then(data => {
         if (data) {
           res.send(data);
         } else {
           res.status(404).send({
-            message: `Cannot find Timein with id=${id}.`
+            message: `Cannot find Timeout with id=${id}.`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Timein with id=" + id
+          message: "Error retrieving Timeout with id=" + id
         });
       });
-};
+  }
 
-// UPDATE SINGLE TIMEIN BY ID
 exports.update = (req, res) => {
     const id = req.params.id;
-    Timein.update(req.body, {
+    Timeout.update(req.body, {
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Timein was updated successfully."
+            message: "Timeout was updated successfully."
           });
         } else {
           res.send({
-            message: `Cannot update Timein with id=${id}. Maybe Timein was not found or req.body is empty!`
+            message: `Cannot update Timeout with id=${id}. Maybe Timeout was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Timein with id=" + id
+          message: "Error updating Timeout with id=" + id
         });
       });
-};
+  };
 
-// DELETE SINGLE TIMEIN BY ID
 exports.delete = (req, res) => {
     const id = req.params.id;
-    Timein.destroy({
+    Timeout.destroy({
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Timein was deleted successfully!"
+            message: "Timeout was deleted successfully!"
           });
         } else {
           res.send({
-            message: `Cannot delete Timein with id=${id}. Maybe Timein was not found!`
+            message: `Cannot delete Timeout with id=${id}. Maybe Timeout was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Timein with id=" + id
+          message: "Could not delete Timeout with id=" + id
         });
       });
-};
+  };
 
-// DELETE ALL BY ID
 exports.deleteAll = (req, res) => {
-  Timein.destroy({
+  Timeout.destroy({
       where: {},
       truncate: false
     })
       .then(nums => {
-        res.send({ message: `${nums} Timein were deleted successfully!` });
+        res.send({ message: `${nums} Timeout were deleted successfully!` });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all Timein."
+            err.message || "Some error occurred while removing all Timeout."
         });
       });
-};
+  };
 
 exports.findAllPublished = (req, res) => {
-  Timein.findAll({ where: { published: true } })
+  Timeout.findAll({ where: { published: true } })
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving Timein."
+            err.message || "Some error occurred while retrieving Timeout."
         });
       });
-};
+  };
