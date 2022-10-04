@@ -57,7 +57,13 @@ exports.signin = (req, res) => {
           MESSAGE: "Email Not found",
           ERROR: "Error Email Incorrect"
         });
+        console.log(404)
       }
+      
+      const token = jwt.sign({ id: user.id }, config.secret, {
+        expiresIn: config.jwtExpiration
+              // expiresIn: 86400, // 24 hours
+      });
 
       const passwordIsValid = bcrypt.compareSync(
         req.body.password,
@@ -65,19 +71,29 @@ exports.signin = (req, res) => {
       );
 
       if (!passwordIsValid) {
+          // res.send(token)
         return res.status(401).send({
+          token: (token),
           // accessToken: null,
-          STATUS: "Status 401",
-          MESSAGE: "Invalid Password!",
-          ERROR: "Error Password Incorrect",
+          status: "Status 401",
+          message: "Invalid Password!",
+          error: "Error Password Incorrect",
           // ok: "NOT OK"
         });
+        console.log(401)
       }
-
-      const token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: config.jwtExpiration
-              // expiresIn: 86400, // 24 hours
-      });
+      
+      
+  if (!user.email==="email" && user.password==="password") {
+          res.send(accessToken)
+          res.send(token)
+        return res.status(502).send({ 
+          STATUS: "Status 502",
+          MESSAGE: "Wrong Email or Password",
+          ERROR: "Error Email or Password"
+        });
+      console.log(502)
+      }
 
       let refreshToken = await RefreshToken.createToken(user);
 
