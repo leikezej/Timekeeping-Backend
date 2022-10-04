@@ -12,7 +12,7 @@ const app = express();
 const db = require("./models");
 const Role = db.role;
 
-db.sequelize.sync();
+// db.sequelize.sync();
 // db.sequelize.sync({force: true}).then(() => {
 //   console.log('Drop and Resync Db');
 //   initial();
@@ -64,7 +64,7 @@ const PORT = process.env.PORT || 0420;
 function initial() {
   Role.create({
     id: 1,
-    name: "admin"
+    name: "moderator"
   });
  
   Role.create({
@@ -74,6 +74,6 @@ function initial() {
   
   Role.create({
     id: 3,
-    name: "moderator"
+    name: "admin"
   });
 }
