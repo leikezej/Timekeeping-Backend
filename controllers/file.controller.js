@@ -2,22 +2,34 @@ const uploadFile = require("../middleware/upload");
 const fs = require('fs');
 baseUrl = "http://localhost:272/api/user/files";
 
-const upload = async (req, res) => {
-  try {
-    await uploadFile(req, res);
+const upload = (req, res) => {
+    try {
+        if(!req.files) {
+            res.send({
+                status: false,
+                message: 'No file uploaded'
+            });
+        } else {
+            //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
+            let avatar = req.files.avatar;
+            
+            //Use the mv() method to place the file in the upload directory (i.e. "uploads")
+            avatar.mv('/assets/uploads/' + avatar.name);
 
-    if (req.file == undefined) {
-      return res.status(400).send({ message: "Please upload a file!" });
+            //send response
+            res.send({
+                status: true,
+                message: 'File is uploaded',
+                data: {
+                    name: avatar.name,
+                    mimetype: avatar.mimetype,
+                    size: avatar.size
+                }
+            });
+        }
+    } catch (err) {
+        res.status(500).send(err);
     }
-
-    res.status(200).send({
-      message: "Uploaded the file successfully: " + req.file.originalname,
-    });
-  } catch (err) {
-    res.status(500).send({
-      message: `Could not upload the file: ${req.file.originalname}. ${err}`,
-    });
-  }
 };
 
 const getListFiles = (req, res) => {
