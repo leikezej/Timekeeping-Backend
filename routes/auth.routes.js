@@ -6,7 +6,7 @@ module.exports = function(app) {
     res.header(
       "Access-Control-Allow-Headers",
       'Access-Control-Allow-Origin: *',
-      "x-access-token, Origin, Content-Type, Accept"
+      "x-access-token, Origin,  Content-Type, Accept"
     );
     next();
   });

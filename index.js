@@ -27,15 +27,14 @@ db.sequelize.sync();
 
 
 var corsOptions = {
-  origin: "http://localhost:8081"
-    // origin: '*'
+  // origin: "http://localhost:8081"
+    origin: '*'
 };
-app.use('/img', express.static('storage'))
+// app.use('/img', express.static('storage'))
 app.use(express.static('public'))
 app.use(jepskiUploader({
   createParentPath: false
 }));
-app.use(cors());
 app.use(logger);
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
@@ -86,7 +85,6 @@ app.post('/api/user/uploader', function(req, res) {
       message: 'No File Uploaded'
     });
   }
-
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
   uploadedFile = req.files.uploadedFile;
   uploadPath = __dirname + '/assets/uploads/' + uploadedFile.name;

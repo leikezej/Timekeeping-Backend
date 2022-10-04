@@ -1,9 +1,40 @@
 const uploadFile = require("../middleware/upload");
 const fs = require('fs');
 baseUrl = "http://localhost:272/api/user/files";
+const path = require('path');
 
 const upload = (req, res) => {
-    const files = req.files
+  let uploadedFile;
+  let uploadPath;
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send({
+      status: false,
+      message: 'No File Uploaded'
+    });
+  }
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  uploadedFile = req.files.uploadedFile;
+  uploadPath = __dirname + '/assets/uploads/' + uploadedFile.name;
+
+  // Use the mv() method to place the file somewhere on your server
+  uploadedFile.mv(uploadPath, function(err) {
+    if (err)
+      return res.status(500).send(err);
+
+    res.send({
+        status: true,
+        message: 'File Uploaded to' + uploadPath,
+        data: {
+            name: uploadedFile.name,
+            mimetype: uploadedFile.mimetype,
+            size: uploadedFile.size
+        }
+    });
+  });
+};
+
+const uploader = (req, res) => {
         console.log(files)
     Object.keys(files).forEach(key => {
     const filepath = path.join(__dirname, '/assets/uploads', files[key].name)
@@ -74,6 +105,7 @@ const remove = (req, res) => {
 
 module.exports = {
   upload,
+  uploader,
   getListFiles,
   download,
   remove

@@ -22,8 +22,8 @@ const logEvents = async (message, logName) => {
 
 const logger = (req, res, next) => {
     logEvents(`${req.method}\t${req.headers.origin}\t${req.url}`, 'reqLog.txt');
+    // logEvents(`${req.method}\t${req.ip}\t${req.url}`, 'JepLog.txt');
     console.log(`${req.method} ${req.path}`);
-    // console.log(`${res.ip} ${ip}`)
     next();
 }
 
