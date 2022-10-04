@@ -1,3 +1,14 @@
 20221004	17:37:08	5aeddf09-78e8-4652-b87d-1b77e9f775a4	POST	undefined	/api/auth/signup
 20221004	17:37:23	804d24bc-4a93-4bf7-998d-e8eabb2102c9	POST	undefined	/api/auth/signin
 20221004	17:37:37	ea9886a0-aefa-4f2f-a9eb-e1410bc53ce4	POST	undefined	/api/auth/signin
+20221004	17:39:33	e3226b25-6572-46a6-bef8-87183c78a985	GET	undefined	/api/test/user
+20221004	17:39:53	d6544f04-2aab-4a16-aeff-4388c1254381	GET	undefined	/api/test/user
+20221004	17:39:59	15fd0888-9bb4-4178-8b70-dca8cb9d3b99	GET	undefined	/api/test/mod
+20221004	17:40:27	7af37a33-a224-432a-bac3-0abb3622e0d2	POST	undefined	/api/auth/signin
+20221004	17:40:39	38905bfe-f10a-4819-9b5d-852852654f27	POST	undefined	/api/auth/signup
+20221004	17:40:50	94a39e8c-fbab-48b4-9fd9-b2a0ed2a3bcb	POST	undefined	/api/auth/signin
+20221004	17:41:00	5bfe934e-93e7-441b-932e-c05f7850c8ff	GET	undefined	/api/test/mod
+20221004	17:41:18	8b47e5c3-f63b-4f06-99f6-40749ab0a923	POST	undefined	/api/auth/signin
+20221004	17:41:22	f20a04d4-1e84-4284-a60a-b2bc64acf87c	POST	undefined	/api/auth/signin
+20221004	17:41:31	2edce717-a1e8-4671-a488-0c76735fceb4	GET	undefined	/api/test/mod
+20221004	17:41:38	9f656351-b437-4d08-9d96-55b11f8530ee	GET	undefined	/api/test/admin
