@@ -9,6 +9,7 @@ exports.create = (req, res) => {
     name: req.body.name,
     time: req.body.time,
     date: req.body.date,
+    status: req.body.status
   };
   
   Timein.create(timein)

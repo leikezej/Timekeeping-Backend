@@ -10,14 +10,13 @@ const path = require('path');
 const util = require("util");
 const app = express();
 
+const fs = require('fs');
+global.__basedir = __dirname;
+
+
 const db = require("./models");
 const Role = db.role;
 
-// const fileDir = path.join(__dirname, 'files');
-// const tempDir = path.join(__dirname, 'temp');
-const uploadDir = path.join(__dirname, '/assets/uploaders');
-const fs = require('fs');
-global.__basedir = __dirname;
 
 db.sequelize.sync();
 // db.sequelize.sync({force: true}).then(() => {
@@ -31,7 +30,7 @@ var corsOptions = {
     origin: '*'
 };
 // app.use('/img', express.static('storage'))
-app.use(express.static('public'))
+// app.use(express.static('public'))
 app.use(jepskiUploader({
   createParentPath: false
 }));
@@ -40,7 +39,7 @@ app.use(morgan('dev'));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/assets/uploads", express.static(path.join(__dirname, "/assets/uploads")));
+// app.use("/assets/uploads", express.static(path.join(__dirname, "/assets/uploads")));
 app.use(
   cookieSession({
     name: process.env.SESSION_COOKIE_NAME,
