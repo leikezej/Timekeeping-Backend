@@ -5,3 +5,6 @@
 /node_modules
 /env
 /github
+
+node_modules
+package-lock.json
