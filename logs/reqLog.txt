@@ -15,3 +15,16 @@
 20221004	17:59:34	8009bc64-b190-4701-8408-25a538f1cdcf	POST	undefined	/api/auth/refreshtoken
 20221004	17:59:40	ca303e3c-6a35-4259-9f48-d002998684c3	POST	undefined	/api/auth/signin
 20221004	17:59:48	fffe10bf-b162-4139-b433-99d718a54033	POST	undefined	/api/auth/refreshtoken
+20221004	18:09:09	08027563-e307-4050-ace4-796e03c3fc87	POST	undefined	/api/auth/refreshtoken
+20221004	18:09:18	e13ce88d-618b-428d-8a26-61257a545387	POST	undefined	/api/auth/signin
+20221004	18:09:43	ff6868d0-f26b-4a82-aabf-1c80c8d0a4ba	POST	undefined	/api/auth/signin
+20221004	18:09:49	ae8be09b-d1fc-4edb-901a-5c8f2b8906d8	POST	undefined	/api/auth/signin
+20221004	18:09:54	91d99c6c-9fb6-43c5-8d06-c4b15a8dd4bb	POST	undefined	/api/auth/signin
+20221004	18:10:13	29f3327b-af06-4672-8cc1-1c5a964e353f	POST	undefined	/api/auth/signin
+20221004	18:10:24	e520a99e-6982-42cf-95c8-c66ba2ad28e1	POST	undefined	/api/auth/refreshtoken
+20221004	18:11:32	13ae3368-04cb-4f42-913c-1a84aa2c52f6	GET	undefined	/api/auth/signout
+20221004	18:12:12	84282fc3-6920-473d-8e56-a4a53b3b970e	GET	undefined	/api/auth/signout
+20221004	18:12:16	ed093173-2a32-4a19-925a-9fd6d4bbfc01	POST	undefined	/api/auth/signout
+20221004	18:12:53	807873c1-5b9c-4e33-b307-c0dd39809b63	GET	undefined	/api/test/user
+20221004	18:12:58	9134ea3f-eeab-4966-a235-9e3915f1837f	GET	undefined	/api/test/user
+20221004	18:13:06	692a8420-4e4f-47a5-92f9-b6fb2adf0acb	POST	undefined	/api/auth/signin

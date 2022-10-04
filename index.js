@@ -4,6 +4,8 @@ const express = require("express");
 const cors = require("cors");
 const { logger } = require('./middleware/logEvents');
 const morgan = require('morgan');
+const cookieSession = require("cookie-session");
+const app = express();
 
 
 
@@ -21,13 +23,26 @@ var corsOptions = {
   origin: "http://localhost:8081"
 };
 
-const app = express();
 
+app.use(cors());
 app.use(logger);
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  cookieSession({
+    name: "Jepski-User-Session",
+        // keys: ['key1', 'key2'], 
+    secret: "process.env.SESSION_SECRET",
+    // httpOnly: false,
+    httpOnly: true,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 }
+  })
+);
 
 
 // simple route
