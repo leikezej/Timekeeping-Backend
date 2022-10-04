@@ -12,3 +12,6 @@
 20221004	17:41:22	f20a04d4-1e84-4284-a60a-b2bc64acf87c	POST	undefined	/api/auth/signin
 20221004	17:41:31	2edce717-a1e8-4671-a488-0c76735fceb4	GET	undefined	/api/test/mod
 20221004	17:41:38	9f656351-b437-4d08-9d96-55b11f8530ee	GET	undefined	/api/test/admin
+20221004	17:59:34	8009bc64-b190-4701-8408-25a538f1cdcf	POST	undefined	/api/auth/refreshtoken
+20221004	17:59:40	ca303e3c-6a35-4259-9f48-d002998684c3	POST	undefined	/api/auth/signin
+20221004	17:59:48	fffe10bf-b162-4139-b433-99d718a54033	POST	undefined	/api/auth/refreshtoken
