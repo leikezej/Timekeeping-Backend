@@ -1,15 +1,15 @@
 on:
   push:
-    branches:
-      - "main"
-    pull_request:
-      - "main"
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 # on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-
+  # push:
+  #   branches:
+  #     - "latest"
+  #   pull_request:
+  #     - "main"
+  
 jobs:
   build:
     runs-on: ubuntu-latest
