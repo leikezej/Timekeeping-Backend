@@ -195,3 +195,6 @@
 20221003	01:59:02	3b573ae7-0744-49df-93e7-602e317e2a09	GET	http://localhost:3000	/api/user/timein
 20221003	01:59:02	93e76ba0-0cf8-4175-8370-6ce5882a4a0f	GET	http://localhost:3000	/api/user/timeout
 20221003	01:59:02	69e8f638-c0c9-436d-a975-2e7881f1ad2a	GET	http://localhost:3000	/api/auth/users
+20221004	15:59:00	ff6bff95-dc9f-4ec2-837c-5e1d0ede936b	GET	undefined	/api/auth/users
+20221004	15:59:39	fc5cebcd-7fc8-4a42-a3dc-d6179a7b169a	POST	undefined	/api/auth/signin
+20221004	15:59:47	f629d55f-a9de-442a-b66d-0a77dee8b5b5	POST	undefined	/api/auth/signin
