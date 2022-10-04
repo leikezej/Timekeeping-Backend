@@ -48,3 +48,7 @@
 20221004	19:01:33	fa652ded-a394-48d3-9b7a-5eb208e0f53b	POST	undefined	/api/auth/signin
 20221004	19:01:41	d462cdb5-f543-4841-8214-043a853a7902	POST	undefined	/api/auth/signin
 20221004	19:01:53	34575e15-929b-4247-9b4f-ac9d3aa4abd2	POST	undefined	/api/auth/signin
+20221004	19:08:44	8207cdfc-bad5-442e-8771-ffbcd16d3779	POST	undefined	/api/auth/signin
+20221004	19:13:35	1fecdd16-bd2f-423c-8117-be740d7179f4	GET	undefined	/api/auth/users
+20221004	19:13:44	48749703-dc9b-4827-a6ec-737a1d4c7c84	GET	undefined	/api/auth/users
+20221004	19:14:02	7ac05ef6-cb8f-41de-8f53-6fa10586a82e	GET	undefined	/api/auth/users

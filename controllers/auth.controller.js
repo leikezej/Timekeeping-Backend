@@ -137,6 +137,16 @@ exports.signout = async (req, res) => {
     res.sendStatus(204);
 };
 
+// LOGOUT USER
+exports.logout = async (req, res) => {
+    try {
+        res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
+        return res.json({msg: "Logged out."})
+    } catch (err) {
+        return res.status(500).json({msg: err.message})
+    }
+},
+
 // user refresh token
 exports.refreshToken = async (req, res) => {
   const { refreshToken: requestToken } = req.body;

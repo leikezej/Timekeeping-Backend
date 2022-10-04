@@ -11,17 +11,12 @@ module.exports = function(app) {
     next();
   });
   
-  
-  
-      // app.get("/api/auth/users", controller.getAllRecords);
-      // app.get("/api/auth/user/:id", controller.findOne);
+      app.get("/api/auth/users", controller.findAll);
+      app.get("/api/auth/user/:id", controller.findOne);
       // app.get("/api/auth/user/:email", controller.findEmail);
-      // app.put("/api/auth/user/:id", controller.update);
-      // app.delete("/api/auth/user/:id", controller.delete);
-      // app.delete("/api/auth/users", controller.deleteAll);
-  
-  
-  
+      app.put("/api/auth/user/:id", controller.update);
+      app.delete("/api/auth/user/:id", controller.delete);
+      app.delete("/api/auth/users", controller.deleteAll);
   
   
 
