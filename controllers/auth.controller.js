@@ -1,7 +1,7 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const Op = db.Sequelize.Op;
-const { user: User, role: Role, refreshToken: RefreshToken } = db;
+const { user: User, roles: Role, refreshToken: RefreshToken } = db;
 const { v4: uuidv4 } = require("uuid");
 const nodemailer = require('nodemailer');
 
@@ -10,10 +10,10 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 // LOG USER 
-exports.loggedUser =  (req, res) => {
-    res.end("Your IP address is " + ip.address());
-    res.send({ "user": req.users })
-}
+// exports.loggedUser =  (req, res) => {
+//     res.end("Your IP address is " + ip.address());
+//     res.send({ "user": req.users })
+// }
 
 // REGISTER USER
 exports.signup = (req, res) => {
@@ -34,12 +34,11 @@ exports.signup = (req, res) => {
         }).then(roles => {
           user.setRoles(roles).then(() => {
             res.send({ message: 'User was registered with' + '${roles} '});
-            // res.end("Your IP address is " + ip.address());
           });
         });
       } else {
         // user role = 1
-        user.setRoles([1]).then(() => {
+        user.setRoles([0420]).then(() => {
           res.send({ message: "User was registered successfully!" });
         });
       }
@@ -59,18 +58,18 @@ exports.signin = async (req, res) => {
     });
     if (!user) {
       return res.status(404).send({ status: "failed", message: "User Not found." });
+      console.log('status')
     }
     const passwordIsValid = bcrypt.compareSync(
       req.body.password,
       user.password
-    );
-    
-    if (!passwordIsValid) {
-      return res.status(401).send({
+      );
+      
+      if (!passwordIsValid) {
+        return res.status(401).send({
         status: "failed",
         message: "Invalid Password!",
-        userIP: "ip",
-        userIPs: ip.address()
+        // userIPs: ip.address()
       });
     }
     const token = jwt.sign({ id: user.id }, config.secret, {
@@ -87,6 +86,7 @@ exports.signin = async (req, res) => {
 
     req.session.token = token;
       return res.status(200).send({
+        status: OK,
         id: user.id,
         name: user.name,
         email: user.email,
@@ -94,7 +94,7 @@ exports.signin = async (req, res) => {
         role: authorities,
         accessToken: token,
         refreshToken: refreshToken,
-        userIp: getUserIp,
+        // userIp: getUserIp,
         expiryDate: config.jwtExpiration,
     });
 
@@ -136,10 +136,10 @@ exports.refreshToken = async (req, res) => {
     });
 
     return res.status(200).json({
-      expiryDate: config.jwtExpiration,
-      userIp: getUserIp,
+      // userIp: getUserIp,
       accessToken: newAccessToken,
       refreshToken: refreshToken.token,
+      expiryDate: config.jwtExpiration,
     });
     
   } catch (err) {

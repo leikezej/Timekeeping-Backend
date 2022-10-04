@@ -8,9 +8,9 @@ const ip = require('ip');
 
 
 // GET IP
-exports.getIp = (req, res) => {
-  res.end("Your IP address is " + ip.address());
-}
+// exports.getIp = (req, res) => {
+//   res.end("Your IP address is " + ip.address());
+// }
 
 // GET ALL RECORDS
 exports.getAllRecords = async (req, res) => {
@@ -141,50 +141,6 @@ exports.deleteAll = (req, res) => {
             err.message || "Some error occurred while removing all Users."
         });
       });
-};
-
-
-// UPLOAD PROFILE
-exports.uploadProfile = async (req, res, next) => {
-  try {
-    const id = req.params.id;
-    const user = await User.findByPk(id);
-  
-    if (!user) {
-      return res.status(404).json({ message: "Resource not found" });
-    }
-    const profile = req.files.profile;
-    const fileSize = profile.size / 1000;
-    const fileExt = profile.name.split(".")[1];
-    if (fileSize > 500) {
-      return res
-        .status(400)
-        .json({ message: "file size must be lower than 500kb" });
-    }
-
-    if (!["jpg", "png"].includes(fileExt)) {
-      return res
-        .status(400)
-        .json({ message: "file extension must be jpg or png" });
-    }
-
-    const fileName = `${req.params.id}${path.extname(profile.name)}`;
-    profile.mv(`/uploads/${fileName}`, async (err) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).send(err);
-      }
-      await User.findByIdAndUpdate(req.params.id, { profile: fileName });
-      res.status(200).json({
-        data: {
-          file: `${req.protocol}://${req.get("host")}/${fileName}`,
-        },
-      });
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
 };
 
 // ACTIVATE EMAIL

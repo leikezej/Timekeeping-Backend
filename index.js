@@ -52,11 +52,11 @@ app.use(
 );
 
 // GET USER IP ADDRESS
-app.get("/",function(req,res){
-    res.end("Your IP address is " + ip.address());
-      console.log(ip)
-      console.log(res.ip)
-})
+// app.get("/",function(req,res){
+//     res.end("Your IP address is " + ip.address());
+//       console.log(ip)
+//       console.log(res.ip)
+// })
 
  db.sequelize.sync();
 //  db.sequelize.sync({force: true}).then(() => {

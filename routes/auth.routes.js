@@ -16,19 +16,18 @@ module.exports = function(app) {
     [
       verifySignUp.checkDuplicateNameOrEmail,
       verifySignUp.checkRolesExisted,
-      userLogger.getUserIp
     ],
     controller.signup
   );
   
   app.post("/api/auth/signin", 
-      [
-        userLogger.getUserIp,
-        userLogger.getLoggedUser
-      ],
+      // [
+      //   userLogger.getUserIp,
+      //   userLogger.getLoggedUser
+      // ],
   controller.signin);
   
-  app.get("/api/auth/loggedUser", controller.loggedUser);
+  // app.get("/api/auth/loggedUser", controller.loggedUser);
   
   app.post("/api/auth/signout", controller.signout);
   app.post("/api/auth/logout", controller.logout);

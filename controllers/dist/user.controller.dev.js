@@ -17,9 +17,9 @@ var fileUpload = require("express-fileupload");
 var ip = require('ip'); // GET IP
 
 
-exports.getIp = function (req, res) {
-  res.end("Your IP address is " + ip.address());
-}; // GET ALL RECORDS
+// exports.getIp = function (req, res) {
+  // res.end("Your IP address is " + ip.address());
+// }; // GET ALL RECORDS
 
 
 exports.getAllRecords = function _callee(req, res) {

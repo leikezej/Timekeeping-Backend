@@ -13,16 +13,13 @@ module.exports = function(app) {
 
        app.get("/api/test/all", controller.allAccess);
 
-      app.use('/loggeduser', checkUserAuth);
+      // app.use('/loggeduser', checkUserAuth);
       
-      app.get('/getIp', controller.getIp);
+      // app.get('/getIp', controller.getIp);
 
       // app.use("/changepassword", checkUserAuth);
       // app.post("/changepassword", controller.changeUserPassword);
 
-      // app.post("/send-reset-password-email", controller.sendUserPasswordResetEmail);
-      // app.post("/reset-password/:id/:token", controller.userPasswordReset);
-      // app.put("/api/auth/user/change-password/:id", controller.change);
 
       app.get("/api/auth/users", controller.getAllRecords);
       app.get("/api/auth/user/:id", controller.findOne);
