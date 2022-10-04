@@ -9,6 +9,7 @@ const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+// REGISTER USER
 exports.signup = (req, res) => {
   // Save User to Database
   User.create({
@@ -42,6 +43,7 @@ exports.signup = (req, res) => {
     });
 };
 
+// LOGIN USER
 exports.signin = (req, res) => {
   User.findOne({
     where: {
@@ -92,7 +94,19 @@ exports.signin = (req, res) => {
     });
 };
 
+// SIGNOUT USER
+exports.signout = async (req, res) => {
+  try {
+    req.session = null;
+    return res.status(200).send({
+      message: "You've been signed out!"
+    });
+  } catch (err) {
+    this.next(err);
+  }
+};
 
+// user refresh token
 exports.refreshToken = async (req, res) => {
   const { refreshToken: requestToken } = req.body;
 
