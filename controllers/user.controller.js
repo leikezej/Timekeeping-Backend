@@ -1,16 +1,9 @@
 const db = require("../models");
 const config = require("../config/auth.config");
-const transporter = require("../config/email.config");
 const Op = db.Sequelize.Op;
 const { user: User, role: Role, roles: Roles, refreshToken: RefreshToken } = db;
-const fileUpload = require("express-fileupload");
-const ip = require('ip');
 
 
-// GET IP
-// exports.getIp = (req, res) => {
-//   res.end("Your IP address is " + ip.address());
-// }
 
 // GET ALL RECORDS
 exports.getAllRecords = async (req, res) => {

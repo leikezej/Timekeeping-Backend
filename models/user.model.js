@@ -1,36 +1,18 @@
-module.exports = (sequelize, Sequelize, DataTypes) => {
-   const User = sequelize.define("user", {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      // type: DataTypes.UUID,
-      // defaultValue: Sequelize.UUIDV4,
-     },
-     name: {
-       type: Sequelize.STRING,
-        allowNull: false,
-     },
-     email: {
-      allowNull: false,
-       type: Sequelize.STRING,
-       unique: true
-     },
-    phone: {
-      allowNull: false,
+module.exports = (sequelize, Sequelize) => {
+  const User = sequelize.define("users", {
+    name: {
       type: Sequelize.STRING
     },
-    // avatar: {
-    //   // allowNull: false,
-    //   type: Sequelize.STRING
-    // },
-    // otp: {
-    //   type: Sequelize.INTEGER
-    // },
-     password: {
-      allowNull: false,
+    email: {
       type: Sequelize.STRING
-     }
-   });
-   return User;
- };
+    },
+    phone: {
+      type: Sequelize.STRING
+    },
+    password: {
+      type: Sequelize.STRING
+    }
+  });
+
+  return User;
+};
