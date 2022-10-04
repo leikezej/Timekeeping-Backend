@@ -30,6 +30,7 @@ exports.getAllRecords = async (req, res) => {
     });
 };
 
+
 // LOGOUT USER
 exports.logout = async (req, res) => {
     try {

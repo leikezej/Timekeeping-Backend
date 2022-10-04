@@ -96,7 +96,7 @@ exports.signin = async (req, res) => {
         refreshToken: refreshToken,
         // userIp: getUserIp,
         // userIPs: ip.address(),
-        expiryDate: config.jwtExpiration,
+        // expiryDate: config.jwtExpiration,
     });
 
   } catch (error) {
