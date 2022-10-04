@@ -74,3 +74,8 @@
 20221004	19:21:41	923dcbb3-1e88-478b-b2d7-ffafc71030bf	POST	undefined	/api/auth/logout
 20221004	19:22:54	af8040ce-6af3-4395-8642-e2068675474e	POST	undefined	/api/auth/signout
 20221004	19:23:06	54c77e6d-9977-4c6f-a7ac-edfc10d33c48	POST	undefined	/api/auth/logout
+20221004	19:32:40	a8108ac1-d06d-40a3-b3bd-504b4d37f26e	POST	undefined	/api/user/timein
+20221004	19:32:58	d01ed5c8-dfa4-4f1f-bbde-2672db7ec1ce	POST	undefined	/api/user/timein
+20221004	19:33:00	e6a4fd47-2eed-423f-9126-f4eeb14a19d9	GET	undefined	/api/user/timein
+20221004	19:33:07	900185cf-d59e-4474-a5a8-103d13b77e8e	GET	undefined	/api/user/timein/2
+20221004	19:33:10	d4db49c1-acc6-4551-ba36-462f86efc8c2	DELETE	undefined	/api/user/timein/2
