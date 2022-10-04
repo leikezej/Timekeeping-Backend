@@ -106,17 +106,21 @@ exports.signin = (req, res) => {
     });
 };
 
-// SIGNOUT USER
-exports.signout = async (req, res) => {
-  try {
-    req.session = null;
-    res.clearCookie('accessToken');
-    return res.status(200).send({
-      message: "You've been signed out!"
-    });
+// LOGOUT USER
+exports.logout = async (req, res) => {
+    try {
+    // res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
+      req.session = null;
+      res.clearCookie('refreshtoken', 'accessToken')
+      return res.json({message: "Successfully Logged out."})
   } catch (err) {
+      return res.status(500).json({msg: err.message})
     this.next(err);
   }
+},
+
+// SIGNOUT USER
+exports.signout = async (req, res) => {
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(204); //No content
     const refreshToken = cookies.jwt;
@@ -136,16 +140,6 @@ exports.signout = async (req, res) => {
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
     res.sendStatus(204);
 };
-
-// LOGOUT USER
-exports.logout = async (req, res) => {
-    try {
-        res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
-        return res.json({msg: "Logged out."})
-    } catch (err) {
-        return res.status(500).json({msg: err.message})
-    }
-},
 
 // user refresh token
 exports.refreshToken = async (req, res) => {
