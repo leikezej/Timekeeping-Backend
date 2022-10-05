@@ -13,17 +13,7 @@ const app = express();
 const db = require("./models");
 const Role = db.role;
 
-<<<<<<< HEAD
 // db.sequelize.sync();
-=======
-// const fileDir = path.join(__dirname, 'files');
-// const tempDir = path.join(__dirname, 'temp');
-const uploadDir = path.join(__dirname, '/assets/uploaders');
-const fs = require('fs');
-global.__basedir = __dirname;
-
-db.sequelize.sync();
->>>>>>> 0c43ee6b160d26ac10f469ec0df8ed61f896ffbe
 // db.sequelize.sync({force: true}).then(() => {
 //   console.log('Drop and Resync Db');
 //   initial();
@@ -32,11 +22,7 @@ db.sequelize.sync();
 
 var corsOptions = {
   // origin: "http://localhost:8081"
-<<<<<<< HEAD
   origin: "*"
-=======
-    origin: '*'
->>>>>>> 0c43ee6b160d26ac10f469ec0df8ed61f896ffbe
 };
 // app.use('/img', express.static('storage'))
 app.use(express.static('public'))
@@ -53,6 +39,7 @@ app.use(
   cookieSession({
     name: process.env.SESSION_COOKIE_NAME,
         // keys: ['key1', 'key2'], 
+    // secret: process.env.SESSION_COOKIE_SECRET,
     secret: process.env.SESSION_COOKIE_SECRET,
     // httpOnly: false,
     httpOnly: true,

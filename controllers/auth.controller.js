@@ -81,6 +81,10 @@ exports.signin = (req, res) => {
           // ok: "NOT OK"
         });
         console.log(401)
+         const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}`};
+      const detailResult= await axios.get(API.base + API.details, {
+      headers:headers});
       }
       
       
