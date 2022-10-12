@@ -33,57 +33,61 @@ db.refreshToken = require("../models/refreshToken.model.js")(sequelize, Sequeliz
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
-  foreignKey: "roleId",
+  foreignKey: "role_id",
   otherKey: "user_id"
 });
 
 db.user.belongsToMany(db.role, {
   through: "user_roles",
-  foreignKey: "userId",
-  otherKey: "user_id"
+  foreignKey: "user_id",
+  otherKey: "role_id"
 });
 
+db.timein.belongsToMany(db.timeout, {
+  through: "time_sheets",
+  foreignKey: "timein_time",
+  otherKey: "timeout_time"
+})
 
-// db.timeout.belongsToMany(db.timein, {
-//   through: "time_table",
-//   foreignKey: "timeout.time",
-//   otherKey: "user_id"
-// })
+db.timeout.belongsToMany(db.timein, {
+  through: "time_sheets",
+  foreignKey: "timeout_time",
+  otherKey: "timein_time"
+})
 
-// db.timein.belongsToMany(db.timeout, {
-//   through: "time_table",
-//   foreignKey: "timein_id",
-//   otherKey: "timeout_id"
-// })
-
-
-// db.timein.belongsToMany(db.timeout, { through: 'Time_Table' });
-// db.timeout.belongsToMany(db.timein, { through: 'Time_Table' });
-
-// db.timeout.belongsTo(db.timein, {
-//   foreignKey: 'start_time', targetKey: 'time'
+// db.timeSheet.belongsTo(db.user,  {
+//   foreignKey: 'user_id', targetKey:'id'
 // });
-
-// db.timein.hasOne(db.timeout, {
-//   foreignKey: 'end_time', targetKey: 'time'
+// db.user.hasOne(db.timeSheet, {
+//   foreignKey: 'user_id', targetKey: 'id'
 // });
-
-// db.timesheet.hasOne(db.timein, {
-//    foreignKey: 'timeId', targetKey: 'time'
-// })
-
-// db.timesheet.hasOne(db.timeout, {
-//    foreignKey: 'timeId', targetKey: 'time'
-// })
 
 db.refreshToken.belongsTo(db.user, {
-  foreignKey: 'userId', targetKey: 'id'
+  foreignKey: 'user_id', targetKey: 'id'
 });
-
 db.user.hasOne(db.refreshToken, {
-  foreignKey: 'userId', targetKey: 'id'
+  foreignKey: 'user_id', targetKey: 'id'
 });
 
 db.ROLES = ["user", "admin", "moderator"];
 
 module.exports = db;
+
+  // users.associate = function (models) {
+  //   users.belongsToMany(models.roles, {
+  //     through: "user_roles",
+  //     foreignKey: "userId",
+  //     otherKey: "roleId"    
+  //   });
+
+
+  //   users.belongsToMany(models.phones, {
+  //     through: "user_phones",
+  //     foreignKey: "userId",
+  //     otherKey: "phoneId",
+  //     constraints: false   
+  //   });
+
+  //   users.belongsTo(models.businesses, {
+  //     foreignKey: 'businessId', as: "business"
+  //   });

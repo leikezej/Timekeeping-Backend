@@ -33,7 +33,7 @@ exports.signup = (req, res) => {
         });
       } else {
         // user role = 1 admin, 3 moderator
-        user.setRoles([2]).then(() => {
+        user.setRoles([222]).then(() => {
           res.send({ message: "User registered successfully!" });
         });
       }
@@ -113,7 +113,7 @@ exports.signin = (req, res) => {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: authorities,
+          roles: authorities,
           accessToken: token,
           refreshToken: refreshToken,
           expiryDate: config.jwtExpiration,

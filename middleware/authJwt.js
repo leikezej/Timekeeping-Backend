@@ -31,13 +31,13 @@ verifyToken = (req, res, next) => {
     if (err) {
       return catchError(err, res);
     }
-    req.userId = decoded.id;
+    req.user_id = decoded.id;
     next();
   });
 };
 
 isAdmin = (req, res, next) => {
-  User.findByPk(req.userId).then(user => {
+  User.findByPk(req.user_id).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === "admin") {
@@ -55,7 +55,7 @@ isAdmin = (req, res, next) => {
 };
 
 isModerator = (req, res, next) => {
-  User.findByPk(req.userId).then(user => {
+  User.findByPk(req.user_id).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === "moderator") {
@@ -72,7 +72,7 @@ isModerator = (req, res, next) => {
 };
 
 isModeratorOrAdmin = (req, res, next) => {
-  User.findByPk(req.userId).then(user => {
+  User.findByPk(req.user_id).then(user => {
     user.getRoles().then(roles => {
       for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === "moderator") {
