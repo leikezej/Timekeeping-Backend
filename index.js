@@ -5,10 +5,11 @@ const cors = require("cors");
 const { logger } = require('./middleware/logEvents');
 const morgan = require('morgan');
 const cookieSession = require("cookie-session");
+const session = require('express-session');
 const jepskiUploader = require('express-fileupload');
 const path = require('path');
-const util = require("util");
 const app = express();
+const mysqlStore = require('express-mysql-session')(session);
 
 const fs = require('fs');
 global.__basedir = __dirname;
@@ -17,8 +18,8 @@ global.__basedir = __dirname;
 const db = require("./models");
 const Role = db.role;
 
-// db.sequelize.sync();
-// db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync();
+//   db.sequelize.sync({force: true}).then(() => {
 //   console.log('Drop and Resync Db');
 //   initial();
 // });
@@ -28,8 +29,7 @@ var corsOptions = {
   // origin: "http://localhost:8081"
   origin: "*"
 };
-// app.use('/img', express.static('storage'))
-// app.use(express.static('public'))
+const  sessionStore = new mysqlStore((db));
 app.use(jepskiUploader({
   createParentPath: false
 }));
@@ -52,6 +52,20 @@ app.use(
     cookie: { maxAge: 60000 }
   })
 );
+
+app.use(session({
+    name: process.env.SESSION_NAME,
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+        // maxAge: TWO_HOURS,
+        sameSite: true,
+        // secure: IN_PROD
+    }
+}))
+
 
 app.post('/upload-avatar', async (req, res, next) => {
     const files = req.files
@@ -114,6 +128,7 @@ require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/timein.routes')(app);
 require('./routes/timeout.routes')(app);
+require('./routes/timesheet.routes')(app);
 require('./routes/upload.routes')(app);
 
 const PORT = process.env.PORT || 0420;

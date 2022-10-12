@@ -113,7 +113,7 @@ exports.signin = (req, res) => {
           id: user.id,
           name: user.name,
           email: user.email,
-          roles: authorities,
+          role: authorities,
           accessToken: token,
           refreshToken: refreshToken,
           expiryDate: config.jwtExpiration,

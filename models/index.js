@@ -28,23 +28,57 @@ db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.timein = require("../models/timein.model.js")(sequelize, Sequelize);
 db.timeout = require("../models/timeout.model.js")(sequelize, Sequelize);
+db.timeSheet = require("./timesheet.model.js")(sequelize, Sequelize);
 db.refreshToken = require("../models/refreshToken.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
-  otherKey: "userId"
+  otherKey: "user_id"
 });
 
 db.user.belongsToMany(db.role, {
   through: "user_roles",
   foreignKey: "userId",
-  otherKey: "roleId"
+  otherKey: "user_id"
 });
+
+// db.timeout.belongsToMany(db.timein, {
+//   through: "timesheet",
+//   foreignKey: "timeout_id",
+//   otherKey: "timein_id"
+// })
+
+// db.timein.belongsToMany(db.timeout, {
+//   through: "timesheet",
+//   foreignKey: "timein_id",
+//   otherKey: "timeout_id"
+// })
+
+
+// db.timein.belongsToMany(db.timeout, { through: 'Time_Table' });
+// db.timeout.belongsToMany(db.timein, { through: 'Time_Table' });
+
+// db.timeout.belongsTo(db.timein, {
+//   foreignKey: 'start_time', targetKey: 'time'
+// });
+
+// db.timein.hasOne(db.timeout, {
+//   foreignKey: 'end_time', targetKey: 'time'
+// });
+
+// db.timesheet.hasOne(db.timein, {
+//    foreignKey: 'timeId', targetKey: 'time'
+// })
+
+// db.timesheet.hasOne(db.timeout, {
+//    foreignKey: 'timeId', targetKey: 'time'
+// })
 
 db.refreshToken.belongsTo(db.user, {
   foreignKey: 'userId', targetKey: 'id'
 });
+
 db.user.hasOne(db.refreshToken, {
   foreignKey: 'userId', targetKey: 'id'
 });

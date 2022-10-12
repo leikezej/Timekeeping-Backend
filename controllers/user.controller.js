@@ -2,8 +2,8 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const { user: User, roles: Roles, refreshToken: RefreshToken } = db;
 
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
+// var jwt = require("jsonwebtoken");
+// var bcrypt = require("bcryptjs");
 
 // GET ALL USERS
 exports.findAll = (req, res) => {
