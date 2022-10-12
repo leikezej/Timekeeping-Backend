@@ -6,9 +6,9 @@ const { user: User, role: Role, timeSheet: TimeSheet } = db;
 exports.new = (req, res) => {
   const timeSheet = {
     name: req.body.name,
-    start_time: req.body.start_time,
-    end_time: req.body.end_time,
-    total_time: req.body.total_time
+    time_start: req.body.time_start,
+    time_end: req.body.time_end,
+    time_total: req.body.time_total
   };
   TimeSheet.create(timeSheet)
     .then(data => {

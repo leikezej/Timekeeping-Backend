@@ -43,14 +43,15 @@ db.user.belongsToMany(db.role, {
   otherKey: "user_id"
 });
 
+
 // db.timeout.belongsToMany(db.timein, {
-//   through: "timesheet",
-//   foreignKey: "timeout_id",
-//   otherKey: "timein_id"
+//   through: "time_table",
+//   foreignKey: "timeout.time",
+//   otherKey: "user_id"
 // })
 
 // db.timein.belongsToMany(db.timeout, {
-//   through: "timesheet",
+//   through: "time_table",
 //   foreignKey: "timein_id",
 //   otherKey: "timeout_id"
 // })
