@@ -3,11 +3,11 @@ const config = require("../config/auth.config");
 
 const { user: User, role: Role, refreshToken: RefreshToken } = db;
 
-
 const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const { user } = require("../models");
 
 // REGISTER USER
 exports.signup = (req, res) => {
@@ -62,7 +62,6 @@ exports.signin = (req, res) => {
       
       const token = jwt.sign({ id: user.id }, config.secret, {
         expiresIn: config.jwtExpiration
-              // expiresIn: 86400, // 24 hours
       });
 
       const passwordIsValid = bcrypt.compareSync(
@@ -78,13 +77,7 @@ exports.signin = (req, res) => {
           status: "Status 401",
           message: "Invalid Password!",
           error: "Error Password Incorrect",
-          // ok: "NOT OK"
         });
-        console.log(401)
-         const token = localStorage.getItem('token');
-      const headers = { Authorization: `Bearer ${token}`};
-      const detailResult= await axios.get(API.base + API.details, {
-      headers:headers});
       }
       
       
@@ -162,7 +155,7 @@ exports.signout = async (req, res) => {
 };
 
 // user refresh token
-exports.refreshToken = async (req, res) => {
+exports.refreshToken = async (req, res) => {  
   const { refreshToken: requestToken } = req.body;
 
   if (requestToken == null) {
@@ -203,3 +196,69 @@ exports.refreshToken = async (req, res) => {
   }
 };
 
+exports.forgotPassword = async (req, res, next) => {
+  let user = {
+    id: '2',
+    email: 'jezedevkiel21@gmail.com',
+    password: "123123123"
+  }
+  const {email} = req.body;
+  
+  const secret = process.env.JWT_SECRET + user.password
+  
+  const payload = {
+    email: user.email,
+    id: user.id
+  }
+  
+  const token = jwt.sign(payload, secret, {expiresIn: '15m'});
+  const link = `http://localhost:272/api/auth/resets-password/${user.id}/${token}`;
+  console.log(link);
+     res.status(200).send({ 
+        message: 'Password reset link has been sent to your Email', 
+        resetlink: link });
+};
+
+
+exports.resetsPassword = async (req, res, next) => {
+  const { id, token } = req.params;
+  User.findByPk(id)
+  
+  if (id !== user.id) {
+     res.status(200).send({ message: "NICE!" });
+    return
+  }
+
+  const secret = process.env.JWT_SECRET + user.password;
+  try {
+    const payload  = jwt.verify(token, secret)
+    res.render('reset-password', {email: user.email})
+  } catch (error) {
+    console.log(error.message);
+    res.send(error.message);
+  }
+};
+
+exports.resetPassword = async (req, res, next) => {
+  const { id, token } = req.params;
+  const {password, passwordConfirm} = req.body;
+
+  if (id !== user.id) {
+    // res.send('Invalid id...');
+    res.send('Password Resetted');
+    return;
+  }
+  
+  const secret = process.env.JWT_SECRET + user.password
+  
+  try {
+    const payload = jwt.verify(token, secret)
+    
+    user.password = password
+    res.send(user)
+    
+  } catch (error) {
+    console.log(error.message);
+    res.send(error.message);
+  }
+};

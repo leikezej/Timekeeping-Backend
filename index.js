@@ -43,9 +43,7 @@ app.use(
   cookieSession({
     name: process.env.SESSION_COOKIE_NAME,
         // keys: ['key1', 'key2'], 
-    // secret: process.env.SESSION_COOKIE_SECRET,
     secret: process.env.SESSION_COOKIE_SECRET,
-    // httpOnly: false,
     httpOnly: true,
     resave: false,
     saveUninitialized: true,
@@ -128,7 +126,7 @@ require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/timein.routes')(app);
 require('./routes/timeout.routes')(app);
-require('./routes/timesheet.routes')(app);
+// require('./routes/timesheet.routes')(app);
 require('./routes/upload.routes')(app);
 
 const PORT = process.env.PORT || 0420;
