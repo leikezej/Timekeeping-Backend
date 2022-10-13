@@ -4,6 +4,28 @@ baseUrl = "http://localhost:272/api/user/files";
 const path = require('path');
 
 const upload = (req, res) => {
+    const files = req.files
+        // console.log(files)
+    Object.keys(files).forEach(key => {
+    const filepath = path.join(__dirname, '/assets/avatar', files[key].name)
+        files[key].mv(filepath, (err) => {
+            if (err) 
+         return res.status(500).send(err);
+                res.send({
+          status: true,
+          message: 'File Uploaded to' + filepath,
+          data: {
+              name: req.files.name,
+              mimetype: req.files.mimetype,
+              size: req.files.size
+          }
+      });
+        })
+    })
+};
+
+// kelangan anay ig declare it base filename ht file hn "uploadedFile" para makarawat it pag upload
+const uploader = (req, res) => {
   let uploadedFile;
   let uploadPath;
 
@@ -13,11 +35,9 @@ const upload = (req, res) => {
       message: 'No File Uploaded'
     });
   }
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
   uploadedFile = req.files.uploadedFile;
-  uploadPath = __dirname + '/assets/uploads/' + uploadedFile.name;
+  uploadPath = __dirname + '/assets/avatar/' + uploadedFile.name;
 
-  // Use the mv() method to place the file somewhere on your server
   uploadedFile.mv(uploadPath, function(err) {
     if (err)
       return res.status(500).send(err);
@@ -34,25 +54,23 @@ const upload = (req, res) => {
   });
 };
 
-const uploader = (req, res) => {
-        console.log(files)
-    Object.keys(files).forEach(key => {
-    const filepath = path.join(__dirname, '/assets/uploads', files[key].name)
-        files[key].mv(filepath, (err) => {
-            if (err) 
-         return res.status(500).send(err);
-                res.send({
-          status: true,
-          message: 'File Uploaded to' + filepath,
-          data: {
-              name: req.files.name,
-              mimetype: req.files.mimetype,
-              size: req.files.size
-          }
-      });
-        })
+const userUpload = (req, res) => {
+    const files = req.files
+
+  if (!req.file) {
+    console.log("No file upload");
+} 
+else {
+    console.log(req.file.filename)
+    var imgsrc = 'https://i.scdn.co/image/ab6761610000e5eba00b11c129b27a88fc72f36b' + req.file.filename
+    var insertData = "INSERT INTO files VALUES(?)"
+    db.query(insertData, [imgsrc], (err, result) => {
+        if (err) throw err
+        console.log("file uploaded")
     })
+  }
 };
+
 
 const getListFiles = (req, res) => {
   const directoryPath = __basedir + "/assets/uploads";
@@ -106,6 +124,7 @@ const remove = (req, res) => {
 module.exports = {
   upload,
   uploader,
+  userUpload,
   getListFiles,
   download,
   remove

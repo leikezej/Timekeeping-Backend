@@ -125,11 +125,10 @@ app.post('/api/user/uploader', function(req, res) {
       message: 'No File Uploaded'
     });
   }
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+
   uploadedFile = req.files.uploadedFile;
   uploadPath = __dirname + '/assets/uploads/' + uploadedFile.name;
 
-  // Use the mv() method to place the file somewhere on your server
   uploadedFile.mv(uploadPath, function(err) {
     if (err)
       return res.status(500).send(err);

@@ -26,6 +26,7 @@ db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
+db.file = require("../models/file.model.js")(sequelize, Sequelize);
 db.timein = require("../models/timein.model.js")(sequelize, Sequelize);
 db.timeout = require("../models/timeout.model.js")(sequelize, Sequelize);
 db.timesheet = require("./timesheet.model.js")(sequelize, Sequelize);

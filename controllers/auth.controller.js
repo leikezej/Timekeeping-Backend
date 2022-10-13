@@ -14,6 +14,7 @@ exports.signup = (req, res) => {
   // Save User to Database
   User.create({
     name: req.body.name,
+    avatar: req.body.avatar,
     email: req.body.email,
     phone: req.body.phone,
     password: bcrypt.hashSync(req.body.password, 8)
@@ -222,7 +223,6 @@ exports.forgotPassword = async (req, res, next) => {
         message: 'Password reset link has been sent to your Email', 
         resetlink: link });
 };
-
 
 exports.resetsPassword = async (req, res, next) => {
   const { id, token } = req.params;
