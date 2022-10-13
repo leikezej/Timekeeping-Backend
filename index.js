@@ -7,12 +7,13 @@ const morgan = require('morgan');
 const cookieSession = require("cookie-session");
 const session = require('express-session');
 const jepskiUploader = require('express-fileupload');
+const multer = require("multer");
+
 const path = require('path');
 const app = express();
 const mysqlStore = require('express-mysql-session')(session);
 
 global.__basedir = __dirname;
-
 
 const db = require("./models");
 const Role = db.role;
@@ -29,6 +30,30 @@ var corsOptions = {
 };
 
 const  sessionStore = new mysqlStore((db));
+
+const fileStorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, "./assets/avatars");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "--" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: fileStorageEngine });
+
+// SINGLE FILE UPLOAD
+app.post("/api/user/single-upload", upload.single("image"),(req, res) => {
+  console.log(req.file);
+  res.send("Single File Uploaded Successfully!");
+});
+
+// MULTIPLE FILE UPLOAD
+app.post("/api/user/multiple-upload", upload.array("images", 5),
+  (req, res) => { 
+    console.log(req.files);
+    res.send("Multiple Files Upload Success!");
+});
 
 app.use(jepskiUploader({
   createParentPath: true

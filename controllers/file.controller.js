@@ -3,6 +3,19 @@ const fs = require('fs');
 baseUrl = "http://localhost:272/api/user/files";
 const path = require('path');
 
+const db = require("../config/db.config");
+const User = db.User;
+
+const singleUpload = (req, res) => {
+  console.log(req.file);
+  res.send("Single File Uploaded Successfully!");
+};
+
+const multipleUpload = (req, res) => {
+    console.log(req.files);
+    res.send("Multiple Files Upload Success!");
+};
+
 const upload = (req, res) => {
     const files = req.files
         // console.log(files)
@@ -54,23 +67,32 @@ const uploader = (req, res) => {
   });
 };
 
-const userUpload = (req, res) => {
-    const files = req.files
-
-  if (!req.file) {
-    console.log("No file upload");
-} 
-else {
-    console.log(req.file.filename)
-    var imgsrc = 'https://i.scdn.co/image/ab6761610000e5eba00b11c129b27a88fc72f36b' + req.file.filename
-    var insertData = "INSERT INTO files VALUES(?)"
-    db.query(insertData, [imgsrc], (err, result) => {
-        if (err) throw err
-        console.log("file uploaded")
-    })
+const userUpload = async (req, res) => {
+    try {
+    console.log(req.file);
+    if (req.file == undefined) {
+      return res.send(`You must select a file.`);
+    }
+    Image.create({
+      type: req.file.mimetype,
+      name: req.file.originalname,
+      data: fs.readFileSync(
+        __basedir + "/assets/uploads/" + req.file.filename
+      ),
+    }).then((image) => {
+      fs.writeFileSync(
+        __basedir + "/assets/tmp/" + image.name,
+        image.data
+      );
+     return res.status(200).send('SUCCESS');
+      return res.send(`File has been uploaded.`);
+    });
+  } catch (error) {
+    console.log(error);
+     return res.status(500).send('No files were uploaded.');
+    return res.send(`Error when trying upload images: ${error}`);
   }
 };
-
 
 const getListFiles = (req, res) => {
   const directoryPath = __basedir + "/assets/uploads";
@@ -124,6 +146,8 @@ const remove = (req, res) => {
 module.exports = {
   upload,
   uploader,
+  singleUpload,
+  multipleUpload,
   userUpload,
   getListFiles,
   download,

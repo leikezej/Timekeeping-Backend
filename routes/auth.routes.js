@@ -1,5 +1,19 @@
 const { verifySignUp } = require("../middleware");
 const controller = require("../controllers/auth.controller");
+const multer = require("multer");
+const path = require("path");
+
+
+const storage = multer.diskStorage({
+  destination: './src/image/',
+  filename: (req, file, cb) => {
+    return cb(null, `${file.filename}_${Date.now()}${path.extname(file.originalname)}`)
+  }
+})
+
+const upload = multer({
+  storage : storage
+})
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -17,6 +31,7 @@ module.exports = function(app) {
       verifySignUp.checkDuplicateUsernameOrEmail,
       verifySignUp.checkRolesExisted
     ],
+    upload.single('image'),
     controller.signup
   );
 

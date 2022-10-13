@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
     name: {
       type: Sequelize.STRING
     },
-    avatar: {
+    image: {
       type: Sequelize.STRING
     },
     email: {
