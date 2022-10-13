@@ -17,9 +17,7 @@ module.exports = function(app) {
       app.put("/api/auth/user/:id", controller.update);
       app.delete("/api/auth/user/:id", controller.delete);
       app.delete("/api/auth/users", controller.deleteAll);
-  
-  
-
+    
   app.get("/api/test/all", controller.allAccess);
 
   app.get(

@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
-dotenv.config()
+dotenv.config();
+const http = require("http");
 const express = require("express");
 const cors = require("cors");
 const { logger } = require('./middleware/logEvents');
@@ -11,6 +12,9 @@ const path = require('path');
 const app = express();
 const mysqlStore = require('express-mysql-session')(session);
 
+const hostname = process.env.HOSTNAME || '127.0.0.1';
+const port = process.env.PORT || 0420;
+
 const fs = require('fs');
 global.__basedir = __dirname;
 
@@ -18,7 +22,7 @@ global.__basedir = __dirname;
 const db = require("./models");
 const Role = db.role;
 
-// db.sequelize.sync();
+db.sequelize.sync();
 //   db.sequelize.sync({force: true}).then(() => {
 //   console.log('Drop and Resync Db');
 //   initial();
@@ -30,6 +34,29 @@ var corsOptions = {
 };
 
 const  sessionStore = new mysqlStore((db));
+
+app.get("/", (req, res) => {
+  res.send("<h2>It's Working!</h2>");
+});
+
+//if we are here then the specified request is not found
+app.use((req,res,next)=> {
+    const err = new Error("Not Found");
+    err.status = 404;
+    next(err);
+});
+ 
+//all other requests are not implemented.
+app.use((err,req, res, next) => {
+   res.status(err.status || 501);
+   res.json({
+       error: {
+           code: err.status || 501,
+           message: err.message
+       }
+   });
+});
+ 
 
 app.use(jepskiUploader({
   createParentPath: false
@@ -55,20 +82,16 @@ app.use(
 
 app.use(session({
     name: process.env.SESSION_NAME,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     store: sessionStore,
     secret: process.env.SESSION_SECRET,
     cookie: {
-        maxAge: TWO_HOURS,
+        // maxAge: TWO_HOURS,
         sameSite: true,
         // secure: IN_PROD
     }
 }))
-
-app.get("/", (req, res) => {
-  res.send("<h2>It's Working!</h2>");
-});
 
 
 app.post('/upload-avatar', async (req, res, next) => {
@@ -130,9 +153,8 @@ require('./routes/timeout.routes')(app);
 require('./routes/timesheet.routes')(app);
 require('./routes/upload.routes')(app);
 
-const PORT = process.env.PORT || 0420;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
+app.listen(port, hostname, function ()  {
+    console.log(`Server running at http://${hostname}:${port}`);
 });
 
 function initial() {

@@ -4,7 +4,10 @@
   "description": "POST\t/api/auth/signup\tsignup new account\r POST\t/api/auth/signin\tlogin an account\r GET\t/api/test/all\tretrieve public content\r GET\t/api/test/user\taccess User’s content\r GET\t/api/test/admin\taccess Admin’s content",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/* --exit",
+    "test2": "mocha ./test/* --exit",
+    "test": "jest src/app.test.js",
+    "starts": "node src",
+    "start": "node index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [],
@@ -32,6 +35,8 @@
     "sharp": "^0.30.7"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "jest": "^29.1.2",
+    "nodemon": "^2.0.19",
+    "supertest": "^6.3.0"
   }
 }

@@ -1,3 +1,6 @@
+Run npm start and npm test to ensure that everything works as expected.
+
+
 POST	/api/auth/signup	signup new account
 POST	/api/auth/signin	login an account
 GET	/api/test/all	retrieve public content

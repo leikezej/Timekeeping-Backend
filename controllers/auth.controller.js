@@ -72,7 +72,7 @@ exports.signin = (req, res) => {
       if (!passwordIsValid) {
           // res.send(token)
         return res.status(401).send({
-          token: (token),
+          // token: (token),
           // accessToken: null,
           status: "Status 401",
           message: "Invalid Password!",
@@ -123,6 +123,8 @@ exports.signin = (req, res) => {
 exports.logout = async (req, res) => {
     try {
     // res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
+    req.session.destroy();
+    res.redirect("/");
       req.session = null;
       res.clearCookie('refreshtoken', 'accessToken')
       return res.json({message: "Successfully Logged out."})
@@ -134,6 +136,8 @@ exports.logout = async (req, res) => {
 
 // SIGNOUT USER
 exports.signout = async (req, res) => {
+    req.session.destroy();
+    
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(204); //No content
     const refreshToken = cookies.jwt;
