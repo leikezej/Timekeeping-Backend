@@ -23,10 +23,13 @@ let routes = (app) => {
   router.post("/api/user/userUpload", controller.userUpload);
   
   router.post("/api/user/single-upload", upload.single("image"),controller.singleUpload);
+  
   router.post("/api/user/multiple-upload", upload.array("images", 5),controller.multipleUpload);
   
   router.get("/api/user/files", controller.getListFiles);
+  
   router.get("/api/user/files/:name", controller.download);
+  
   router.delete("/api/user/files/:name", controller.remove);
 
   app.use(router);

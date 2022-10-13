@@ -31,30 +31,6 @@ var corsOptions = {
 
 const  sessionStore = new mysqlStore((db));
 
-const fileStorageEngine = multer.diskStorage({
-  destination: (req, file, cb) => {
-      cb(null, "./assets/avatars");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "--" + file.originalname);
-  },
-});
-
-const upload = multer({ storage: fileStorageEngine });
-
-// SINGLE FILE UPLOAD
-app.post("/api/user/single-upload", upload.single("image"),(req, res) => {
-  console.log(req.file);
-  res.send("Single File Uploaded Successfully!");
-});
-
-// MULTIPLE FILE UPLOAD
-app.post("/api/user/multiple-upload", upload.array("images", 5),
-  (req, res) => { 
-    console.log(req.files);
-    res.send("Multiple Files Upload Success!");
-});
-
 app.use(jepskiUploader({
   createParentPath: true
 }));
