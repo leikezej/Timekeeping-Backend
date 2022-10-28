@@ -49,9 +49,12 @@ checkRolesExisted = (req, res, next) => {
   next();
 };
 
-const verifySignUp = {
-  checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail,
-  checkRolesExisted: checkRolesExisted
-};
+// const verifySignUp = {
+//   checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail,
+//   checkRolesExisted: checkRolesExisted
+// };
+const verifySignUp = {};
+  verifySignUp.checkDuplicateUsernameOrEmail = checkDuplicateUsernameOrEmail;
+  verifySignUp.checkRolesExisted = checkRolesExisted;
 
 module.exports = verifySignUp;

@@ -60,10 +60,6 @@ exports.signin = (req, res) => {
         });
         console.log(404)
       }
-      
-      const token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: config.jwtExpiration
-      });
 
       const passwordIsValid = bcrypt.compareSync(
         req.body.password,
@@ -81,6 +77,9 @@ exports.signin = (req, res) => {
         });
       }
       
+      const token = jwt.sign({ id: user.id }, config.secret, {
+        expiresIn: config.jwtExpiration
+      });
       
   if (!user.email==="email" && user.password==="password") {
           res.send(accessToken)
@@ -116,7 +115,9 @@ exports.signin = (req, res) => {
       });
     })
     .catch(err => {
-      res.status(500).send({ message: err.message });
+      res.status(500).send({ message: err.message,
+      // 'Error ->' + err
+      });
     });
 };
 

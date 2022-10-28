@@ -23,12 +23,15 @@ module.exports = function(app) {
   app.get(
     "/api/test/user",
     [authJwt.verifyToken],
-    controller.userBoard
+    controller.userContent
   );
 
   app.get(
-    "/api/test/mod",
-    [authJwt.verifyToken, authJwt.isModerator],
+    // "/api/test/mod",
+    "/api/test/pm",
+    [authJwt.verifyToken, 
+    // authJwt.isModerator],
+    authJwt.isModeratorOrAdmin],
     controller.moderatorBoard
   );
 

@@ -34,7 +34,7 @@ const  sessionStore = new mysqlStore((db));
 app.use(jepskiUploader({
   createParentPath: true
 }));
-
+app.use(express.static('resources'));
 app.use(logger);
 app.use(morgan('dev'));
 app.use(cors(corsOptions));
@@ -76,11 +76,27 @@ require('./routes/timein.routes')(app);
 require('./routes/timeout.routes')(app);
 require('./routes/timesheet.routes')(app);
 require('./routes/upload.routes')(app);
+require('./routes/file.routes')(app);
 
-const PORT = process.env.PORT || 0420;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-});
+// const PORT = process.env.PORT || 0420;
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}.`);
+// });
+
+const server = app.listen(0420, function () {
+ 
+  let host = server.address().address
+  let port = server.address().port
+ 
+  console.log("Backend Server running at http://%s:%s", host, port); 
+})
+
+
+
+
+
+
+
 
 function initial() {
   Role.create({
