@@ -1,6 +1,8 @@
 const { authJwt } = require("../middleware");
 const controller = require("../controllers/user.controller");
+const refreshToken = require("../controllers/refreshToken.controller");
 import { verifyToken } from "../middleware/verifyToken";
+import { refreshToken } from "../middleware/refreshToken";
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -21,6 +23,7 @@ module.exports = function(app) {
       
       
       app.get("/api/auth/v1/users", verifyToken,  controller.getUsers);
+      app.get("/api/auth/v1/token", controller.refreshToken);
   
   
   app.get("/api/test/all", controller.allAccess);
