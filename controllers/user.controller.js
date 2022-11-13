@@ -2,8 +2,8 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const { user: User, roles: Roles, refreshToken: RefreshToken } = db;
 
-// var jwt = require("jsonwebtoken");
-// var bcrypt = require("bcryptjs");
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
 
 // GET ALL USERS
 exports.findAll = (req, res) => {
@@ -20,6 +20,18 @@ exports.findAll = (req, res) => {
       });
     });
 };
+
+// GET USERS
+exports.getUsers = async (req, res) => {
+      try {
+        const users = await Users.findAll({
+            attributes:['id','name','email']
+        });
+        res.json(users);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 // FIND BY ID
 exports.findOne = (req, res) => {
@@ -106,6 +118,26 @@ exports.deleteAll = (req, res) => {
       });
 };
 
+// LOGOUT USER
+// exports.logOut = async (req, res) => {
+//     const refreshToken = req.cookies.refreshToken;
+//     if(!refreshToken) return res.sendStatus(204);
+//     const user = await User.findAll({
+//         where:{
+//             refresh_token: refreshToken
+//         }
+//     });
+//     if(!user[0]) return res.sendStatus(204);
+//     const userId = user[0].id;
+//     await User.update({refresh_token: null},{
+//         where:{
+//             id: userId
+//         }
+//     });
+//     res.clearCookie('refreshToken');
+//     return res.sendStatus(200);
+// }
+
 
 exports.userContent = (req, res) => {
 	User.findOne({
@@ -178,14 +210,6 @@ exports.managementBoard = (req, res) => {
 		});
 	})
 }
-
-
-
-
-
-
-
-
 
 
 

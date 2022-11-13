@@ -1,5 +1,6 @@
 const { authJwt } = require("../middleware");
 const controller = require("../controllers/user.controller");
+import { verifyToken } from "../middleware/verifyToken";
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -17,7 +18,11 @@ module.exports = function(app) {
       app.put("/api/auth/user/:id", controller.update);
       app.delete("/api/auth/user/:id", controller.delete);
       app.delete("/api/auth/users", controller.deleteAll);
-    
+      
+      
+      app.get("/api/auth/v1/users", verifyToken,  controller.getUsers);
+  
+  
   app.get("/api/test/all", controller.allAccess);
 
   app.get(

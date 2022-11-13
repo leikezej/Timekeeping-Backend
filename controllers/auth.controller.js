@@ -9,7 +9,7 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const { user } = require("../models");
 
-// REGISTER USER
+// SIGNUP USER
 exports.signup = (req, res) => {
   // Save User to Database
   User.create({
@@ -44,7 +44,25 @@ exports.signup = (req, res) => {
     });
 };
 
-// LOGIN USER
+// REGISTER USER
+exports.register = async (req, res) => {
+  const { name, email, password, confPassword } = req.body;
+    if(password !== confPassword) return res.status(400).json({msg: "Password and Confirm Password do not match"});
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(password, salt);
+    try {
+        await Users.create({
+            name: name,
+            email: email,
+            password: hashPassword
+        });
+        res.json({msg: "Registration Successful"});
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// SIGNIN USER
 exports.signin = (req, res) => {
   User.findOne({
     where: {
@@ -121,6 +139,39 @@ exports.signin = (req, res) => {
     });
 };
 
+// LOGIN USER
+exports.login = async (req, res) => {
+      try {
+        const user = await User.findAll({
+            where:{
+                email: req.body.email
+            }
+        });
+        const match = await bcrypt.compare(req.body.password, user[0].password);
+        if(!match) return res.status(400).json({msg: "Wrong Password"});
+        const userId = user[0].id;
+        const name = user[0].name;
+        const email = user[0].email;
+        const accessToken = jwt.sign({userId, name, email}, process.env.ACCESS_TOKEN_SECRET,{
+            expiresIn: '15s'
+        });
+        const refreshToken = jwt.sign({userId, name, email}, process.env.REFRESH_TOKEN_SECRET,{
+            expiresIn: '1d'
+        });
+        await User.update({refresh_token: refreshToken},{
+            where:{
+                id: userId
+            }
+        });
+        res.cookie('refreshToken', refreshToken,{
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000
+        });
+        res.json({ accessToken });
+    } catch (error) {
+        res.status(404).json({msg:"Email not found"});
+    }
+}
 // LOGOUT USER
 exports.logout = async (req, res) => {
     try {
@@ -159,6 +210,26 @@ exports.signout = async (req, res) => {
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
     res.sendStatus(204);
 };
+
+// LOGOUTS USER
+exports.logouts = async (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
+    if(!refreshToken) return res.sendStatus(204);
+    const user = await User.findAll({
+        where:{
+            refresh_token: refreshToken
+        }
+    });
+    if(!user[0]) return res.sendStatus(204);
+    const userId = user[0].id;
+    await User.update({refresh_token: null},{
+        where:{
+            id: userId
+        }
+    });
+    res.clearCookie('refreshToken');
+    return res.sendStatus(200);
+}
 
 // user refresh token
 exports.refreshToken = async (req, res) => {  

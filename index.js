@@ -8,6 +8,8 @@ const cookieSession = require("cookie-session");
 const session = require('express-session');
 const jepskiUploader = require('express-fileupload');
 const multer = require("multer");
+const cookieParser = require("cookie-parser");
+
 
 const path = require('path');
 const app = express();
@@ -26,7 +28,8 @@ db.sequelize.sync();
 
 var corsOptions = {
   // origin: "http://localhost:8081"
-  origin: "*"
+  origin: "*",
+  credentials: true
 };
 
 const  sessionStore = new mysqlStore((db));
@@ -34,6 +37,8 @@ const  sessionStore = new mysqlStore((db));
 app.use(jepskiUploader({
   createParentPath: true
 }));
+
+app.use(cookieParser());
 app.use(express.static('resources'));
 app.use(logger);
 app.use(morgan('dev'));
