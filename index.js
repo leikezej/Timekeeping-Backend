@@ -75,8 +75,8 @@ require('./routes/user.routes')(app);
 require('./routes/timein.routes')(app);
 require('./routes/timeout.routes')(app);
 require('./routes/timesheet.routes')(app);
-require('./routes/upload.routes')(app);
-require('./routes/file.routes')(app);
+// require('./routes/upload.routes')(app);
+// require('./routes/file.routes')(app);
 
 // const PORT = process.env.PORT || 0420;
 // app.listen(PORT, () => {
