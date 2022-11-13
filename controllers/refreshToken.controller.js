@@ -1,5 +1,6 @@
-import Users from "../models/UserModel.js";
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
+const db = require("../models");
+const { user: User, role: Role } = db;
  
 exports.refreshToken = async(req, res) => {
     try {

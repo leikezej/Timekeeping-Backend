@@ -41,9 +41,9 @@ module.exports = function(app) {
   app.post("/api/auth/logout", controller.logout);
   
   
-  app.post("/api/auth/v1/login", controller.login);
-  app.post("/api/auth/v1/register", controller.register);
-  app.delete("/api/auth/v1/logouts", controller.logouts);
+  // app.post("/api/auth/v1/login", controller.login);
+  // app.post("/api/auth/v1/register", controller.register);
+  // app.delete("/api/auth/v1/logouts", controller.logouts);
   
   
   

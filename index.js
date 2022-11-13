@@ -21,10 +21,19 @@ const db = require("./models");
 const Role = db.role;
 
 db.sequelize.sync();
-//   db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Db');
-//   initial();
-// });
+  db.sequelize.sync({force: true}).then(() => {
+  // console.log('Drop and Resync Db');
+  initial();
+});
+
+// db.sequelize.sync(
+//      {force: true}
+//     ).then(() => {
+//         console.log('Drop and Resync Database!');
+//         initial();
+//     }).catch(err => {
+//         console.log(err)
+//     });
 
 var corsOptions = {
   // origin: "http://localhost:8081"
@@ -97,25 +106,19 @@ const server = app.listen(0420, function () {
 })
 
 
-
-
-
-
-
-
 function initial() {
   Role.create({
-    id: 111,
+    id: 1,
     name: "moderator"
   });
  
   Role.create({
-    id: 222,
+    id: 2,
     name: "user"
   });
   
   Role.create({
-    id: 333,
+    id: 3,
     name: "admin"
   });
 }

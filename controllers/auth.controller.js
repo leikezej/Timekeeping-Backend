@@ -175,8 +175,8 @@ exports.login = async (req, res) => {
 // LOGOUT USER
 exports.logout = async (req, res) => {
     try {
-    // res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
-    req.session.destroy();
+    res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
+    // req.session.destroy();
     res.redirect("/");
       req.session = null;
       res.clearCookie('refreshtoken', 'accessToken')
