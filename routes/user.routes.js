@@ -22,7 +22,7 @@ module.exports = function(app) {
       app.delete("/api/auth/users", controller.deleteAll);
       
       
-      // app.get("/api/auth/v1/users", verifyToken,  controller.getUsers);
+      app.get("/api/auth/v1/users", controller.getUsers);
       // app.get("/api/auth/v1/token", controller.refreshToken);
   
   

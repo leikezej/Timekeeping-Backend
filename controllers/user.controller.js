@@ -24,10 +24,10 @@ exports.findAll = (req, res) => {
 // GET USERS
 exports.getUsers = async (req, res) => {
       try {
-        const users = await Users.findAll({
+        const user = await User.findAll({
             attributes:['id','name','email']
         });
-        res.json(users);
+        res.json(user);
     } catch (error) {
         console.log(error);
     }

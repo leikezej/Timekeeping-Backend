@@ -51,7 +51,7 @@ exports.register = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
     try {
-        await Users.create({
+        await User.create({
             name: name,
             email: email,
             password: hashPassword
@@ -117,6 +117,8 @@ exports.signin = (req, res) => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
+        
+    req.session.token = token;
 
     req.session.token = token;
         res.status(200).send({
@@ -176,7 +178,8 @@ exports.login = async (req, res) => {
 exports.logout = async (req, res) => {
     try {
     res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
-    // req.session.destroy();
+     req.session = null;
+    req.session.destroy();
     res.redirect("/");
       req.session = null;
       res.clearCookie('refreshtoken', 'accessToken')
@@ -190,7 +193,7 @@ exports.logout = async (req, res) => {
 // SIGNOUT USER
 exports.signout = async (req, res) => {
     req.session.destroy();
-    
+         req.session = null;
     const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(204); //No content
     const refreshToken = cookies.jwt;
@@ -213,6 +216,10 @@ exports.signout = async (req, res) => {
 
 // LOGOUTS USER
 exports.logouts = async (req, res) => {
+    // req.session.destroy();
+    // req.session.null();
+
+
     const refreshToken = req.cookies.refreshToken;
     if(!refreshToken) return res.sendStatus(204);
     const user = await User.findAll({
