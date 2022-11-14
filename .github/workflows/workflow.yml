@@ -31,7 +31,7 @@ jobs:
 
     strategy:
       matrix:
-      node-version: [ 14.x, 15.x, 16.x]
+      node-version: [ 14.x, 15.x]
     
     steps:
         - uses: actions/checkout@v2
@@ -85,6 +85,4 @@ jobs:
     #       branch: main
     #       folder: build
     #       node-version: [10.x, 12.x, 14.x, 15.x, 16.x]
-- run: npm ci
-- run: npm run build --if-present
-- run: npm test
+w

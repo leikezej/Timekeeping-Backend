@@ -127,7 +127,6 @@ exports.deleteAll = (req, res) => {
 //             refresh_token: refreshToken
 //         }
 //     });
-<<<<<<< HEAD
 //     if(!user[0]) return res.sendStatus(204);
 //     const userId = user[0].id;
 //     await User.update({refresh_token: null},{
@@ -138,7 +137,6 @@ exports.deleteAll = (req, res) => {
 //     res.clearCookie('refreshToken');
 //     return res.sendStatus(200);
 // }
-
 
 exports.userContent = (req, res) => {
 	User.findOne({
@@ -212,9 +210,6 @@ exports.managementBoard = (req, res) => {
 	})
 }
 
-
-
-
 exports.allAccess = (req, res) => {
   res.status(200).send("Public Content.");
 };
@@ -230,6 +225,3 @@ exports.adminBoard = (req, res) => {
 exports.moderatorBoard = (req, res) => {
   res.status(200).send("Moderator Content.");
 };
-=======
-// };
->>>>>>> f312411091f4baaaa7e4aa57ae421f7db1d25a91

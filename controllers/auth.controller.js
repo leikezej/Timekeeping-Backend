@@ -174,6 +174,7 @@ exports.login = async (req, res) => {
         res.status(404).json({msg:"Email not found"});
     }
 }
+
 // LOGOUT USER
 exports.logout = async (req, res) => {
     try {
@@ -218,8 +219,6 @@ exports.signout = async (req, res) => {
 exports.logouts = async (req, res) => {
     // req.session.destroy();
     // req.session.null();
-
-
     const refreshToken = req.cookies.refreshToken;
     if(!refreshToken) return res.sendStatus(204);
     const user = await User.findAll({

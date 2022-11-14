@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 20221004	18:26:07	64a7f524-d8a0-48de-9ff1-016b3b67398d	POST	[object Object]	/api/auth/signin
 20221004	18:26:14	aada66fa-a700-4494-a50d-0d57ac1479ab	POST	undefined	/api/auth/signin
 20221004	18:34:05	1d2c89be-e541-4639-94b4-9a3987bbda32	POST	undefined	/api/auth/signup
@@ -241,7 +239,6 @@
 20221005	01:01:16	2c2b837c-0f36-4c08-b975-5cb33b7d2c03	GET	http://localhost:3000	/api/user/timeout
 20221005	01:01:16	103dac46-91bb-4cdc-aaa9-4a2c974656fc	GET	http://localhost:3000	/api/user/timein
 20221005	01:01:24	a05486e2-acd7-4d8a-9c7d-2e4a9e57003f	POST	http://localhost:3000	/api/auth/signout
-<<<<<<< HEAD
 >>>>>>> 0c43ee6b160d26ac10f469ec0df8ed61f896ffbe
 20221005	03:06:45	6e6e650f-d56a-4159-afe0-a2d66aa767ea	OPTIONS	http://localhost:3000	/api/auth/signin
 20221005	03:06:45	af2de7b7-0433-462e-90de-dfb6244cd6c7	POST	http://localhost:3000	/api/auth/signin
@@ -2167,3 +2164,78 @@
 20221004	15:59:39	fc5cebcd-7fc8-4a42-a3dc-d6179a7b169a	POST	undefined	/api/auth/signin
 20221004	15:59:47	f629d55f-a9de-442a-b66d-0a77dee8b5b5	POST	undefined	/api/auth/signin
 >>>>>>> f312411091f4baaaa7e4aa57ae421f7db1d25a91
+20221115	01:13:35	84eb8713-f0e8-408a-abcc-3feb8d419923	OPTIONS	http://localhost:3000	/api/auth/signin
+20221115	01:13:35	cdfc19c7-c353-4542-8fc9-7f105435db45	POST	http://localhost:3000	/api/auth/signin
+20221115	01:15:53	e61deafe-46f3-4d64-b706-e753f68f0b6d	OPTIONS	http://localhost:3000	/api/auth/signup
+20221115	01:15:53	0a55d6b6-9527-46b4-a842-1589200850dc	POST	http://localhost:3000	/api/auth/signup
+20221115	01:16:51	e0dface3-36bf-4ec0-bfc8-5c027b6caa18	OPTIONS	http://localhost:3000	/api/auth/signin
+20221115	01:16:51	cfad17f9-9bb4-4da6-be56-7d9b0f1ae0e1	POST	http://localhost:3000	/api/auth/signin
+20221115	01:16:53	3c1f9891-29e9-4a56-a532-53ff31459e44	GET	http://localhost:3000	/api/user/timein
+20221115	01:16:53	cadaa692-ba68-424a-88fd-f5c852a9a3fd	GET	http://localhost:3000	/api/user/timeout
+20221115	01:16:53	a4f69040-a9bc-4354-b7d8-1355da8c85b1	GET	http://localhost:3000	/api/auth/users
+20221115	01:17:37	824b2873-8a3b-4070-994f-9b5cf32514b6	OPTIONS	http://localhost:3000	/api/user/timein
+20221115	01:17:37	d34b9954-d70a-4664-8b5e-f3ce9b0e6060	POST	http://localhost:3000	/api/user/timein
+20221115	01:17:40	97c2474b-ac7c-421a-a04f-a5f904c8bcc3	GET	http://localhost:3000	/api/user/timein
+20221115	01:17:40	45145758-8546-4c90-84c8-4811fb7a7348	GET	http://localhost:3000	/api/user/timeout
+20221115	01:17:40	dd2b9d08-494d-4481-811b-0951a3cc1064	GET	http://localhost:3000	/api/auth/users
+20221115	01:18:00	4c0e27a6-5fba-48b6-9c04-d911a6204823	OPTIONS	http://localhost:3000	/api/user/timeout
+20221115	01:18:00	a9c16bc1-90f8-492e-a707-e53910ff0485	POST	http://localhost:3000	/api/user/timeout
+20221115	01:18:04	5c727b42-a16d-4e85-a07c-e1a74788f322	GET	http://localhost:3000	/api/user/timein
+20221115	01:18:04	c8f9af23-4456-4560-8e20-079103b35c10	GET	http://localhost:3000	/api/user/timeout
+20221115	01:18:04	3d4a7acf-fff2-4d0b-9742-08367845a3a0	GET	http://localhost:3000	/api/auth/users
+20221115	01:18:36	046d978e-4bb0-40ff-a288-40b4e00bfb21	GET	http://localhost:3000	/api/user/timesheets
+20221115	01:32:15	c7d5f6b6-72b9-43c1-9378-60fe82258225	OPTIONS	http://localhost:3000	/api/auth/signin
+20221115	01:32:15	0f61eb47-fe73-4fe0-9df8-1a2d2caf02fa	POST	http://localhost:3000	/api/auth/signin
+20221115	01:32:18	a9639073-29f9-4182-88bc-b382a42304a7	GET	http://localhost:3000	/api/user/timein
+20221115	01:32:18	c7fe4205-c1a7-4ad7-ba38-9a6abe4198c4	GET	http://localhost:3000	/api/user/timeout
+20221115	01:32:18	9f5732f4-e1db-455e-b2a9-1002def4d542	GET	http://localhost:3000	/api/auth/users
+20221115	01:32:35	7a1e2148-665f-4e8a-aec2-ec51a4194bee	OPTIONS	http://localhost:3000	/api/user/timein
+20221115	01:32:35	6d49eff7-f96a-4fc5-b72b-48ba6ee58d63	POST	http://localhost:3000	/api/user/timein
+20221115	01:32:38	aabf58fe-6abb-4e3e-8196-e6c75a8575d7	GET	http://localhost:3000	/api/user/timein
+20221115	01:32:38	5cfb6fbe-ef69-476e-98c1-b0675604f721	GET	http://localhost:3000	/api/user/timeout
+20221115	01:32:38	770136f7-3b38-490b-9866-5e584dfc0d25	GET	http://localhost:3000	/api/auth/users
+20221115	01:33:04	3bdd4e00-1c87-4a4b-ba7d-a998f51d3fe5	OPTIONS	http://localhost:3000	/api/user/timeout
+20221115	01:33:04	06ad973d-90b5-4652-82f0-ba321c1c7a1c	POST	http://localhost:3000	/api/user/timeout
+20221115	01:33:06	8f0f32e0-5581-4b1e-9571-3a8d611cfe3c	GET	http://localhost:3000	/api/user/timein
+20221115	01:33:06	29300401-6f61-4d7b-8861-5627b579b2fd	GET	http://localhost:3000	/api/user/timeout
+20221115	01:33:06	4e306b0b-f4ea-437d-bc08-160c69fe5dc6	GET	http://localhost:3000	/api/auth/users
+20221115	01:34:58	70bd9107-31c8-4b8d-a146-d202a5101486	POST	http://localhost:3000	/api/auth/v1/logouts
+20221115	01:35:02	7178f1d0-90f9-40cd-936f-d8019f2cb77a	POST	http://localhost:3000	/api/auth/v1/logouts
+20221115	01:35:09	75b6b2d6-ca10-4fc3-b74e-f0c37220cfb1	OPTIONS	http://localhost:3000	/api/auth/signin
+20221115	01:35:09	316ad17a-4bb6-43e7-adb4-9b0e31ccdbc9	POST	http://localhost:3000	/api/auth/signin
+20221115	01:35:10	100a3d93-8d26-44ea-aaad-45f3fb0e1ee3	GET	http://localhost:3000	/api/user/timeout
+20221115	01:35:10	bb3d08d8-11aa-4798-b454-02394ba407c1	GET	http://localhost:3000	/api/user/timein
+20221115	01:35:10	1144fd1c-7fb9-4268-847e-d222cc16f857	GET	http://localhost:3000	/api/auth/users
+20221115	01:35:13	87bccfa0-a945-4b16-a2a1-763848699644	POST	http://localhost:3000	/api/auth/v1/logouts
+20221115	01:39:30	e763842b-ea71-4fb8-a801-33669e13da92	GET	http://localhost:3000	/api/user/timein
+20221115	01:39:30	5a8c1bee-ff78-4d60-8008-d431074cac44	GET	http://localhost:3000	/api/user/timeout
+20221115	01:39:32	1c7b8d9e-437c-4a5a-82f8-39540fba195b	GET	http://localhost:3000	/api/user/timein
+20221115	01:39:32	eb377c07-3c1a-44d2-be0e-ec2c932ec86f	GET	http://localhost:3000	/api/user/timeout
+20221115	01:39:37	32810b3f-6e0d-4c78-947a-831b2536491c	GET	http://localhost:3000	/api/user/timein
+20221115	01:39:37	13d4007c-d0ec-4663-83a6-f8852d6fb620	GET	http://localhost:3000	/api/user/timeout
+20221115	01:39:41	20b3220e-46c3-433d-89eb-5376a362d0ad	OPTIONS	http://localhost:3000	/api/auth/signin
+20221115	01:39:41	348be777-32f0-43ec-b1de-b69f12100f34	POST	http://localhost:3000	/api/auth/signin
+20221115	01:39:43	4baa5df3-e15b-4a94-8a94-ec5a92c7efc8	GET	http://localhost:3000	/api/user/timein
+20221115	01:39:43	959cae5c-a338-4cd6-8450-532f6783a0e2	GET	http://localhost:3000	/api/user/timeout
+20221115	01:41:34	04e22b55-e76e-4b43-84f2-08e73cf24e6b	OPTIONS	http://localhost:3000	/api/auth/signin
+20221115	01:41:34	3ac0f2df-9f12-4e6f-b6a9-fee77be8544c	POST	http://localhost:3000	/api/auth/signin
+20221115	01:41:36	19867fc4-fb05-42b4-853d-6269604df3ae	GET	http://localhost:3000	/api/user/timein
+20221115	01:41:36	8054bdbd-ee46-4c61-a92b-28359b86fbae	GET	http://localhost:3000	/api/user/timeout
+20221115	01:41:36	430cf9d5-e5a0-4f63-8af6-74311089beec	GET	http://localhost:3000	/api/auth/users
+20221115	01:41:39	32f36d95-4042-4396-9b49-5deed85faf5b	GET	http://localhost:3000	/api/user/timein
+20221115	01:41:39	9ba02ee5-aa7c-4056-8cc2-527b84abb434	GET	http://localhost:3000	/api/user/timeout
+20221115	01:41:39	2ef22572-201a-4894-8a96-907bf59cfee0	GET	http://localhost:3000	/api/auth/users
+20221115	01:41:57	9045efa0-1b8c-471e-b2b8-690b57810af7	GET	http://localhost:3000	/api/user/timein
+20221115	01:41:57	a38e3e1d-0c0f-4ac1-bbee-993a656c9edd	GET	http://localhost:3000	/api/user/timeout
+20221115	01:41:57	55e12198-1bec-4efc-a517-3b207b4e99e1	GET	http://localhost:3000	/api/auth/users
+20221115	01:42:16	cbed5d26-e471-4f21-b594-813cec5d695b	OPTIONS	http://localhost:3000	/api/auth/forgot-password
+20221115	01:42:16	b07146bb-7a61-4e86-9f5a-24f5c7e132ee	POST	http://localhost:3000	/api/auth/forgot-password
+20221115	01:42:26	e1a09c65-9f2f-48a3-a72a-6eb68ec1d144	OPTIONS	http://localhost:3000	/api/auth/reset-password
+20221115	01:42:26	bbb52a3c-d05f-466e-9896-6b20bcbc0085	POST	http://localhost:3000	/api/auth/reset-password
+20221115	01:42:28	8a830852-5d4d-423b-83bb-01baefc2d12a	POST	http://localhost:3000	/api/auth/reset-password
+20221115	01:42:29	0557596d-e11a-47d6-bfb1-9fcff45d15ef	POST	http://localhost:3000	/api/auth/reset-password
+20221115	01:46:40	2a4dbd51-2e51-413f-902b-45a694fd7617	OPTIONS	http://localhost:3000	/api/auth/signin
+20221115	01:46:40	8f4659bf-e7e3-4117-b8b1-d06147478c6b	POST	http://localhost:3000	/api/auth/signin
+20221115	01:46:41	7e1daedd-d43e-41ae-8a91-f18ff2bf01e2	GET	http://localhost:3000	/api/user/timeout
+20221115	01:46:41	32cefdbb-eaf9-4e1c-abc4-ba1f1431053c	GET	http://localhost:3000	/api/user/timein
+20221115	01:46:41	3a6fb31f-4af6-4754-9f91-f714c4f2fdb5	GET	http://localhost:3000	/api/auth/users
