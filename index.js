@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 const dotenv = require('dotenv');
 dotenv.config()
+=======
+>>>>>>> f312411091f4baaaa7e4aa57ae421f7db1d25a91
 const express = require("express");
 const cors = require("cors");
 const { logger } = require('./middleware/logEvents');
+<<<<<<< HEAD
 const morgan = require('morgan');
 const cookieSession = require("cookie-session");
 const session = require('express-session');
@@ -10,6 +14,12 @@ const jepskiUploader = require('express-fileupload');
 const multer = require("multer");
 const cookieParser = require("cookie-parser");
 
+=======
+const router = express.Router();;
+const controller = require("./controllers/file.controller");
+const app = express();
+const requestIp = require('request-ip');
+>>>>>>> f312411091f4baaaa7e4aa57ae421f7db1d25a91
 
 const path = require('path');
 const app = express();
@@ -17,6 +27,7 @@ const mysqlStore = require('express-mysql-session')(session);
 
 global.__basedir = __dirname;
 
+<<<<<<< HEAD
 const db = require("./models");
 const Role = db.role;
 
@@ -28,6 +39,8 @@ db.sequelize.sync(
     }).catch(err => {
         console.log(err)
     });
+=======
+>>>>>>> f312411091f4baaaa7e4aa57ae421f7db1d25a91
 
 var corsOptions = {
   // origin: "http://localhost:8081"
@@ -41,10 +54,16 @@ app.use(jepskiUploader({
   createParentPath: true
 }));
 
+<<<<<<< HEAD
 app.use(cookieParser());
 app.use(express.static('resources'));
 app.use(logger);
 app.use(morgan('dev'));
+=======
+
+app.use(logger);
+
+>>>>>>> f312411091f4baaaa7e4aa57ae421f7db1d25a91
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -101,6 +120,7 @@ const server = app.listen(0420, function () {
 
 
 function initial() {
+<<<<<<< HEAD
   Role.create({
     id: 1,
     name: "moderator"
@@ -116,3 +136,16 @@ function initial() {
     name: "admin"
   });
 }
+=======
+   Role.create({
+     id: 0420,
+     name: "user"
+   });
+
+   Role.create({
+     id: 0230,
+     name: "admin"
+   });
+
+  }
+>>>>>>> f312411091f4baaaa7e4aa57ae421f7db1d25a91
