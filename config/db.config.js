@@ -5,9 +5,12 @@ const colors = require ("colors");
 mongoose.set('strictQuery', false);
 mongoose.Promise = global.Promise;
 
+const db = require("../models");
+const Role = db.role;
+
 const connectDB = async () => {
   let conn;
-
+  initial();
   if (process.env.NODE_ENV === "development") {
       conn = await mongoose.connect(
           process.env.DB_DEV,
@@ -15,7 +18,7 @@ const connectDB = async () => {
     //   );console.log('working on development');
 
     );console.log(
-        `Development Workspace`.magenta.underline.italic
+        `DEVELOPMENT Workspace`.white.underline.italic
     );
 
     // console.log(`mongodb connected: ${conn.connection.host}`.cyan.underline)
@@ -43,6 +46,33 @@ const connectDB = async () => {
     // console.log(`Error: ${error.message}`.underline.bold)
 
   return conn;
+};
+
+function initial() {
+  Role.estimatedDocumentCount((err, count) => {
+    if (!err && count === 0) {
+      new Role({
+        name: "user"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+        console.log("added 'user' to roles collection");
+        // console.log(`${success.message}`.underline.bold)
+      });
+
+      new Role({
+        name: "admin"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+          // console.log(`error, ${err.message}`.underline.bold);
+        }
+        // console.log(`${success.message}`.underline.bold);
+        console.log("added 'admin' to roles collection");
+      });
+    }
+  });
 };
 
 module.exports = connectDB;

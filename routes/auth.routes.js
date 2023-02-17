@@ -18,7 +18,9 @@ module.exports = function(app) {
       verifySignUp.checkRolesExisted
     ],
     controller.signup
+  
   );
+  app.post("/api/auth/refreshtoken", controller.refreshToken);
 
   app.post("/api/auth/signin", controller.signin);
 
@@ -27,15 +29,3 @@ module.exports = function(app) {
   app.get("/api/auth/profile", controller.profile);
   
 };
-
-// import express from 'express'
-// import { protect } from '../middleware/authMiddleware.js'
-// import * as userController from '../controllers/userController.js'
-
-// const router = express.Router()
-
-// router.post('/register', userController.registerUser)
-// router.post('/login', userController.loginUser)
-// router.route('/profile').get(protect, userController.getUserProfile)
-
-// export default router

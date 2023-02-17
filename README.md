@@ -24,6 +24,42 @@ const server = app.listen(0420, function () {
 const square = require("./square"); // Here we require() the name of the file without the (optional) .js file extension
 console.log(`The area of a square with a width of 4 is ${square.area(4)}`);
 
+<!-- SETTING UP FRONTEND -->
+const loadPosts = async () => {
+  let results = await fetch(`${baseUrl}/posts/latest`).then(resp => resp.json());
+  setPosts(results);
+}
+let results = await fetch(`${baseUrl}/posts/`).then(resp => resp.json());
+let results = await fetch(`${baseUrl}/posts/${params.id}`).then(resp => resp.json());
+
+<!-- AWAIT -->
+await fetch(`${baseUrl}/posts`, {
+  method: "POST",
+  headers: {
+    "content-type": "application/json"
+  },
+  body: JSON.stringify({
+    author, title, tags: tags.split(","), body
+  })
+}).then(resp => resp.json());
+
+<!-- Doing an update follows the same patterns but with a different method. -->
+await fetch(`${baseUrl}/posts/comment/${params.id}`, {
+  method: "PATCH",
+  headers: {
+    "content-type": "application/json"
+  },
+  body: JSON.stringify({
+    author, body
+  })
+});
+
+<!-- And the same is true for a delete request. -->
+await fetch(`${baseUrl}/posts/${params.id}`, {
+  method: "DELETE"
+});
+
+
 
 <!-- redirect back  -->
 app.post('/quotes', (req, res) => {
