@@ -51,3 +51,20 @@ app.get('/', (req, res) => {
   console.log(cursor)
   // ...
 })
+
+<!-- if valid -->
+  // Validate required fields
+  if (!valid) {
+    return res.status(400).json({
+      m: "Required Fields",
+      c: 400,
+      d: errors,
+    });
+  }
+
+<!-- send html -->
+  app.use("/", (req, res) => {
+ res.sendFile(__dirname + "/index.html");
+    // res.render("testing", { title: "About dogs", message: "Dogs rock!" });
+    // res.sendFile(__dirname + '/index.html')
+});

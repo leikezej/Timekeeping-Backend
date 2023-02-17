@@ -8,19 +8,25 @@ const colors = require ("colors");
 const cors = require ("cors");
 const cookieParser = require('cookie-parser');
 const bodyParser= require('body-parser')
+const cookieSession = require('cookie-session')
+const session = require('express-session');
 
 const connectDB = require("./config/db.config.js");
+const { Session } = require('inspector');
 dotenv.config({ path: './config/config.env'});
+connectDB();
 
 const app = express();
-
-connectDB();
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: true }))
 
 if (process.env.NODE_ENV === 'development') {
     // app.use(morgan('dev'));
     dotenv.config({ path:  '../.'})
     app.use(logger("dev"));
-}
+};
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/build')))
@@ -28,46 +34,79 @@ if (process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) =>
       res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
     )
-}
+};
 
 // CORS
 app.use(
     cors({
-      origin: '*',
+      // origin: '*',
+      origin: "http://localhost:5050",
+      credentials:  true
     })
-)
+);
 
-app.use(express.json());
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }))
+// Express Session
+app.use(session({
+  secret: '123jepski',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+  maxAge: 60000
+  }
+}));
 
-// API Routes
-// app.use('/api/user', userRoutes)
+// Cookie Session
+  app.use(
+  cookieSession({
+    name: "jepskey-session",
+    // keys: ['key1', 'key2'], 
+    secret: "COOKIE_SECRET", // should use as secret environment variable
+    httpOnly: true
+  })
+);
 
+require('./routes/auth.routes')(app);
+// require('./routes/user.routes')(app);
 
-app.get("/api/jep", function (req, res)  {
-    // res.render("testing", { title: "About dogs", message: "Dogs rock!" });
-    // res.sendFile(__dirname + '/index.html')
-    res.json({ message: "Welcome to bezkoder application." });
-});
-
-// const PORT = process.env.PORT || 6060
-// app.listen(
-//   PORT,
-//   console.log(
-//     `Server running in ${process.env.NODE_ENV} mode on port http://localhost:${PORT}`
-//       .yellow.bold
-//   )
-// )
 
 app.listen(process.env.PORT, () => {
-    const HOST = '127.0.0.1';
     const PORT = process.env.PORT || 6060
-
+    const HOST = process.env.HOST;
+    
     console.log(
-        // `Server Running with ${process.env.NODE_ENV} on http://${host}:${port}!!!`.yellow.bold
         `Server running in ${process.env.NODE_ENV} mode on http://${HOST}:${PORT}`
       .red.bold
     );
     // console.log('hello'.green); // outputs green text
 });
+
+function initial() {
+  Role.estimatedDocumentCount((err, count) => {
+    if (!err && count === 0) {
+      new Role({
+        name: "user"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+        }
+        console.log("added 'user' to roles collection");
+        // console.log(`${success.message}`.underline.bold)
+      });
+
+
+
+      new Role({
+        name: "admin"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+          // console.log(`error, ${err.message}`.underline.bold);
+        }
+        // console.log(`${success.message}`.underline.bold);
+        console.log("added 'admin' to roles collection");
+      });
+    }
+  });
+};
+
+

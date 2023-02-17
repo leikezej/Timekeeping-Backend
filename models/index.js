@@ -1,16 +1,14 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
-const Schema = mongoose.Schema;
+const db = {};
 
-const authorSchema = Schema({
-  name: String,
-  stories: [{ type: Schema.Types.ObjectId, ref: "Story" }],
-});
+db.mongoose = mongoose;
 
-const storySchema = Schema({
-  author: { type: Schema.Types.ObjectId, ref: "Author" },
-  title: String,
-});
+db.user = require("./user.model");
+db.role = require("./role.model");
+// db.refreshToken = require("./refreshToken.model");
 
-const Story = mongoose.model("Story", storySchema);
-const Author = mongoose.model("Author", authorSchema);
+db.ROLES = ["user", "admin"];
+
+module.exports = db;
