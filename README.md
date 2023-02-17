@@ -1,3 +1,14 @@
+LEAVE
+ATTENDANCE
+PAYROLL
+Display Employee
+Add Employee
+Remove Employee
+Promote Employee (Update Post)
+Update Salary
+time in/out
+timesheet
+
 setTimeout(function () {
   console.log("First");
 }, 3000);

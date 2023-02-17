@@ -2,7 +2,6 @@ const config = require("../config/auth.config");
 const db = require('../models');
 const { user: User, role: Role, refreshToken: RefreshToken } = db;
 
-
 let jwt = require("jsonwebtoken");
 let bcrypt = require("bcryptjs");
 
@@ -12,7 +11,6 @@ exports.signup = (req, res) => {
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
   });
-
   user.save((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -134,7 +132,6 @@ exports.signout = async (req, res) => {
 
 exports.profile = async (req, res) => {
   const user = await User.findById(req.user._id)
-
   if (user) {
     res.json({
       id: user._id,

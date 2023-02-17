@@ -66,16 +66,13 @@ app.use(
 //   }
 // }));
 
-
-
 require('./routes/auth.routes')(app);
-// require('./routes/user.routes')(app);
+require('./routes/user.routes')(app);
 
 
 app.listen(process.env.PORT, () => {
-    const PORT = process.env.PORT || 5151 || 5252
+    const PORT = process.env.PORT || 5555 || 5050
     const HOST = process.env.HOST;
-    
     console.log(
         `Server running in ${process.env.NODE_ENV} mode on http://${HOST}:${PORT}`
       .red.bold

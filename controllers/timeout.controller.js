@@ -1,37 +1,20 @@
-const db = require("../models");
-const Timeout = db.timeout;
-
-// Create and Save a new Timeout
-exports.create = (req, res) => {
-  
+const BlogModel = require("../models/Blog");
+ 
+exports.getAllBlogs = async () => {
+  return await BlogModel.find();
 };
-
-// Retrieve all Timeouts from the database.
-exports.findAll = (req, res) => {
-  
+ 
+exports.createBlog = async (blog) => {
+  return await BlogModel.create(blog);
 };
-
-// Find a single Timeout with an id
-exports.findOne = (req, res) => {
-  
+exports.getBlogById = async (id) => {
+  return await BlogModel.findById(id);
 };
-
-// Update a Timeout by the id in the request
-exports.update = (req, res) => {
-  
+ 
+exports.updateBlog = async (id, blog) => {
+  return await BlogModel.findByIdAndUpdate(id, blog);
 };
-
-// Delete a Timeout with the specified id in the request
-exports.delete = (req, res) => {
-  
-};
-
-// Delete all Timeouts from the database.
-exports.deleteAll = (req, res) => {
-  
-};
-
-// Find all published Timeouts
-exports.findAllPublished = (req, res) => {
-  
+ 
+exports.deleteBlog = async (id) => {
+  return await BlogModel.findByIdAndDelete(id);
 };

@@ -2,8 +2,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const db = require("../models");
 
-const User = db.user;
-const Role = db.role;
+const { user: User, roles: Role, refreshToken: RefreshToken } = db;
 
 const { TokenExpiredError } = jwt;
 
@@ -19,7 +18,7 @@ const verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
 
   if (!token) {
-    return res.status(403).send({ message: "No token provided!" });
+        return res.status(403).send({ message: "No token provided!" });
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
@@ -62,8 +61,39 @@ isAdmin = (req, res, next) => {
   });
 };
 
+isUser = (req, res, next) => {
+  User.findOne(req.userId).exec((err, user) => {
+    if (err) {
+      res.status(500).send({ message: err });
+      return;
+    }
+
+    Role.find(
+      {
+        _id: { $in: user.roles }
+      },
+      (err, roles) => {
+        if (err) {
+          res.status(500).send({ message: err });
+          return;
+        }
+
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].name === "user") {
+            next();
+            return;
+          }
+        }
+        res.status(403).send({ message: "You're an impostor!" });
+        return;
+      }
+    );
+  });
+};
+
 const authJwt = {
   verifyToken,
-  isAdmin
+  isAdmin,
+  isUser
 };
 module.exports = authJwt;
