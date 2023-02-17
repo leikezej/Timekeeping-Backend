@@ -61,7 +61,7 @@ isAdmin = (req, res, next) => {
   });
 };
 
-isUser = (req, res, next) => {
+isModerator = (req, res, next) => {
   User.findOne(req.userId).exec((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -79,7 +79,7 @@ isUser = (req, res, next) => {
         }
 
         for (let i = 0; i < roles.length; i++) {
-          if (roles[i].name === "user") {
+          if (roles[i].name === "moderator") {
             next();
             return;
           }
@@ -92,8 +92,9 @@ isUser = (req, res, next) => {
 };
 
 const authJwt = {
+  catchError,
   verifyToken,
   isAdmin,
-  isUser
+  isModerator
 };
 module.exports = authJwt;

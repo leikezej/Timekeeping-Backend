@@ -30,11 +30,11 @@ if (process.env.NODE_ENV === 'development') {
 };
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/frontend/build')))
-  
-    app.get('*', (req, res) =>
-      res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-    )
+      app.use(logger("dev"));
+    // app.use(express.static(path.join(__dirname, '/frontend/build')))
+    // app.get('*', (req, res) =>
+    // res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+    // )
 };
 
 // CORS
@@ -57,24 +57,24 @@ app.use(
 );
 
 // Express Session
-// app.use(session({
-//   secret: '123jepski',
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: {
-//   maxAge: 60000
-//   }
-// }));
+app.use(session({
+  secret: '123jepski',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+  maxAge: 60000
+  }
+}));
 
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
-
+require('./routes/leave.routes')(app);
 
 app.listen(process.env.PORT, () => {
     const PORT = process.env.PORT || 5555 || 5050
     const HOST = process.env.HOST;
     console.log(
-        `Server running in ${process.env.NODE_ENV} mode on http://${HOST}:${PORT}`
+        `Server Running @ ${HOST}:${PORT}`
       .red.bold
     );
     // console.log('hello'.green); // outputs green text

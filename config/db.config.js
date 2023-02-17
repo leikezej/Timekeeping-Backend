@@ -37,7 +37,7 @@ const connectDB = async () => {
           process.env.DB_TEST,
           {}
           );console.log(
-            `Testing Workspace`.orange.underline.italic
+            `Testing Workspace`
         );
   }
       console.log(
@@ -52,15 +52,27 @@ function initial() {
   Role.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
       new Role({
-        name: "user"
+        name: "employee"
       }).save(err => {
         if (err) {
           console.log("error", err);
         }
-        console.log("added 'user' to roles collection");
+        console.log(`Added ${EMPLOYEE}`.underline.yellow` To Roles Collection`);
         // console.log(`${success.message}`.underline.bold)
       });
 
+      new Role({
+        name: "moderator"
+      }).save(err => {
+        if (err) {
+          console.log("error", err);
+          // console.log(`error, ${err.message}`.underline.bold);
+        }
+        // console.log(`${success.message}`.underline.bold);
+        console.log(`Added ${MODERATOR}`.underline.greeen` To Roles Collection`);
+
+      });
+      
       new Role({
         name: "admin"
       }).save(err => {
@@ -68,8 +80,7 @@ function initial() {
           console.log("error", err);
           // console.log(`error, ${err.message}`.underline.bold);
         }
-        // console.log(`${success.message}`.underline.bold);
-        console.log("added 'admin' to roles collection");
+        console.log(`Added ${ADMIN}`.underline.magenta` To Roles Collection`);
       });
     }
   });

@@ -8,7 +8,15 @@ db.mongoose = mongoose;
 db.user = require("./user.model");
 db.role = require("./role.model");
 db.refreshToken = require("./refreshToken.model");
+db.leave = require("./leave.model");
 
-db.ROLES = ["user", "admin"];
+
+// db.story = require("./story.model");
+// db.timein = require("./timein.model");
+// db.employee = require("./employee.model");
+// db.attendance = require("./attendance.model");
+
+
+db.ROLES = ["employee", "moderator", "admin"];
 
 module.exports = db;
