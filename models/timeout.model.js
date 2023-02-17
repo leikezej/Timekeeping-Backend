@@ -1,27 +1,19 @@
-module.exports = (sequelize, Sequelize, DataTypes) => {
-   const Timeout = sequelize.define("timeout", {
-     name: {
-       type: Sequelize.STRING,
-       allowNull: false,
-     },
-     time: {
-      allowNull: false,
-      type: Sequelize.TIME,
-      // defaultValue: new Time(),
-      // defaultValue: moment.utc().format('YYYY-MM-DD HH:mm:ss a'),
-    },
-    date: {
-      defaultValue: new Date(),
-      type: Sequelize.DATEONLY,
-      allowNull: false
-      // type: Sequelize.DATE
-      // type: 'Array'
-    },
-    status: {
-      type: Sequelize.STRING,
-      defaultValue: "OUT",
-      allowNull: false
-    }
-   });
-   return Timeout;
- };
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+const userSchema = Schema({
+  _id: Schema.Types.ObjectId,
+  name: String,
+  age: Number,
+  attendance: [{ type: Schema.Types.ObjectId, ref: 'Attendance' }]
+});
+
+const attendanceSchema = Schema({
+  id: { type: Schema.Types.ObjectId, ref: 'User' },
+  title: String,
+  present: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  isVerified: [{ type: Boolean, default: false }]
+});
+
+const Attendance = mongoose.model('Attendance', attendanceSchema);
+const User = mongoose.model('User', userSchema);

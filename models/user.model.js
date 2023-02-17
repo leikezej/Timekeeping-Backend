@@ -1,24 +1,38 @@
-module.exports = (sequelize, Sequelize) => {
-  const User = sequelize.define("users", {
-    name: {
-      type: Sequelize.STRING
-    },
-    image: {
-      type: Sequelize.STRING
+const bcrypt = require  ('bcryptjs');
+const { mongoose }; from = ('mongoose');
+
+const userSchema = mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: true,
     },
     email: {
-      type: Sequelize.STRING
-    },
-    phone: {
-      type: Sequelize.STRING
+      type: String,
+      required: true,
+      unique: true,
     },
     password: {
-      type: Sequelize.STRING
+      type: String,
+      required: true,
     },
-    refresh_token:{
-        type: Sequelize.TEXT
-    }
-  });
+  },
+  {
+    timestamps: true,
+  }
+)
 
-  return User;
-};
+// hash user's password with salt before saving document to db
+userSchema.pre('save', async function () {
+  const salt = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password, salt)
+})
+
+// extend matchPassword function unto userSchema
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password)
+}
+
+const User = mongoose.model('User', userSchema)
+
+export default User

@@ -96,13 +96,13 @@ var validators = {
   },
   IR: function IR(str) {
     if (!str.match(/^\d{10}$/)) return false;
-    str = "0000".concat(str).substr(str.length - 6);
-    if (parseInt(str.substr(3, 6), 10) === 0) return false;
-    var lastNumber = parseInt(str.substr(9, 1), 10);
+    str = "0000".concat(str).slice(str.length - 6);
+    if (parseInt(str.slice(3, 9), 10) === 0) return false;
+    var lastNumber = parseInt(str.slice(9, 10), 10);
     var sum = 0;
 
     for (var i = 0; i < 9; i++) {
-      sum += parseInt(str.substr(i, 1), 10) * (10 - i);
+      sum += parseInt(str.slice(i, i + 1), 10) * (10 - i);
     }
 
     sum %= 11;
@@ -298,6 +298,32 @@ var validators = {
     };
 
     return checkIdCardNo(str);
+  },
+  'zh-HK': function zhHK(str) {
+    // sanitize user input
+    str = str.trim(); // HKID number starts with 1 or 2 letters, followed by 6 digits,
+    // then a checksum contained in square / round brackets or nothing
+
+    var regexHKID = /^[A-Z]{1,2}[0-9]{6}((\([0-9A]\))|(\[[0-9A]\])|([0-9A]))$/;
+    var regexIsDigit = /^[0-9]$/; // convert the user input to all uppercase and apply regex
+
+    str = str.toUpperCase();
+    if (!regexHKID.test(str)) return false;
+    str = str.replace(/\[|\]|\(|\)/g, '');
+    if (str.length === 8) str = "3".concat(str);
+    var checkSumVal = 0;
+
+    for (var i = 0; i <= 7; i++) {
+      var convertedChar = void 0;
+      if (!regexIsDigit.test(str[i])) convertedChar = (str[i].charCodeAt(0) - 55) % 11;else convertedChar = str[i];
+      checkSumVal += convertedChar * (9 - i);
+    }
+
+    checkSumVal %= 11;
+    var checkSumConverted;
+    if (checkSumVal === 0) checkSumConverted = '0';else if (checkSumVal === 1) checkSumConverted = 'A';else checkSumConverted = String(11 - checkSumVal);
+    if (checkSumConverted === str[str.length - 1]) return true;
+    return false;
   },
   'zh-TW': function zhTW(str) {
     var ALPHABET_CODES = {

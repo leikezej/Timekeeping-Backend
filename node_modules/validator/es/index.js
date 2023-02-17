@@ -12,6 +12,7 @@ import isIP from './lib/isIP';
 import isIPRange from './lib/isIPRange';
 import isFQDN from './lib/isFQDN';
 import isDate from './lib/isDate';
+import isTime from './lib/isTime';
 import isBoolean from './lib/isBoolean';
 import isLocale from './lib/isLocale';
 import isAlpha, { locales as isAlphaLocales } from './lib/isAlpha';
@@ -53,6 +54,7 @@ import isMongoId from './lib/isMongoId';
 import isAfter from './lib/isAfter';
 import isBefore from './lib/isBefore';
 import isIn from './lib/isIn';
+import isLuhnNumber from './lib/isLuhnNumber';
 import isCreditCard from './lib/isCreditCard';
 import isIdentityCard from './lib/isIdentityCard';
 import isEAN from './lib/isEAN';
@@ -64,6 +66,7 @@ import isMobilePhone, { locales as isMobilePhoneLocales } from './lib/isMobilePh
 import isEthereumAddress from './lib/isEthereumAddress';
 import isCurrency from './lib/isCurrency';
 import isBtcAddress from './lib/isBtcAddress';
+import isISO6391 from './lib/isISO6391';
 import isISO8601 from './lib/isISO8601';
 import isRFC3339 from './lib/isRFC3339';
 import isISO31661Alpha2 from './lib/isISO31661Alpha2';
@@ -91,7 +94,7 @@ import isSlug from './lib/isSlug';
 import isLicensePlate from './lib/isLicensePlate';
 import isStrongPassword from './lib/isStrongPassword';
 import isVAT from './lib/isVAT';
-var version = '13.7.0';
+var version = '13.9.0';
 var validator = {
   version: version,
   toDate: toDate,
@@ -151,6 +154,7 @@ var validator = {
   isAfter: isAfter,
   isBefore: isBefore,
   isIn: isIn,
+  isLuhnNumber: isLuhnNumber,
   isCreditCard: isCreditCard,
   isIdentityCard: isIdentityCard,
   isEAN: isEAN,
@@ -164,6 +168,7 @@ var validator = {
   isEthereumAddress: isEthereumAddress,
   isCurrency: isCurrency,
   isBtcAddress: isBtcAddress,
+  isISO6391: isISO6391,
   isISO8601: isISO8601,
   isRFC3339: isRFC3339,
   isISO31661Alpha2: isISO31661Alpha2,
@@ -191,6 +196,7 @@ var validator = {
   isStrongPassword: isStrongPassword,
   isTaxID: isTaxID,
   isDate: isDate,
+  isTime: isTime,
   isLicensePlate: isLicensePlate,
   isVAT: isVAT,
   ibanLocales: ibanLocales

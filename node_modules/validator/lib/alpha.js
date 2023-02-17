@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.commaDecimal = exports.dotDecimal = exports.farsiLocales = exports.arabicLocales = exports.englishLocales = exports.decimal = exports.alphanumeric = exports.alpha = void 0;
+exports.commaDecimal = exports.dotDecimal = exports.bengaliLocales = exports.farsiLocales = exports.arabicLocales = exports.englishLocales = exports.decimal = exports.alphanumeric = exports.alpha = void 0;
 var alpha = {
   'en-US': /^[A-Z]+$/i,
   'az-AZ': /^[A-VXYZÇƏĞİıÖŞÜ]+$/i,
@@ -17,6 +17,7 @@ var alpha = {
   'fi-FI': /^[A-ZÅÄÖ]+$/i,
   'fr-FR': /^[A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]+$/i,
   'it-IT': /^[A-ZÀÉÈÌÎÓÒÙ]+$/i,
+  'ja-JP': /^[ぁ-んァ-ヶｦ-ﾟ一-龠ー・。、]+$/i,
   'nb-NO': /^[A-ZÆØÅ]+$/i,
   'nl-NL': /^[A-ZÁÉËÏÓÖÜÚ]+$/i,
   'nn-NO': /^[A-ZÆØÅ]+$/i,
@@ -33,11 +34,14 @@ var alpha = {
   'tr-TR': /^[A-ZÇĞİıÖŞÜ]+$/i,
   'uk-UA': /^[А-ЩЬЮЯЄIЇҐі]+$/i,
   'vi-VN': /^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴĐÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸ]+$/i,
+  'ko-KR': /^[ㄱ-ㅎㅏ-ㅣ가-힣]*$/,
   'ku-IQ': /^[ئابپتجچحخدرڕزژسشعغفڤقکگلڵمنوۆھەیێيطؤثآإأكضصةظذ]+$/i,
   ar: /^[ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]+$/,
   he: /^[א-ת]+$/,
   fa: /^['آاءأؤئبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهةی']+$/i,
-  'hi-IN': /^[\u0900-\u0961]+[\u0972-\u097F]*$/i
+  bn: /^['ঀঁংঃঅআইঈউঊঋঌএঐওঔকখগঘঙচছজঝঞটঠডঢণতথদধনপফবভমযরলশষসহ়ঽািীুূৃৄেৈোৌ্ৎৗড়ঢ়য়ৠৡৢৣৰৱ৲৳৴৵৶৷৸৹৺৻']+$/,
+  'hi-IN': /^[\u0900-\u0961]+[\u0972-\u097F]*$/i,
+  'si-LK': /^[\u0D80-\u0DFF]+$/
 };
 exports.alpha = alpha;
 var alphanumeric = {
@@ -52,6 +56,7 @@ var alphanumeric = {
   'fi-FI': /^[0-9A-ZÅÄÖ]+$/i,
   'fr-FR': /^[0-9A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]+$/i,
   'it-IT': /^[0-9A-ZÀÉÈÌÎÓÒÙ]+$/i,
+  'ja-JP': /^[0-9０-９ぁ-んァ-ヶｦ-ﾟ一-龠ー・。、]+$/i,
   'hu-HU': /^[0-9A-ZÁÉÍÓÖŐÚÜŰ]+$/i,
   'nb-NO': /^[0-9A-ZÆØÅ]+$/i,
   'nl-NL': /^[0-9A-ZÁÉËÏÓÖÜÚ]+$/i,
@@ -67,12 +72,15 @@ var alphanumeric = {
   'th-TH': /^[ก-๙\s]+$/i,
   'tr-TR': /^[0-9A-ZÇĞİıÖŞÜ]+$/i,
   'uk-UA': /^[0-9А-ЩЬЮЯЄIЇҐі]+$/i,
+  'ko-KR': /^[0-9ㄱ-ㅎㅏ-ㅣ가-힣]*$/,
   'ku-IQ': /^[٠١٢٣٤٥٦٧٨٩0-9ئابپتجچحخدرڕزژسشعغفڤقکگلڵمنوۆھەیێيطؤثآإأكضصةظذ]+$/i,
   'vi-VN': /^[0-9A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴĐÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸ]+$/i,
   ar: /^[٠١٢٣٤٥٦٧٨٩0-9ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]+$/,
   he: /^[0-9א-ת]+$/,
   fa: /^['0-9آاءأؤئبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهةی۱۲۳۴۵۶۷۸۹۰']+$/i,
-  'hi-IN': /^[\u0900-\u0963]+[\u0966-\u097F]*$/i
+  bn: /^['ঀঁংঃঅআইঈউঊঋঌএঐওঔকখগঘঙচছজঝঞটঠডঢণতথদধনপফবভমযরলশষসহ়ঽািীুূৃৄেৈোৌ্ৎৗড়ঢ়য়ৠৡৢৣ০১২৩৪৫৬৭৮৯ৰৱ৲৳৴৵৶৷৸৹৺৻']+$/,
+  'hi-IN': /^[\u0900-\u0963]+[\u0966-\u097F]*$/i,
+  'si-LK': /^[0-9\u0D80-\u0DFF]+$/
 };
 exports.alphanumeric = alphanumeric;
 var decimal = {
@@ -108,20 +116,30 @@ for (var _locale2, _i2 = 0; _i2 < farsiLocales.length; _i2++) {
   _locale2 = "fa-".concat(farsiLocales[_i2]);
   alphanumeric[_locale2] = alphanumeric.fa;
   decimal[_locale2] = decimal.ar;
+}
+
+var bengaliLocales = ['BD', 'IN'];
+exports.bengaliLocales = bengaliLocales;
+
+for (var _locale3, _i3 = 0; _i3 < bengaliLocales.length; _i3++) {
+  _locale3 = "bn-".concat(bengaliLocales[_i3]);
+  alpha[_locale3] = alpha.bn;
+  alphanumeric[_locale3] = alphanumeric.bn;
+  decimal[_locale3] = decimal['en-US'];
 } // Source: https://en.wikipedia.org/wiki/Decimal_mark
 
 
 var dotDecimal = ['ar-EG', 'ar-LB', 'ar-LY'];
 exports.dotDecimal = dotDecimal;
-var commaDecimal = ['bg-BG', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-ZM', 'es-ES', 'fr-CA', 'fr-FR', 'id-ID', 'it-IT', 'ku-IQ', 'hi-IN', 'hu-HU', 'nb-NO', 'nn-NO', 'nl-NL', 'pl-PL', 'pt-PT', 'ru-RU', 'sl-SI', 'sr-RS@latin', 'sr-RS', 'sv-SE', 'tr-TR', 'uk-UA', 'vi-VN'];
+var commaDecimal = ['bg-BG', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-ZM', 'es-ES', 'fr-CA', 'fr-FR', 'id-ID', 'it-IT', 'ku-IQ', 'hi-IN', 'hu-HU', 'nb-NO', 'nn-NO', 'nl-NL', 'pl-PL', 'pt-PT', 'ru-RU', 'si-LK', 'sl-SI', 'sr-RS@latin', 'sr-RS', 'sv-SE', 'tr-TR', 'uk-UA', 'vi-VN'];
 exports.commaDecimal = commaDecimal;
 
-for (var _i3 = 0; _i3 < dotDecimal.length; _i3++) {
-  decimal[dotDecimal[_i3]] = decimal['en-US'];
+for (var _i4 = 0; _i4 < dotDecimal.length; _i4++) {
+  decimal[dotDecimal[_i4]] = decimal['en-US'];
 }
 
-for (var _i4 = 0; _i4 < commaDecimal.length; _i4++) {
-  decimal[commaDecimal[_i4]] = ',';
+for (var _i5 = 0; _i5 < commaDecimal.length; _i5++) {
+  decimal[commaDecimal[_i5]] = ',';
 }
 
 alpha['fr-CA'] = alpha['fr-FR'];

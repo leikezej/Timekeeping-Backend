@@ -1,126 +1,41 @@
-const db = require("../models");
-const Op = db.Sequelize.Op;
-const { user: User, role: Role, timesheet: Timesheet } = db;
+const Timesheet = require("../models/timesheet");
 
-// CREATE NEW TIMESHEET
-exports.new = (req, res) => {
-  const timesheet = {
-    name: req.body.name,
-    time_start: req.body.time_start,
-    time_end: req.body.time_end,
-    time_total: req.body.time_total
-  };
-  TimeSheet.create(timesheet)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Timein."
-      });
-    }); 
-}
-
-// GET ALL TIMESHEET
-exports.getAll = (req, res) => {
-    const name = req.query.name;
-    var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    Timesheet.findAll({ where: condition })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving All TIMESHEETS."
-        });
-      });
+// Display list of all Genre.
+exports.timesheet_list = (req, res) => {
+  res.send("NOT IMPLEMENTED: Genre list");
 };
 
-//  GET SINGLE TIMETIMESHEET
-exports.findSheet = (req, res) => {
-    const id = req.params.id;
-    Timesheet.findByPk(id)
-      .then(data => {
-        if (data) {
-          res.send(data);
-        } else {
-          res.status(404).send({
-            message: `Cannot find TimeSheet with id=${id}.`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error retrieving TimeSheet with id=" + id
-        });
-      });
+// Display detail page for a specific Genre.
+exports.timesheet_detail = (req, res) => {
+  res.send(`NOT IMPLEMENTED: Genre detail: ${req.params.id}`);
 };
 
-// UPDATE SINGLE TIMEIN BY ID
-exports.updateSheet = (req, res) => {
-    const id = req.params.id;
-    Timesheet.update(req.body, {
-      where: { id: id }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "TimeSheet was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update TimeSheet with id=${id}. Maybe TimeSheet was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating TimeSheet with id=" + id
-        });
-      });
+// Display Genre create form on GET.
+exports.timesheet_create_get = (req, res) => {
+  res.send("NOT IMPLEMENTED: Genre create GET");
 };
 
-// DELETE SINGLE TIMESHEET BY ID
-exports.deleteSheet = (req, res) => {
-    const id = req.params.id;
-    Timesheet.destroy({
-      where: { id: id }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "TimeSheet was deleted successfully!"
-          });
-        } else {
-          res.send({
-            message: `Cannot delete TimeSheet with id=${id}. Maybe Timein was not found!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Could not delete TimeSheet with id=" + id
-        });
-      });
+// Handle Genre create on POST.
+exports.timesheet_create_post = (req, res) => {
+  res.send("NOT IMPLEMENTED: Genre create POST");
 };
 
-// DELETE ALL TIMESHEET
-exports.deleteAllSheets = (req, res) => {
-  Timesheet.destroy({
-      where: {},
-      truncate: false
-    })
-      .then(nums => {
-        res.send({ message: `${nums} TimeSheet were deleted successfully!` });
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while removing all TimeSheet."
-        });
-      });
+// Display Genre delete form on GET.
+exports.timesheet_delete_get = (req, res) => {
+  res.send("NOT IMPLEMENTED: Genre delete GET");
 };
 
+// Handle Genre delete on POST.
+exports.timesheet_delete_post = (req, res) => {
+  res.send("NOT IMPLEMENTED: Genre delete POST");
+};
 
+// Display Genre update form on GET.
+exports.genre_update_get = (req, res) => {
+  res.send("NOT IMPLEMENTED: Genre update GET");
+};
+
+// Handle Genre update on POST.
+exports.genre_update_post = (req, res) => {
+  res.send("NOT IMPLEMENTED: Genre update POST");
+};

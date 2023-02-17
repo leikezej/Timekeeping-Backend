@@ -35,6 +35,8 @@ var _isFQDN = _interopRequireDefault(require("./lib/isFQDN"));
 
 var _isDate = _interopRequireDefault(require("./lib/isDate"));
 
+var _isTime = _interopRequireDefault(require("./lib/isTime"));
+
 var _isBoolean = _interopRequireDefault(require("./lib/isBoolean"));
 
 var _isLocale = _interopRequireDefault(require("./lib/isLocale"));
@@ -117,6 +119,8 @@ var _isBefore = _interopRequireDefault(require("./lib/isBefore"));
 
 var _isIn = _interopRequireDefault(require("./lib/isIn"));
 
+var _isLuhnNumber = _interopRequireDefault(require("./lib/isLuhnNumber"));
+
 var _isCreditCard = _interopRequireDefault(require("./lib/isCreditCard"));
 
 var _isIdentityCard = _interopRequireDefault(require("./lib/isIdentityCard"));
@@ -139,7 +143,9 @@ var _isCurrency = _interopRequireDefault(require("./lib/isCurrency"));
 
 var _isBtcAddress = _interopRequireDefault(require("./lib/isBtcAddress"));
 
-var _isISO = _interopRequireDefault(require("./lib/isISO8601"));
+var _isISO = _interopRequireDefault(require("./lib/isISO6391"));
+
+var _isISO2 = _interopRequireDefault(require("./lib/isISO8601"));
 
 var _isRFC = _interopRequireDefault(require("./lib/isRFC3339"));
 
@@ -147,7 +153,7 @@ var _isISO31661Alpha = _interopRequireDefault(require("./lib/isISO31661Alpha2"))
 
 var _isISO31661Alpha2 = _interopRequireDefault(require("./lib/isISO31661Alpha3"));
 
-var _isISO2 = _interopRequireDefault(require("./lib/isISO4217"));
+var _isISO3 = _interopRequireDefault(require("./lib/isISO4217"));
 
 var _isBase = _interopRequireDefault(require("./lib/isBase32"));
 
@@ -199,7 +205,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = '13.7.0';
+var version = '13.9.0';
 var validator = {
   version: version,
   toDate: _toDate.default,
@@ -259,6 +265,7 @@ var validator = {
   isAfter: _isAfter.default,
   isBefore: _isBefore.default,
   isIn: _isIn.default,
+  isLuhnNumber: _isLuhnNumber.default,
   isCreditCard: _isCreditCard.default,
   isIdentityCard: _isIdentityCard.default,
   isEAN: _isEAN.default,
@@ -272,11 +279,12 @@ var validator = {
   isEthereumAddress: _isEthereumAddress.default,
   isCurrency: _isCurrency.default,
   isBtcAddress: _isBtcAddress.default,
-  isISO8601: _isISO.default,
+  isISO6391: _isISO.default,
+  isISO8601: _isISO2.default,
   isRFC3339: _isRFC.default,
   isISO31661Alpha2: _isISO31661Alpha.default,
   isISO31661Alpha3: _isISO31661Alpha2.default,
-  isISO4217: _isISO2.default,
+  isISO4217: _isISO3.default,
   isBase32: _isBase.default,
   isBase58: _isBase2.default,
   isBase64: _isBase3.default,
@@ -299,6 +307,7 @@ var validator = {
   isStrongPassword: _isStrongPassword.default,
   isTaxID: _isTaxID.default,
   isDate: _isDate.default,
+  isTime: _isTime.default,
   isLicensePlate: _isLicensePlate.default,
   isVAT: _isVAT.default,
   ibanLocales: _isIBAN.locales

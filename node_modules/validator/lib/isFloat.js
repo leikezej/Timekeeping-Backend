@@ -17,7 +17,7 @@ function isFloat(str, options) {
   options = options || {};
   var float = new RegExp("^(?:[-+])?(?:[0-9]+)?(?:\\".concat(options.locale ? _alpha.decimal[options.locale] : '.', "[0-9]*)?(?:[eE][\\+\\-]?(?:[0-9]+))?$"));
 
-  if (str === '' || str === '.' || str === '-' || str === '+') {
+  if (str === '' || str === '.' || str === ',' || str === '-' || str === '+') {
     return false;
   }
 

@@ -26,8 +26,9 @@ function isLength(str, options) {
     max = arguments[2];
   }
 
+  var presentationSequences = str.match(/(\uFE0F|\uFE0E)/g) || [];
   var surrogatePairs = str.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g) || [];
-  var len = str.length - surrogatePairs.length;
+  var len = str.length - presentationSequences.length - surrogatePairs.length;
   return len >= min && (typeof max === 'undefined' || len <= max);
 }
 

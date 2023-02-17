@@ -98,6 +98,37 @@ function bgBgCheck(tin) {
   checksum = checksum % 11 === 10 ? 0 : checksum % 11;
   return checksum === digits[9];
 }
+/**
+ * Check if an input is a valid Canadian SIN (Social Insurance Number)
+ *
+ * The Social Insurance Number (SIN) is a 9 digit number that
+ * you need to work in Canada or to have access to government programs and benefits.
+ *
+ * https://en.wikipedia.org/wiki/Social_Insurance_Number
+ * https://www.canada.ca/en/employment-social-development/services/sin.html
+ * https://www.codercrunch.com/challenge/819302488/sin-validator
+ *
+ * @param {string} input
+ * @return {boolean}
+ */
+
+
+function isCanadianSIN(input) {
+  var digitsArray = input.split('');
+  var even = digitsArray.filter(function (_, idx) {
+    return idx % 2;
+  }).map(function (i) {
+    return Number(i) * 2;
+  }).join('').split('');
+  var total = digitsArray.filter(function (_, idx) {
+    return !(idx % 2);
+  }).concat(even).map(function (i) {
+    return Number(i);
+  }).reduce(function (acc, cur) {
+    return acc + cur;
+  });
+  return total % 10 === 0;
+}
 /*
  * cs-CZ validation function
  * (Rodné číslo (RČ), persons only)
@@ -450,7 +481,7 @@ function enUsGetPrefixes() {
 
 
 function enUsCheck(tin) {
-  return enUsGetPrefixes().indexOf(tin.substr(0, 2)) !== -1;
+  return enUsGetPrefixes().indexOf(tin.slice(0, 2)) !== -1;
 }
 /*
  * es-ES validation function
@@ -1418,6 +1449,7 @@ var taxIdFormat = {
   'dk-DK': /^\d{6}-{0,1}\d{4}$/,
   'el-CY': /^[09]\d{7}[A-Z]$/,
   'el-GR': /^([0-4]|[7-9])\d{8}$/,
+  'en-CA': /^\d{9}$/,
   'en-GB': /^\d{10}$|^(?!GB|NK|TN|ZZ)(?![DFIQUV])[A-Z](?![DFIQUVO])[A-Z]\d{6}[ABCD ]$/i,
   'en-IE': /^\d{7}[A-W][A-IW]{0,1}$/i,
   'en-US': /^\d{2}[- ]{0,1}\d{7}$/,
@@ -1446,7 +1478,8 @@ var taxIdFormat = {
 
 taxIdFormat['lb-LU'] = taxIdFormat['fr-LU'];
 taxIdFormat['lt-LT'] = taxIdFormat['et-EE'];
-taxIdFormat['nl-BE'] = taxIdFormat['fr-BE']; // Algorithmic tax id check functions for various locales
+taxIdFormat['nl-BE'] = taxIdFormat['fr-BE'];
+taxIdFormat['fr-CA'] = taxIdFormat['en-CA']; // Algorithmic tax id check functions for various locales
 
 var taxIdCheck = {
   'bg-BG': bgBgCheck,
@@ -1456,6 +1489,7 @@ var taxIdCheck = {
   'dk-DK': dkDkCheck,
   'el-CY': elCyCheck,
   'el-GR': elGrCheck,
+  'en-CA': isCanadianSIN,
   'en-IE': enIeCheck,
   'en-US': enUsCheck,
   'es-ES': esEsCheck,
@@ -1481,7 +1515,8 @@ var taxIdCheck = {
 
 taxIdCheck['lb-LU'] = taxIdCheck['fr-LU'];
 taxIdCheck['lt-LT'] = taxIdCheck['et-EE'];
-taxIdCheck['nl-BE'] = taxIdCheck['fr-BE']; // Regexes for locales where characters should be omitted before checking format
+taxIdCheck['nl-BE'] = taxIdCheck['fr-BE'];
+taxIdCheck['fr-CA'] = taxIdCheck['en-CA']; // Regexes for locales where characters should be omitted before checking format
 
 var allsymbols = /[-\\\/!@#$%\^&\*\(\)\+\=\[\]]+/g;
 var sanitizeRegexes = {

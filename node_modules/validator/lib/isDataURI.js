@@ -9,7 +9,7 @@ var _assertString = _interopRequireDefault(require("./util/assertString"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var validMediaType = /^[a-z]+\/[a-z0-9\-\+]+$/i;
+var validMediaType = /^[a-z]+\/[a-z0-9\-\+\._]+$/i;
 var validAttribute = /^[a-z\-]+=[a-z0-9\-]+$/i;
 var validData = /^[a-z0-9!\$&'\(\)\*\+,;=\-\._~:@\/\?%\s]*$/i;
 
@@ -24,11 +24,11 @@ function isDataURI(str) {
   var attributes = data.shift().trim().split(';');
   var schemeAndMediaType = attributes.shift();
 
-  if (schemeAndMediaType.substr(0, 5) !== 'data:') {
+  if (schemeAndMediaType.slice(0, 5) !== 'data:') {
     return false;
   }
 
-  var mediaType = schemeAndMediaType.substr(5);
+  var mediaType = schemeAndMediaType.slice(5);
 
   if (mediaType !== '' && !validMediaType.test(mediaType)) {
     return false;

@@ -54,18 +54,11 @@ function isIP(str) {
   }
 
   if (version === '4') {
-    if (!IPv4AddressRegExp.test(str)) {
-      return false;
-    }
-
-    var parts = str.split('.').sort(function (a, b) {
-      return a - b;
-    });
-    return parts[3] <= 255;
+    return IPv4AddressRegExp.test(str);
   }
 
   if (version === '6') {
-    return !!IPv6AddressRegExp.test(str);
+    return IPv6AddressRegExp.test(str);
   }
 
   return false;

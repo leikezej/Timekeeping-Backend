@@ -24,7 +24,8 @@ var default_email_options = {
   require_tld: true,
   blacklisted_chars: '',
   ignore_max_length: false,
-  host_blacklist: []
+  host_blacklist: [],
+  host_whitelist: []
 };
 /* eslint-disable max-len */
 
@@ -91,7 +92,7 @@ function isEmail(str, options) {
       // the display name is `myname` instead of `myname `, so need to trim the last space
 
       if (display_name.endsWith(' ')) {
-        display_name = display_name.substr(0, display_name.length - 1);
+        display_name = display_name.slice(0, -1);
       }
 
       if (!validateDisplayName(display_name)) {
@@ -111,6 +112,10 @@ function isEmail(str, options) {
   var lower_domain = domain.toLowerCase();
 
   if (options.host_blacklist.includes(lower_domain)) {
+    return false;
+  }
+
+  if (options.host_whitelist.length > 0 && !options.host_whitelist.includes(lower_domain)) {
     return false;
   }
 
@@ -153,7 +158,8 @@ function isEmail(str, options) {
   }
 
   if (!(0, _isFQDN.default)(domain, {
-    require_tld: options.require_tld
+    require_tld: options.require_tld,
+    ignore_max_length: options.ignore_max_length
   })) {
     if (!options.allow_ip_domain) {
       return false;
@@ -164,7 +170,7 @@ function isEmail(str, options) {
         return false;
       }
 
-      var noBracketdomain = domain.substr(1, domain.length - 2);
+      var noBracketdomain = domain.slice(1, -1);
 
       if (noBracketdomain.length === 0 || !(0, _isIP.default)(noBracketdomain)) {
         return false;

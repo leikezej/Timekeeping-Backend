@@ -1,5 +1,5 @@
 import assertString from './util/assertString';
-var validMediaType = /^[a-z]+\/[a-z0-9\-\+]+$/i;
+var validMediaType = /^[a-z]+\/[a-z0-9\-\+\._]+$/i;
 var validAttribute = /^[a-z\-]+=[a-z0-9\-]+$/i;
 var validData = /^[a-z0-9!\$&'\(\)\*\+,;=\-\._~:@\/\?%\s]*$/i;
 export default function isDataURI(str) {
@@ -13,11 +13,11 @@ export default function isDataURI(str) {
   var attributes = data.shift().trim().split(';');
   var schemeAndMediaType = attributes.shift();
 
-  if (schemeAndMediaType.substr(0, 5) !== 'data:') {
+  if (schemeAndMediaType.slice(0, 5) !== 'data:') {
     return false;
   }
 
-  var mediaType = schemeAndMediaType.substr(5);
+  var mediaType = schemeAndMediaType.slice(5);
 
   if (mediaType !== '' && !validMediaType.test(mediaType)) {
     return false;

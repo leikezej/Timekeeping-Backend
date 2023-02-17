@@ -1,13 +1,1 @@
-/env
-/github
-/node_modules
-
-
 node_modules
-env
-github 
-
-.node_modules
-.package-lock.json
-.env
-.github
