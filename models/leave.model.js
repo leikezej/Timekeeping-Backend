@@ -20,6 +20,5 @@ const leaveSchema = new Schema({
 
 }, {timestamps: true})
 
-
 const leaveModel = mongoose.model("leave", leaveSchema, "Leave");
 module.exports = leaveModel;

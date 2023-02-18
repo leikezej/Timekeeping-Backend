@@ -48,19 +48,19 @@ const verifyToken = (req, res, next) => {
 // console.log('Client-side code running');
 // });
 
-app.post('/clicked', (req, res) => {
-  const click = {clickTime: new Date()};
-  console.log(click);
-  console.log(db);
+// app.post('/clicked', (req, res) => {
+//   const click = {clickTime: new Date()};
+//   console.log(click);
+//   console.log(db);
 
-  db.collection('clicks').save(click, (err, result) => {
-    if (err) {
-      return console.log(err);
-    }
-    console.log('click added to db');
-    res.sendStatus(201);
-  });
-});
+//   db.collection('clicks').save(click, (err, result) => {
+//     if (err) {
+//       return console.log(err);
+//     }
+//     console.log('click added to db');
+//     res.sendStatus(201);
+//   });
+// });
 
 
 isAdmin = (req, res, next) => {
