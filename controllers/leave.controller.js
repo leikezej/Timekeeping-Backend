@@ -1,6 +1,6 @@
 const db = require('../models');
 
-const { user: User, employee: Employee, role: Role, refreshToken: RefreshToken } = db;
+const { user: User, role: Role, refreshToken: RefreshToken } = db;
 
 const { sendMail } = require("../middlewares");
 
@@ -20,7 +20,7 @@ exports.requestLeave = async (req, res, next) => {
             await createLeaveRequest.save();
             const find_manager = await User.findOne({_id: find_user.manager});
             //notify staff manager about leave request
-            await sendMail('noreply@leavemanagement', find_manager.email, 'Leave Request', `${find_user.fullname} is requesting for leave`);
+            await sendMail('noreply@bugtechdevs', find_manager.email, 'Leave Request', `${find_user.fullname} is requesting for leave`);
             return res.status(200)
                 .json(vm.ApiResponse(true, 200, "leave request sent"))
         }

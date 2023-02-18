@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const ip = require('ip');
 
 function sendEmailToUser(link, email) {
     return new Promise((resolve, reject) => {

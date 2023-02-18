@@ -8,11 +8,34 @@ Promote Employee (Update Post)
 Update Salary
 time in/out
 timesheet
+${currentDate}
+
+    published: req.body.published ? req.body.published : false
+
+
+    res.status(200).json({
+        c: 200,
+        m: "Hello World!",
+        d: {}
+    });
 
 setTimeout(function () {
   console.log("First");
 }, 3000);
 console.log("Second");
+
+var app = express()
+var sess = {
+  secret: 'keyboard cat',
+  cookie: {}
+}
+
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
+}
+
+app.use(session(sess))
 
 
 exports.area = function (width) {
@@ -115,3 +138,45 @@ app.get('/', (req, res) => {
     // res.render("testing", { title: "About dogs", message: "Dogs rock!" });
     // res.sendFile(__dirname + '/index.html')
 });
+
+// Get all causes
+export function getAllCause({
+  Cause.find()
+    .select('_id title description')
+    .then((allCause) => {
+      return res.status(200).json({
+        success: true,
+        message: 'A list of all causes',
+        Cause: allCause,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: 'Server error. Please try again.',
+        error: err.message,
+      });
+    });
+}
+
+
+  const editRole = document.querySelectorAll('.edit')
+  const deleteUser = document.querySelector('.delete')
+  deleteUser.forEach((button, i)=> {
+   button.addEventListener('click', async ()=> {
+   display.textContent =''
+   const id = data.user[i+1].id
+   const res = await fetch('/api/auth/deleteUser', {
+     method: 'DELETE',
+     body: JSON.stringify({id}),
+     headers: {'Content-Type': 'application/json'}
+     })
+   const dataDelete = await res.json()
+   if (res.status === 401){
+     document.body.scrollTop = 0
+     document.documentElement.scrollTop = 0
+     return display.textContent = `${dataUpdate.message}. ${dataUpdate.error ? dataUpdate.error : ''}`
+   }
+   location.assign('/admin')
+    })
+  })

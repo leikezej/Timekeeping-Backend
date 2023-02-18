@@ -1,3 +1,4 @@
+const ip = require('ip');
 const config = require("../config/auth.config");
 const db = require('../models');
 const { user: User, role: Role, refreshToken: RefreshToken } = db;
@@ -5,12 +6,18 @@ const { user: User, role: Role, refreshToken: RefreshToken } = db;
 let jwt = require("jsonwebtoken");
 let bcrypt = require("bcryptjs");
 
+
 exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
   });
+
+  if (password.length < 6) {
+    return res.status(400).json({ message: "Password must be  atleast 8 characters" })
+  }
+
   user.save((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -29,16 +36,15 @@ exports.signup = (req, res) => {
           }
 
           user.roles = roles.map((role) => role._id);
+
           user.save((err) => {
             if (err) {
               res.status(500).send({ message: err });
               return;
             }
-            // res.send({ message: "User was registered successfully!" });
             res.send({
-              m: "Registration Success!",
-              c: 200,
-              d: {user},
+              status: "failed",
+              message: "Unsuccessfully logged in :D!"
             });
           });
         }
@@ -69,7 +75,7 @@ exports.signup = (req, res) => {
   });
 };
 
-exports.signin = (req, res) => {
+exports.signin = (req, res,  next) => {
   User.findOne({
     username: req.body.username,
   })
@@ -84,6 +90,10 @@ exports.signin = (req, res) => {
         return res.status(404).send({ message: "User Not found." });
       }
 
+    // set the username in the session session 
+    req.session.username = username;
+    req.session.user = req.body.user
+
       let passwordIsValid = bcrypt.compareSync(
         req.body.password,
         user.password
@@ -94,6 +104,10 @@ exports.signin = (req, res) => {
           accessToken: null,
           message: "Invalid Password!",
         });
+      }
+      
+      if (!loggedIn  ===  "success") {
+         attendance = true;
       }
 
       let token = jwt.sign({ id: user.id }, config.secret, {
@@ -107,9 +121,11 @@ exports.signin = (req, res) => {
       for (let i = 0; i < user.roles.length; i++) {
         authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
       }
+      console.log(ip.address())
       res.status(200).send({
         m: "Welcome Back!",
         s: 200,
+        i: ip.address(),
         d: {user},
         accessToken: token,
         refreshToken: refreshToken,
@@ -117,27 +133,24 @@ exports.signin = (req, res) => {
     });
 };
 
-exports.signout = async (req, res) => {
-  try {
-    req.session = null;
-    return res.status(200).send({ message: "You've been signed out!" });
-  } catch (err) {
-    this.next(err);
-  }
-};
+exports.signout = async (req, res, next) => {
+  res.cookie("jwt", "", { maxAge: "1" })
+  req.session.user = null;
+  req.session.save(function (err) {
+    if (err) next(err)
 
-exports.profile = async (req, res) => {
-  const user = await User.findById(req.user._id)
-  if (user) {
-    res.json({
-      id: user._id,
-      firstName: user.firstName,
-      email: user.email,
+    // regenerate the session, which is good practice to help
+    // guard against forms of session fixation
+    req.session.regenerate(function (err) {
+      if (err) next(err)
+      res.redirect('/')
+      return res.status(200).send({
+        m: "You've been signed out!",
+        c: 200,
+        d:  {}
+    });
     })
-  } else {
-    res.status(404)
-    throw new Error('User not found')
-  }
+  })
 };
 
 exports.refreshToken = async (req, res) => {
@@ -176,3 +189,5 @@ exports.refreshToken = async (req, res) => {
     return res.status(500).send({ message: err });
   }
 };
+
+

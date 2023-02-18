@@ -17,7 +17,46 @@ app.post('/login', function(req, res) {
 });
 
 
+    if (typeof roles === 'string') {
+        roles = [roles];
+    }
 
+
+
+
+
+Below is the cronjob runs every midnight and set the active campaigns to inactive if end_date is lesser than today
+
+Also, note that first we need to convert today's date in the same format as saved in db
+var todayDate = new Date().toISOString().substring(0, 10);
+
+cron.schedule('0 1 * * *', () => {
+  console.log('Running a task every midnight (1:00 am)');
+  Campaign.findOneAndUpdate({ campaignStatus: 'active', end_date: { 
+
+    $lt: todayDate, 
+
+ }}, { $set:  {campaignStatus: 'inactive' }},
+
+ {returnNewDocument: true}, (err, data) => {
+  if (err) {
+    return errorHandler(dbError, res);
+  }
+})
+});
+
+
+
+
+
+
+product.sold = Date.now();
+product = await product.save();
+If save is successful, the returned promise will fulfill with the document saved.
+
+Example:
+const newProduct = await product.save();
+newProduct === product; //
 
 
      const MYDBSchema = new mongoose.Schema({
@@ -76,7 +115,5 @@ const MYDBSchema = new mongoose.Schema({
             default:Date.now,
         },
         entry:{type:Date}
-
-
     }]
 });

@@ -1,5 +1,6 @@
 const { verifySignUp, authJwt } = require("../middlewares");
 const controller = require("../controllers/auth.controller");
+const ip = require('ip');
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -18,14 +19,10 @@ module.exports = function(app) {
       verifySignUp.checkRolesExisted
     ],
     controller.signup
-  
   );
   app.post("/api/auth/refreshtoken", controller.refreshToken);
 
   app.post("/api/auth/signin", controller.signin);
 
   app.post("/api/auth/signout", controller.signout);
-  
-  app.get("/api/auth/profile", controller.profile);
-  
 };

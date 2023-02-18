@@ -19,7 +19,7 @@ connectDB();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
@@ -57,14 +57,33 @@ app.use(
 );
 
 // Express Session
-app.use(session({
-  secret: '123jepski',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-  maxAge: 60000
+// app.use(session({
+//   genid: function(req) {
+//     return genuuid() // use UUIDs for session IDs
+//   },
+//   secret: '123jepski',
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: {
+//   maxAge: 60000,
+//   secure: true
+//   }
+// }));
+
+app.use(session({ secret: process.env.SESSION_SECRET, saveUninitialized: true, resave: false, cookie: { maxAge: 60000 }}))
+
+app.get('/sessions', function(req, res, next) {
+  if (req.session.views) {
+    req.session.views++
+    res.setHeader('Content-Type', 'text/html')
+    res.write('<p>views: ' + req.session.views + '</p>')
+    res.write('<p>expires in: ' + (req.session.cookie.maxAge / 5999) + 's</p>')
+    res.end()
+  } else {
+    req.session.views = 1
+    res.end('welcome to the session demo. refresh!')
   }
-}));
+})
 
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);

@@ -30,6 +30,39 @@ const verifyToken = (req, res, next) => {
   });
 };
 
+// const button = document.getElementById('myButton');
+// button.addEventListener('click', function(e) {
+//   console.log('button was clicked');
+
+//   fetch('/clicked', {method: 'POST'})
+//     .then(function(response) {
+//       if(response.ok) {
+//         console.log('Click was recorded');
+//         return;
+//       }
+//       throw new Error('Request failed.');
+//     })
+//     .catch(function(error) {
+//       console.log(error);
+//     });
+// console.log('Client-side code running');
+// });
+
+app.post('/clicked', (req, res) => {
+  const click = {clickTime: new Date()};
+  console.log(click);
+  console.log(db);
+
+  db.collection('clicks').save(click, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    console.log('click added to db');
+    res.sendStatus(201);
+  });
+});
+
+
 isAdmin = (req, res, next) => {
   User.findById(req.userId).exec((err, user) => {
     if (err) {
@@ -91,10 +124,16 @@ isModerator = (req, res, next) => {
   });
 };
 
+const loggedUser = async (req, res, next) => {
+  res.send({ "user": req.user })
+  console.log(ip.address());
+};
+
 const authJwt = {
   catchError,
   verifyToken,
   isAdmin,
-  isModerator
+  isModerator,
+  loggedUser
 };
 module.exports = authJwt;
