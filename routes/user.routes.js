@@ -5,16 +5,16 @@ module.exports = function(app) {
   app.use(function(req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
-      "Origin, Content-Type, Accept"
+      "x-access-token, Origin, Content-Type, Accept"
     );
     next();
   });
 
-  app.get("/api/user/findAll",  [authJwt.verifyToken],  controller.findAll);
+  app.get("/api/user/findAll", [authJwt.verifyToken, authJwt.isAdmin], controller.findAll);
 
   app.get("/api/user/getUser/:id", [authJwt.verifyToken], controller.getUserById);
 
-  app.put("/api/user/update/:id", [authJwt.verifyToken, verifySignUp.checkDuplicateUsernameOrEmail], controller.updateById);
+  app.put("/api/user/update/:id", [authJwt.verifyToken, verifySignUp.checkDuplicatePhoneOrEmail], controller.updateById);
 
   app.delete("/api/user/delete/:id", [authJwt.verifyToken, verifySignUp.checkRolesExisted], controller.deleteById);
 

@@ -6,11 +6,12 @@ const { user: User, role: Role, refreshToken: RefreshToken } = db;
 let jwt = require("jsonwebtoken");
 let bcrypt = require("bcryptjs");
 
-
 exports.signup = (req, res) => {
   const user = new User({
-    username: req.body.username,
+    fullname: req.body.fullname,
     email: req.body.email,
+    phone: req.body.phone,
+    address: req.body.address,
     password: bcrypt.hashSync(req.body.password, 8),
   });
 
@@ -37,13 +38,12 @@ exports.signup = (req, res) => {
               res.status(500).send({ message: err });
               return;
             }
-
-            res.send({ message: "User was registered successfully!" });
+            res.send({ message: "User Registered Successfully!" });
           });
         }
       );
     } else {
-      Role.findOne({ name: "user" }, (err, role) => {
+      Role.findOne({ name: "employee" }, (err, role) => {
         if (err) {
           res.status(500).send({ message: err });
           return;
@@ -55,8 +55,7 @@ exports.signup = (req, res) => {
             res.status(500).send({ message: err });
             return;
           }
-
-          res.send({ message: "User was registered successfully!" });
+          res.send({ message: "User Was Registered w/ default ROLES!" });
         });
       });
     }
@@ -106,7 +105,10 @@ exports.signin = (req, res,  next) => {
       for (let i = 0; i < user.roles.length; i++) {
         authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
       }
-      console.log(ip.address())
+      
+      req.session.token = token;
+      
+      // console.log(ip.address())
       res.status(200).send({
         m: "Welcome Back!",
         s: 200,

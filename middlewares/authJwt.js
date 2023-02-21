@@ -8,7 +8,7 @@ verifyToken = (req, res, next) => {
   let token = req.session.token;
 
   if (!token) {
-    return res.status(403).send({ message: "No token provided!" });
+    return res.status(403).send({ message: "No Token Provided!" });
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
@@ -26,7 +26,6 @@ isAdmin = (req, res, next) => {
       res.status(500).send({ message: err });
       return;
     }
-
     Role.find(
       {
         _id: { $in: user.roles },
@@ -57,7 +56,6 @@ isModerator = (req, res, next) => {
       res.status(500).send({ message: err });
       return;
     }
-
     Role.find(
       {
         _id: { $in: user.roles },

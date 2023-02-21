@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ip = require('ip');
 
-
 const userSchema = new Schema({
   // username: {
   //   type: String,
@@ -36,36 +35,36 @@ const userSchema = new Schema({
       required: [true, "Please Add A Password"],
       minlength: 8,
     },
-    present: {
-      type: Boolean,
-      default: false
-    },
+    // present: {
+    //   type: Boolean,
+    //   default: false
+    // },
     roles: [
       {
         type: mongoose.Schema.Types.ObjectId,
         // type: Schema.Types.ObjectId,
-        enum: ['employee', 'admin', 'moderator'],
+        enum: ["employe", "admin", "moderator"],
         default: "employee",
         ref: "Role",
       }
     ],
-    attendance:[{
-      date:{
-          type:Date,
-          default:Date.now,
-      },
-      entry:{type:Date}
-  }],
+  //   attendance:[{
+  //     date:{
+  //         type:Date,
+  //         default:Date.now,
+  //     },
+  //     entry:{type:Date}
+  // }],
   ip: {
     type: String,
     default: ip.address()
     },
-    city: String,
-    state: String,
-    country: String,
-    occupation: String,
-    phoneNumber: String,
-    transactions: Array,
+    // city: String,
+    // state: String,
+    // country: String,
+    // occupation: String,
+    // phoneNumber: String,
+    // transactions: Array,
       // attendance: [{ type: Schema.Types.ObjectId, ref: 'Attendance' }]
 },  {timestamps: true})
 
