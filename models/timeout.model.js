@@ -7,7 +7,7 @@ const timeoutSchema = Schema({
     type: String,
   },
   time: {
-    type: String,
+    type: Time,
     default: Date.now(),
     // default: new Date()
   },

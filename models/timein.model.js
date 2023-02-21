@@ -7,8 +7,8 @@ const timeinSchema = Schema({
     type: String,
   },
   time: {
-    type: String,
-    default: Date.now(),
+    type: Time,
+    // default: Date.now(),
     // default: new Date()
   },
   date: {

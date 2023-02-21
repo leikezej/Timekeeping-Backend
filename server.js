@@ -69,8 +69,12 @@ app.use(
 app.use(session({ 
     secret: process.env.SESSION_SECRET, 
     saveUninitialized: true, 
-    resave: false, 
-    cookie: { maxAge: 60000 }
+    resave: false,
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection
+    }),
+    cookie:{maxAge: 180*60*1000}
+    // cookie: { maxAge: 60000 }
 }));
 
 app.get('/sessions', function(req, res, next) {
