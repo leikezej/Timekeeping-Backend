@@ -1,30 +1,30 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const timeinSchema = Schema({
-  // id: { type: Schema.Types.ObjectId, ref: 'User' },
+const timeinSchema = new Schema({
   name: {
     type: String,
+    ref: "User"
   },
   time: {
-    type: Time,
-    // default: Date.now(),
-    // default: new Date()
+    type: String,
   },
   date: {
     type: Date,
     default: Date.now()
   },
+  published: Boolean,
   attendance:  {
     type:  Boolean,
     default: false,
     ref: "User"
   }
-});
+}, {timestamps: true});
 
 
-const Timein = mongoose.model('Timein', timeinSchema, "Timein");
+const timeinModel = mongoose.model('Timein', timeinSchema, "Timein");
 
+module.exports = timeinModel;
 
 
 

@@ -9,7 +9,7 @@ module.exports = function(app) {
     );
     next();
   });
-
+  
   app.get("/api/user/findAll", [authJwt.verifyToken, authJwt.isAdmin], controller.findAll);
 
   app.get("/api/user/getUser/:id", [authJwt.verifyToken], controller.getUserById);

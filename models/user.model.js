@@ -77,7 +77,7 @@ const userSchema = new Schema({
 
 // const attendanceModel = mongoose.model('attendance', attendanceSchema,  'Attendance');
 // const userModel = mongoose.model("user", userSchema, "User");
-const userModel = mongoose.model('user', userSchema,  'user');
+const userModel = mongoose.model('user', userSchema,  'User');
 
 
 module.exports = userModel;

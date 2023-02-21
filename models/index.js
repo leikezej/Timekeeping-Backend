@@ -9,6 +9,7 @@ db.user = require("./user.model");
 db.role = require("./role.model");
 db.refreshToken = require("./refreshToken.model");
 db.leave = require("./leave.model");
+db.timein = require("./timein.model");
 // db.timeout = require("./timeout.model");
 
 
@@ -16,7 +17,6 @@ db.leave = require("./leave.model");
 
 
 // db.story = require("./story.model");
-// db.timein = require("./timein.model");
 // db.employee = require("./employee.model");
 // db.attendance = require("./attendance.model");
 

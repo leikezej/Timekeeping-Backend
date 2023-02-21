@@ -3,46 +3,47 @@ const Timein = db.timein;
 
 // CREATE NEW TIMEIN
 exports.create = (req, res) => {
-  const timein = {
-    name: req.body.name,
-    time: req.body.time,
-    date: req.body.date,
-    status: req.body.status
-  };
+  // Create a Timein
+  const timein = new Timein({
+      // title: req.body.title || "Untitled Timein", 
+      name: req.body.name,
+      time: req.body.time,
+      date: req.body.date,
+      published: req.body.published ? req.body.published : false
+  });
+
+  // Save Timein in the database
+  timein.save()
+  .then(data => {
+      res.send(data);
+  }).catch(err => {
+      res.status(500).send({
+          message: err.message || "Some error occurred while creating the Timein."
+      });
+  });
+};
+
+// GET ALL TIMEIN
+exports.findAll = (req, res) => {
+  const id = req.query.id;
+  var condition = id ? { id: { $regex: new RegExp(id), $options: "i" } } : {};
   
-  Timein.create(timein)
+  Timein.find(condition)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Timein."
+          err.message || "Some error occurred while retrieving tutorials."
       });
-    }); 
-}
-
-// GET ALL TIMEIN
-exports.findAll = (req, res) => {
-    const name = req.query.name;
-    var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    
-    Timein.findAll({ where: condition })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving All Timein Lists."
-        });
-      });
+    });
 };
 
 //  GET SINGLE TIMEIN
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Timein.findByPk(id)
+    Timein.findById(id)
       .then(data => {
         if (data) {
           res.send(data);
@@ -61,78 +62,38 @@ exports.findOne = (req, res) => {
 
 // UPDATE SINGLE TIMEIN BY ID
 exports.update = (req, res) => {
-    const id = req.params.id;
-    Timein.update(req.body, {
-      where: { id: id }
+  Timein.findByIdAndUpdate(req.params.id)
+    .then((timein) => {
+      timein.name = req.body.name;
+      timein.time = req.body.time;
+      timein.date = req.body.date;
+      timein
+        .save()
+        .then(() => res.json("Timein Updated..."))
+        .catch((err) => res.status(400).json("Error: " + err));
     })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Timein was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Timein with id=${id}. Maybe Timein was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating Timein with id=" + id
-        });
-      });
+    .catch((err) => res.status(400).json("Error: " + err));
 };
+// message: `Cannot delete Timein with id=${id}. Maybe Timein was not found!`
+
 
 // DELETE SINGLE TIMEIN BY ID
 exports.delete = (req, res) => {
-    const id = req.params.id;
-    Timein.destroy({
-      where: { id: id }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Timein was deleted successfully!"
-          });
-        } else {
-          res.send({
-            message: `Cannot delete Timein with id=${id}. Maybe Timein was not found!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Could not delete Timein with id=" + id
-        });
-      });
+  Timein.findByIdAndDelete(req.params.id)
+    .then(() => res.json(`Timein with is now Deleted...`))
+    .catch((err) => res.status(400).json("Error: " + err));
 };
 
-// DELETE ALL BY ID
-exports.deleteAll = (req, res) => {
-  Timein.destroy({
-      where: {},
-      truncate: false
-    })
-      .then(nums => {
-        res.send({ message: `${nums} Timein were deleted successfully!` });
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while removing all Timein."
-        });
-      });
-};
-
+// Find all published Tutorials
 exports.findAllPublished = (req, res) => {
-  Timein.findAll({ where: { published: true } })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving Timein."
-        });
+  Tutorial.find({ published: true })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
       });
+    });
 };

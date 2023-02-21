@@ -9,7 +9,7 @@ exports.create = (req, res) => {
     status: req.body.status
   };
 
-  Timeout.create(timeout)
+  timeout.save(Timeout)
     .then(data => {
       res.send(data);
     })

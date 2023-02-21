@@ -132,6 +132,11 @@ exports.signout = async (req, res, next) => {
   //       c: 200,
   //       d:  {}
   //   });
+//   res.clearCookie("accessToken",{
+//     secure:true,
+//     sameSite:"none"
+//   }).status(200).json("User has been logged out.")
+// }
 };
 
 exports.refreshToken = async (req, res) => {

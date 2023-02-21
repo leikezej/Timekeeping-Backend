@@ -1,8 +1,7 @@
 const config = require("../config/auth.config");
 const db = require('../models');
-const getCountryIso3 = require("country-iso-2-to-3");
 
-const { user: User, role: Role, refreshToken: RefreshToken } = db;
+const { user: User, role: Role, refreshToken: RefreshToken,   } = db;
 
 // GET
 exports.findAll =  async (req, res) => {

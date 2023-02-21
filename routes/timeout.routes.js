@@ -10,7 +10,7 @@ module.exports = function(app) {
     next();
   });
 
-  app.post("/api/user/timeout", controller.create);
+  app.post("/api/timeout/create", controller.create);
   app.get("/api/user/timeout", controller.findAll);
   app.get("/api/user/timeout/:id", controller.findOne);
   app.put("/api/user/timeout/:id", controller.update);

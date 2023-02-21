@@ -22,6 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
 //   next();
@@ -77,8 +78,8 @@ app.use(session({
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/leave.routes')(app);
-require('./routes/timeout.routes')(app);
-// require('./routes/timein.routes')(app);
+require('./routes/timein.routes')(app);
+// require('./routes/timeout.routes')(app);
 
 
 app.listen(process.env.PORT, () => {
