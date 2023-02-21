@@ -8,6 +8,7 @@ const timeinSchema = new Schema({
   },
   time: {
     type: String,
+    ref: "Timesheet"
   },
   date: {
     type: Date,
@@ -17,7 +18,7 @@ const timeinSchema = new Schema({
   attendance:  {
     type:  Boolean,
     default: false,
-    ref: "User"
+    ref: "Attendance"
   }
 }, {timestamps: true});
 

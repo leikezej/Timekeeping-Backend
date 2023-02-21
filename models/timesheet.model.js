@@ -3,20 +3,19 @@ const { Schema } = mongoose;
 
 const timeSheetSchema = new Schema({
   name: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   },
   time_start: {
-    type: String,
-    // default: timestamps,
+    // type: String,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Timein"
   },
   time_end: {
-    type: String,
-    default: Date.now(),
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Timeout"
   },
-  total_hors:  {
+  total_hours:  {
     default: false,
   },
   published: Boolean,

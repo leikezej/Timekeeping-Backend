@@ -8,6 +8,7 @@ const timeoutSchema = new Schema({
   },
   time: {
     type: String,
+    ref: "Timesheet"
   },
   date: {
     type: Date,
@@ -17,7 +18,7 @@ const timeoutSchema = new Schema({
   attendance:  {
     type:  Boolean,
     default: false,
-    ref: "User"
+    ref: "Attendance"
   }
 }, {timestamps: true});
 
@@ -25,20 +26,3 @@ const timeoutSchema = new Schema({
 const timeoutModel = mongoose.model('Timeout', timeoutSchema, "Timeout");
 
 module.exports = timeoutModel;
-
-
-
-// const mongoose = require("mongoose");
-
-// const Schema = mongoose.Schema;
-
-// const TimeinSchema = new Schema({
-//   title: { type: String, required: true },
-//   author: { type: Schema.Types.ObjectId, ref: "User", required: true },
-//   summary: { type: String, required: true },
-//   isbn: { type: String, required: true },
-//   genre: [{ type: Schema.Types.ObjectId, ref: "Genre" }],
-// });
-
-
-// module.exports = mongoose.model("Timein", TimeinSchema);

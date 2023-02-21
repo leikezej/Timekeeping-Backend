@@ -37,7 +37,7 @@ const userSchema = new Schema({
       {
         type: mongoose.Schema.Types.ObjectId,
         // type: Schema.Types.ObjectId,
-        enum: ["employe", "admin", "moderator"],
+        enum: ["employee", "admin", "moderator"],
         default: "employee",
         ref: "Role",
       }
@@ -54,7 +54,10 @@ const userSchema = new Schema({
     default: ip.address()
     },
     // city: String,
-      attendance: [{ type: Schema.Types.ObjectId, ref: 'Attendance' }]
+      attendance: [{ type: Schema.Types.ObjectId, ref: 'Attendance' }],
+      leaveApplication: [
+        { type: mongoose.Schema.Types.ObjectId, ref: "Leave" }
+      ],
 },  {timestamps: true})
 
 // const attendanceSchema = Schema({
