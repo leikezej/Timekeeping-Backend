@@ -73,3 +73,15 @@ const userModel = mongoose.model('user', userSchema,  'User');
 
 
 module.exports = userModel;
+
+// var dateFirst = new Date("11/25/2017");
+// var dateSecond = new Date("11/28/2017");
+
+// // time difference
+// var timeDiff = Math.abs(dateSecond.getTime() - dateFirst.getTime());
+
+// // days difference
+// var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+// // difference
+// alert(diffDays)

@@ -1,25 +1,53 @@
+const { compareAsc, format } = require ('date-fns');
+
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const timeSheetSchema = new Schema({
+const timesheetSchema = new Schema({
   name: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "User"
   },
-  time_start: {
-    // type: String,
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Timein"
+  // timeStart: {
+  //   type: Date,
+  //   default: Date.now
+  // },
+  timeStart: {
+    type: String,
+    default: Date.now
   },
-  time_end: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Timeout"
+  timeEnd: {
+    type: String,
+    default: Date.now()
   },
-  total_hours:  {
-    default: false,
+  totalHours:  {
+    type: Number,
+    default: function(){
+      return this.timeStart + this.timeEnd
+    }
   },
-  published: Boolean,
-}, {timestamps: true});
+}, {timestamps: true });
 
-const timeSheetModel = mongoose.model('TimeSheet', timeSheetSchema, "TimeSheet");
-module.exports = timeSheetModel;
+// }, {timestamps: {currentTime: () => Math.floor(Date.now() / 1000) }});
+
+// // Generate and hash password token
+// UserSchema.methods.getResetPasswordToken = function() {
+//   // Generate token
+//   const resetToken = crypto.randomBytes(20).toString('hex');
+// // Hash token and set to resetPasswordToken field
+//   this.resetPasswordToken = crypto
+//       .createHash('sha256')
+//       .update(resetToken)
+//       .digest('hex');
+// // Set expire
+//   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+//   return resetToken;
+// };
+
+// //Match input password with encrypted password
+// UserSchema.methods.matchPassword = async function (enteredPassword) {
+//   return await bcrypt.compare(enteredPassword, this.password);
+// };
+
+const timesheetModel = mongoose.model('Timesheet', timesheetSchema, "Timesheet");
+module.exports = timesheetModel;
