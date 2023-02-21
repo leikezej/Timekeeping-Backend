@@ -1,44 +1,49 @@
 const db = require("../models");
 const Timeout = db.timeout;
 
+// CREATE NEW TIMEOUT
 exports.create = (req, res) => {
-  const timeout = {
-    name: req.body.name,
-    time: req.body.time,
-    date: req.body.date,
-    status: req.body.status
-  };
+  // Create a Timeout
+  const timeout = new Timeout({
+      // title: req.body.title || "Untitled Timein", 
+      name: req.body.name,
+      time: req.body.time,
+      date: req.body.date,
+      published: req.body.published ? req.body.published : false
+  });
 
-  timeout.save(Timeout)
+  // Save Timeout in the database
+  timeout.save()
+  .then(data => {
+      res.send(data);
+  }).catch(err => {
+      res.status(500).send({
+          message: err.message || "Some error occurred while creating the Timein."
+      });
+  });
+};
+
+// GET ALL TIMEOUT
+exports.findAll = (req, res) => {
+  const id = req.query.id;
+  var condition = id ? { id: { $regex: new RegExp(id), $options: "i" } } : {};
+
+  Timeout.find(condition)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Timeout."
+          err.message || "Some error occurred while retrieving Timeout."
       });
     });
-}
-
-exports.findAll = (req, res) => {
-    const name = req.query.name;
-    var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    Timeout.findAll({ where: condition })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving All Timein Lists."
-        });
-      });
 };
 
+//  GET SINGLE TIMEOUT
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Timeout.findByPk(id)
+    Timeout.findById(id)
       .then(data => {
         if (data) {
           res.send(data);
@@ -53,79 +58,42 @@ exports.findOne = (req, res) => {
           message: "Error retrieving Timeout with id=" + id
         });
       });
-  }
+};
 
+// UPDATE SINGLE TIMEOUT BY ID
 exports.update = (req, res) => {
-    const id = req.params.id;
-    Timeout.update(req.body, {
-      where: { id: id }
+  Timeout.findByIdAndUpdate(req.params.id)
+    .then((timeout) => {
+      timeout.name = req.body.name;
+      timeout.time = req.body.time;
+      timeout.date = req.body.date;
+      timeout
+        .save()
+        .then(() => res.json("Timeout Updated..."))
+        .catch((err) => res.status(400).json("Error: " + err));
     })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Timeout was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Timeout with id=${id}. Maybe Timeout was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating Timeout with id=" + id
-        });
-      });
-  };
+    .catch((err) => res.status(400).json("Error: " + err));
+};
+// message: `Cannot delete Timein with id=${id}. Maybe Timein was not found!`
 
+
+// DELETE SINGLE TIMEOUT BY ID
 exports.delete = (req, res) => {
-    const id = req.params.id;
-    Timeout.destroy({
-      where: { id: id }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Timeout was deleted successfully!"
-          });
-        } else {
-          res.send({
-            message: `Cannot delete Timeout with id=${id}. Maybe Timeout was not found!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Could not delete Timeout with id=" + id
-        });
-      });
-  };
+  Timeout.findByIdAndDelete(req.params.id)
+    .then(() => res.json(`Timeout with is now Deleted...`))
+    .catch((err) => res.status(400).json("Error: " + err));
+};
 
-exports.deleteAll = (req, res) => {
-  Timeout.destroy({
-      where: {},
-      truncate: false
-    })
-      .then(nums => {
-        res.send({ message: `${nums} Timeout were deleted successfully!` });
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while removing all Timeout."
-        });
-      });
-  };
-
+// Find all published Timeout
 exports.findAllPublished = (req, res) => {
-  Timeout.findAll({ where: { published: true } })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving Timeout."
-        });
+  Timeout.find({ published: true })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Timeout."
       });
-  };
+    });
+};

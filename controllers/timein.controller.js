@@ -86,14 +86,14 @@ exports.delete = (req, res) => {
 
 // Find all published Tutorials
 exports.findAllPublished = (req, res) => {
-  Tutorial.find({ published: true })
+  Timein.find({ published: true })
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials."
+          err.message || "Some error occurred while retrieving Timein."
       });
     });
 };
