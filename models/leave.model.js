@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const timeSheet = new Schema({
-    // id: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    // imprint: { type: String, required: true },
+const leaveSheet = new Schema({
     reason: {
         type: String
     },
@@ -21,5 +19,5 @@ const timeSheet = new Schema({
 }, {timestamps: true})
 
 
-const leaveModel = mongoose.model("timesheet", timeSheet, "Timesheet");
+const leaveModel = mongoose.model("leave", leaveSheet, "Leave");
 module.exports = leaveModel;

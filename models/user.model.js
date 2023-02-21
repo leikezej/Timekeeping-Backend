@@ -4,11 +4,6 @@ const Schema = mongoose.Schema;
 const ip = require('ip');
 
 const userSchema = new Schema({
-  // username: {
-  //   type: String,
-  //   required: true,
-  //   trim: true
-  // },
   fullname: {
     type: String,
     trim: true
@@ -35,10 +30,9 @@ const userSchema = new Schema({
       required: [true, "Please Add A Password"],
       minlength: 8,
     },
-    // present: {
-    //   type: Boolean,
-    //   default: false
-    // },
+    salary: {
+      type: String
+    },
     roles: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -60,12 +54,7 @@ const userSchema = new Schema({
     default: ip.address()
     },
     // city: String,
-    // state: String,
-    // country: String,
-    // occupation: String,
-    // phoneNumber: String,
-    // transactions: Array,
-      // attendance: [{ type: Schema.Types.ObjectId, ref: 'Attendance' }]
+      attendance: [{ type: Schema.Types.ObjectId, ref: 'Attendance' }]
 },  {timestamps: true})
 
 // const attendanceSchema = Schema({

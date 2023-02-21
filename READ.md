@@ -1,3 +1,15 @@
+        const saveEmail = await User.findByIdAndUpdate(userId._id, {
+          $set: {
+            isVerified: true,
+          },
+        });
+
+        if (saveEmail) {
+          return res
+            .status(200)
+            .json({ message: "Email Verification Success" });
+        }
+
     let type = req.params.type
     let userId = req.user.id;
     let user = await User.findById(userId);

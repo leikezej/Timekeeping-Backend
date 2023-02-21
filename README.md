@@ -8,6 +8,9 @@ Promote Employee (Update Post)
 Update Salary
 time in/out
 timesheet
+tasks 
+
+
 ${currentDate}
 
     published: req.body.published ? req.body.published : false
