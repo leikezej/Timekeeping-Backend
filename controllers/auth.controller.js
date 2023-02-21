@@ -14,7 +14,6 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8),
   });
 
-
   user.save((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
@@ -33,40 +32,32 @@ exports.signup = (req, res) => {
           }
 
           user.roles = roles.map((role) => role._id);
-
           user.save((err) => {
             if (err) {
               res.status(500).send({ message: err });
               return;
             }
-            res.send({
-              status: "failed",
-              message: "Unsuccessfully logged in :D!"
-            });
+
+            res.send({ message: "User was registered successfully!" });
           });
         }
       );
     } else {
-      Role.findOne({ name: "employee" }, (err, role) => {
+      Role.findOne({ name: "user" }, (err, role) => {
         if (err) {
           res.status(500).send({ message: err });
           return;
         }
 
-        employee.roles = [role._id];
+        user.roles = [role._id];
         user.save((err) => {
           if (err) {
             res.status(500).send({ message: err });
             return;
           }
-          res.send({ message: "User Was Registered Successfully!" });
-            // Validate required fields
-              // return res.status(200).json({
-              //   m: "Registration Success!",
-              //   c: 200,
-              //   d: {},
-              // });
-          });
+
+          res.send({ message: "User was registered successfully!" });
+        });
       });
     }
   });
@@ -74,7 +65,8 @@ exports.signup = (req, res) => {
 
 exports.signin = (req, res,  next) => {
   User.findOne({
-    username: req.body.username,
+    // username: req.body.username,
+    email: req.body.email,
   })
     .populate("roles", "-__v")
     .exec(async (err, user) => {

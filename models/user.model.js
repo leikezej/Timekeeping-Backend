@@ -5,10 +5,21 @@ const ip = require('ip');
 
 
 const userSchema = new Schema({
-  username: {
+  // username: {
+  //   type: String,
+  //   required: true,
+  //   trim: true
+  // },
+  fullname: {
     type: String,
-    required: true,
     trim: true
+  },
+  address: {
+    type: String,
+    trim: true
+  },
+  phone: {
+    type: String
   },
     email: {
       type: String,
@@ -55,17 +66,19 @@ const userSchema = new Schema({
     occupation: String,
     phoneNumber: String,
     transactions: Array,
-      attendance: [{ type: Schema.Types.ObjectId, ref: 'Attendance' }]
+      // attendance: [{ type: Schema.Types.ObjectId, ref: 'Attendance' }]
 },  {timestamps: true})
 
-const attendanceSchema = Schema({
-  id: { type: Schema.Types.ObjectId, ref: 'User' },
-  title: String,
-  present: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  isVerified: [{ type: Boolean, default: false }]
-});
+// const attendanceSchema = Schema({
+//   id: { type: Schema.Types.ObjectId, ref: 'User' },
+//   title: String,
+//   present: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+//   isVerified: [{ type: Boolean, default: false }]
+// });
 
-const attendanceModel = mongoose.model('attendance', attendanceSchema,  'Attendance');
-const userModel = mongoose.model("user", userSchema, "User");
+// const attendanceModel = mongoose.model('attendance', attendanceSchema,  'Attendance');
+// const userModel = mongoose.model("user", userSchema, "User");
+const userModel = mongoose.model('user', userSchema,  'user');
 
-module.exports = userModel, attendanceModel;
+
+module.exports = userModel;

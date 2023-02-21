@@ -17,7 +17,7 @@ dotenv.config({ path: './config/config.env'});
 connectDB();
 
 const app = express();
-app.use(logger);
+// app.use(logger);
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
@@ -28,9 +28,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // });
 
 if (process.env.NODE_ENV === 'development') {
-    app.use(logger('common'));
-    dotenv.config({ path:  '../.'})
     app.use(logger('dev'));
+    // dotenv.config({ path:  '../.'})
+    // app.use(logger('dev'));
 };
 
 if (process.env.NODE_ENV === 'production') {
@@ -39,10 +39,6 @@ if (process.env.NODE_ENV === 'production') {
     // app.get('*', (req, res) =>
     // res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
     // )
-};
-
-if (process.env.NODE_ENV === 'test') {
-  app.use(logger('tiny'));
 };
 
 // CORS
@@ -70,25 +66,13 @@ app.use(session({
     secret: process.env.SESSION_SECRET, 
     saveUninitialized: true, 
     resave: false,
-    store: new MongoStore({
-      mongooseConnection: mongoose.connection
-    }),
+    // store: new MongoStore({
+    //   mongooseConnection: mongoose.connection
+    // }),
     cookie:{maxAge: 180*60*1000}
     // cookie: { maxAge: 60000 }
 }));
 
-app.get('/sessions', function(req, res, next) {
-  if (req.session.views) {
-    req.session.views++
-    res.setHeader('Content-Type', 'text/html')
-    res.write('<p>views: ' + req.session.views + '</p>')
-    res.write('<p>expires in: ' + (req.session.cookie.maxAge / 5999) + 's</p>')
-    res.end()
-  } else {
-    req.session.views = 1
-    res.end('welcome to the session demo. refresh!')
-  }
-})
 
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);

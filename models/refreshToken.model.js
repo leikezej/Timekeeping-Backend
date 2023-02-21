@@ -37,6 +37,6 @@ RefreshTokenSchema.statics.verifyExpiration = (token) => {
   return token.expiryDate.getTime() < new Date().getTime();
 }
 
-const RefreshToken = mongoose.model("RefreshToken", RefreshTokenSchema);
+const RefreshToken = mongoose.model("RefreshToken", RefreshTokenSchema, "RefreshToken");
 
 module.exports = RefreshToken;
