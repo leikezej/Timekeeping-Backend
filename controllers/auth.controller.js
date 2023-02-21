@@ -14,9 +14,6 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8),
   });
 
-  if (password.length < 6) {
-    return res.status(400).json({ message: "Password must be  atleast 8 characters" })
-  }
 
   user.save((err, user) => {
     if (err) {
@@ -50,13 +47,13 @@ exports.signup = (req, res) => {
         }
       );
     } else {
-      Role.findOne({ name: "user" }, (err, role) => {
+      Role.findOne({ name: "employee" }, (err, role) => {
         if (err) {
           res.status(500).send({ message: err });
           return;
         }
 
-        user.roles = [role._id];
+        employee.roles = [role._id];
         user.save((err) => {
           if (err) {
             res.status(500).send({ message: err });
@@ -91,8 +88,8 @@ exports.signin = (req, res,  next) => {
       }
 
     // set the username in the session session 
-    req.session.username = username;
-    req.session.user = req.body.user
+    // req.session.username = username;
+    // req.session.user = req.body.user
 
       let passwordIsValid = bcrypt.compareSync(
         req.body.password,
@@ -106,10 +103,6 @@ exports.signin = (req, res,  next) => {
         });
       }
       
-      if (!loggedIn  ===  "success") {
-         attendance = true;
-      }
-
       let token = jwt.sign({ id: user.id }, config.secret, {
         expiresIn: config.jwtExpiration,
       });
@@ -125,32 +118,26 @@ exports.signin = (req, res,  next) => {
       res.status(200).send({
         m: "Welcome Back!",
         s: 200,
-        i: ip.address(),
         d: {user},
-        accessToken: token,
         refreshToken: refreshToken,
+        accessToken: token,
       });
     });
 };
 
 exports.signout = async (req, res, next) => {
-  res.cookie("jwt", "", { maxAge: "1" })
-  req.session.user = null;
-  req.session.save(function (err) {
-    if (err) next(err)
-
-    // regenerate the session, which is good practice to help
-    // guard against forms of session fixation
-    req.session.regenerate(function (err) {
-      if (err) next(err)
-      res.redirect('/')
-      return res.status(200).send({
-        m: "You've been signed out!",
-        c: 200,
-        d:  {}
-    });
-    })
-  })
+  try {
+    req.session = null;
+    return res.status(200).send({ message: "You've been signed out!" });
+  } catch (err) {
+    this.next(err);
+  }
+  // res.cookie("jwt", "", { maxAge: "1" })
+  //     return res.status(200).send({
+  //       m: "You've been signed out!",
+  //       c: 200,
+  //       d:  {}
+  //   });
 };
 
 exports.refreshToken = async (req, res) => {

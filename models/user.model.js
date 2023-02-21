@@ -12,12 +12,18 @@ const userSchema = new Schema({
   },
     email: {
       type: String,
-      required: true,
-      trim: true
+      trim: true,
+      required: [true, "Please Provide Email Address"],
+      unique: true,
+      match: [
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "Please Provide A Valid Email",
+      ],
     },
     password: {
       type: String,
-      required: true
+      required: [true, "Please Add A Password"],
+      minlength: 8,
     },
     present: {
       type: Boolean,
@@ -25,8 +31,8 @@ const userSchema = new Schema({
     },
     roles: [
       {
-        // type: mongoose.Schema.Types.ObjectId,
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
+        // type: Schema.Types.ObjectId,
         enum: ['employee', 'admin', 'moderator'],
         default: "employee",
         ref: "Role",
@@ -43,6 +49,12 @@ const userSchema = new Schema({
     type: String,
     default: ip.address()
     },
+    city: String,
+    state: String,
+    country: String,
+    occupation: String,
+    phoneNumber: String,
+    transactions: Array,
       attendance: [{ type: Schema.Types.ObjectId, ref: 'Attendance' }]
 },  {timestamps: true})
 

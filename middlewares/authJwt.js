@@ -30,39 +30,6 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-// const button = document.getElementById('myButton');
-// button.addEventListener('click', function(e) {
-//   console.log('button was clicked');
-
-//   fetch('/clicked', {method: 'POST'})
-//     .then(function(response) {
-//       if(response.ok) {
-//         console.log('Click was recorded');
-//         return;
-//       }
-//       throw new Error('Request failed.');
-//     })
-//     .catch(function(error) {
-//       console.log(error);
-//     });
-// console.log('Client-side code running');
-// });
-
-app.post('/clicked', (req, res) => {
-  const click = {clickTime: new Date()};
-  console.log(click);
-  console.log(db);
-
-  db.collection('clicks').save(click, (err, result) => {
-    if (err) {
-      return console.log(err);
-    }
-    console.log('click added to db');
-    res.sendStatus(201);
-  });
-});
-
-
 isAdmin = (req, res, next) => {
   User.findById(req.userId).exec((err, user) => {
     if (err) {
@@ -129,11 +96,67 @@ const loggedUser = async (req, res, next) => {
   console.log(ip.address());
 };
 
+const isEmployeeOrAdmin = (req, res, next) => {
+  User.findByPk(req.user_id).then(user => {
+    user.getRoles().then(roles => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "moderator") {
+          next();
+          return;
+        }
+
+        if (roles[i].name === "admin") {
+          next();
+          return;
+        }
+      }
+
+      res.status(403).send({
+        message: "Require Moderator or Admin Role!"
+      });
+    });
+  });
+};
 const authJwt = {
   catchError,
   verifyToken,
   isAdmin,
   isModerator,
-  loggedUser
+  loggedUser,
+  // isEmployeeOrAdmin
 };
 module.exports = authJwt;
+
+
+
+// const button = document.getElementById('myButton');
+// button.addEventListener('click', function(e) {
+//   console.log('button was clicked');
+
+//   fetch('/clicked', {method: 'POST'})
+//     .then(function(response) {
+//       if(response.ok) {
+//         console.log('Click was recorded');
+//         return;
+//       }
+//       throw new Error('Request failed.');
+//     })
+//     .catch(function(error) {
+//       console.log(error);
+//     });
+// console.log('Client-side code running');
+// });
+
+// app.post('/clicked', (req, res) => {
+//   const click = {clickTime: new Date()};
+//   console.log(click);
+//   console.log(db);
+
+//   db.collection('clicks').save(click, (err, result) => {
+//     if (err) {
+//       return console.log(err);
+//     }
+//     console.log('click added to db');
+//     res.sendStatus(201);
+//   });
+// });
